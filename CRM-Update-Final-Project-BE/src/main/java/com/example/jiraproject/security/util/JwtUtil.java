@@ -4,6 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.jiraproject.role.model.Role;
+import com.example.jiraproject.user.model.User;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,21 +22,19 @@ import java.util.Date;
 public class JwtUtil {
     private static final String SECRET_KEY = "myLovelySecret";
     private static final Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY.getBytes());
-    public String getAccessToken(UserDetails user, HttpServletRequest request) {
+    public String getAccessToken(User user) {
         return JWT.create()
                 .withSubject(user.getUsername())
-                .withIssuer(request.getRequestURL().toString())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
-                .withClaim("roles", user.getAuthorities()
+                .withClaim("roles", user.getRoles()
                         .stream()
-                        .map(GrantedAuthority::getAuthority)
+                        .map(Role::getCode)
                         .toList())
                 .sign(algorithm);
     }
-    public String getRefreshToken(UserDetails user, HttpServletRequest request) {
+    public String getRefreshToken(User user) {
         return JWT.create()
                 .withSubject(user.getUsername())
-                .withIssuer(request.getRequestURL().toString())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                 .sign(algorithm);
     }

@@ -9,6 +9,7 @@ import com.example.jiraproject.common.validation.group.UpdateInfo;
 import com.example.jiraproject.user.dto.UserDto;
 import com.example.jiraproject.user.model.User;
 import com.example.jiraproject.user.service.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -20,9 +21,10 @@ import java.util.Set;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/users")
-@Validated
+@RequestMapping("/v1/users")
 @RequiredArgsConstructor
+@Validated
+@SecurityRequirement(name = "bearerAuth")
 public class UserRestResource {
     private final UserService service;
     private final MessageSource messageSource;
