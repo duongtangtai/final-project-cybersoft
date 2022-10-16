@@ -9,6 +9,7 @@ import com.example.jiraproject.common.validation.group.UpdateInfo;
 import com.example.jiraproject.operation.dto.OperationDto;
 import com.example.jiraproject.operation.model.Operation;
 import com.example.jiraproject.operation.service.OperationService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -19,9 +20,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/operations")
-@Validated
+@RequestMapping("/v1/operations")
 @RequiredArgsConstructor
+@Validated
+@SecurityRequirement(name = "bearerAuth")
 public class OperationRestResource {
     private final OperationService service;
     private final MessageSource messageSource;

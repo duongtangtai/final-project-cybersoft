@@ -36,7 +36,7 @@ public class User extends BaseEntity {
     private String username;
 
     @Column(name = UserEntity.PASSWORD, nullable = false)
-    @Size(min = 5, max = 200, message = "{user.password.size}")
+    @Size(min = 5, max = 300, message = "{user.password.size}")
     @NotBlank(message = "{user.password.not-blank}")
     private String password;
 

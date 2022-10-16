@@ -21,9 +21,4 @@ public class JpaConfig {
             return Optional.of("Anonymous");
         }
     }
-    //TODO LEAVE IT HERE FOR A MOMENT
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }

@@ -9,6 +9,7 @@ import com.example.jiraproject.common.validation.group.UpdateInfo;
 import com.example.jiraproject.project.dto.ProjectDto;
 import com.example.jiraproject.project.model.Project;
 import com.example.jiraproject.project.service.ProjectService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -19,9 +20,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/projects")
+@RequestMapping("/v1/projects")
 @RequiredArgsConstructor
 @Validated
+@SecurityRequirement(name = "bearerAuth")
 public class ProjectRestResource {
     private final ProjectService service;
     private final MessageSource messageSource;

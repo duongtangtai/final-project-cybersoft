@@ -4,9 +4,11 @@ import com.example.jiraproject.common.dto.ResponseDto;
 import com.example.jiraproject.common.util.DateTimeUtil;
 import com.example.jiraproject.security.util.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -21,12 +23,10 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
+@Component
+@RequiredArgsConstructor
 public class CustomOncePerRequestFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
-
-    public CustomOncePerRequestFilter(JwtUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -34,6 +34,7 @@ public class CustomOncePerRequestFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } else {
             String authorizationToken = request.getHeader(AUTHORIZATION);
+            System.out.println("authorizationToken: " + authorizationToken);
             if (authorizationToken != null && authorizationToken.startsWith("Bearer ")) {
                 String token = authorizationToken.substring("Bearer ".length());
                 log.info("Trying to verify token: {}", token);
@@ -56,17 +57,7 @@ public class CustomOncePerRequestFilter extends OncePerRequestFilter {
                                 .build());
                 }
             } else {
-//                filterChain.doFilter(request, response);
-                response.setStatus(UNAUTHORIZED.value());
-                response.setContentType(APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(),
-                        ResponseDto.builder()
-                                .content(null)
-                                .hasErrors(true)
-                                .errors(List.of("Bạn cần phải đăng nhập"))
-                                .timeStamp(DateTimeUtil.now())
-                                .statusCode(401)
-                                .build());
+                filterChain.doFilter(request, response); //SecurityContextHolder will handle this.
             }
         }
     }

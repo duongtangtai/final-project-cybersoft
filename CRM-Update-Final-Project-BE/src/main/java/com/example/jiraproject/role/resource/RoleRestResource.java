@@ -9,6 +9,7 @@ import com.example.jiraproject.common.validation.group.UpdateInfo;
 import com.example.jiraproject.role.dto.RoleDto;
 import com.example.jiraproject.role.model.Role;
 import com.example.jiraproject.role.service.RoleService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -20,9 +21,10 @@ import java.util.Set;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/roles")
+@RequestMapping("/v1/roles")
 @Validated
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class RoleRestResource {
     private final RoleService service;
     private final MessageSource messageSource;
