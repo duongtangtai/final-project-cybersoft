@@ -1,18 +1,33 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {CommonModule} from "@angular/common";
+import {HttpClientModule} from "@angular/common/http";
+import {NgModule} from "@angular/core";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {BrowserModule} from '@angular/platform-browser';
+import {NgxWebstorageModule} from "ngx-webstorage";
+import {AppRoutingModule} from './app-routing.module';
+import {AsideComponent} from "./layout/aside/aside.component";
+import {FooterComponent} from './layout/footer/footer.component';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import {HeaderComponent} from './layout/header/header.component';
+import {MainComponent} from './layout/main/main.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AsideComponent,
+        HeaderComponent,
+        FooterComponent,
+        MainComponent,
+    ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        CommonModule,
+        HttpClientModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        NgxWebstorageModule.forRoot()
+    ],
+    bootstrap: [MainComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

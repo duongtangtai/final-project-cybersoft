@@ -1,19 +1,33 @@
 import {NgModule} from '@angular/core';
 import {PreloadingStrategy, RouterModule, Routes} from '@angular/router';
+import {ErrorComponent} from "./layout/error/error.component";
 
 const routes: Routes = [
     {
+        path: 'account',
+        loadChildren: () => import('./pages/account/account.module').then(m => m.AccountModule)
+    },
+    {
         path: 'project',
-        loadChildren: () => import('./pages/components/project/project.module').then(m => m.ProjectModule)
+        loadChildren: () => import('./pages/project/project.module').then(m => m.ProjectModule)
     },
     {
         path: 'task',
-        loadChildren: () => import('./pages/components/task/task.module').then(m => m.TaskModule)
+        loadChildren: () => import('./pages/task/task.module').then(m => m.TaskModule)
     },
     {
         path: 'user',
-        loadChildren: () => import('./pages/components/user/user.module').then(m => m.UserModule)
+        loadChildren: () => import('./pages/user/user.module').then(m => m.UserModule)
     },
+    {
+        path: '',
+        redirectTo: 'account/login',
+        pathMatch: 'full'
+    },
+    {
+        path: '**',
+        component: ErrorComponent
+    }
 ];
 
 @NgModule({
