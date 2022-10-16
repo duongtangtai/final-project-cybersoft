@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { LocalStorageService } from "ngx-webstorage";
+import { AppConstraint } from "../../../app.constaint";
 import { AuthService } from "../../../core/service/auth.service";
 
 @Component({
@@ -25,8 +26,7 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.localSt.observe("key")
-            .subscribe(val => console.log("new value: ", val));
+        this.localSt.store(AppConstraint.IS_LOGIN, false);
     }
 
     login() {
@@ -34,9 +34,11 @@ export class LoginComponent implements OnInit {
         const passWord = this.formLogin.controls["password"].value;
 
         if (userName == "admin" && passWord == "admin") {
-            this.router.navigate(["/project"]).then(r => this.localSt.store("isLogin", true));
+            this.localSt.store(AppConstraint.IS_LOGIN, true);
+            this.router.navigate(["/project"]).then(console.log);
         } else {
-            this.router.navigate(["/account/login"]).then(r => this.localSt.store("isLogin", false));
+            this.localSt.store(AppConstraint.IS_LOGIN, false);
+            this.router.navigate(["/account/login"]).then(console.log);
         }
     }
 

@@ -10,15 +10,18 @@ import { AuthService } from "../../core/service/auth.service";
 })
 export class MainComponent implements OnInit {
 
-  appConstraint!: AppConstraint;
-
   constructor(
     readonly authService: AuthService,
     readonly localSt: LocalStorageService
   ) {
   }
 
+  get isLogin() {
+    return this.localSt.retrieve(AppConstraint.IS_LOGIN);
+  }
+
   ngOnInit(): void {
+    console.log("is login: ", this.isLogin);
   }
 
 }

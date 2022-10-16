@@ -18,6 +18,6 @@ export class AuthGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return !!this.localSt.retrieve(AppConstraint.IS_LOGIN);
+    return this.localSt.retrieve(AppConstraint.IS_LOGIN);
   }
 }

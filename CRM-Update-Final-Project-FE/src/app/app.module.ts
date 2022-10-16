@@ -6,6 +6,7 @@ import { BrowserModule } from "@angular/platform-browser";
 import { NgxWebstorageModule } from "ngx-webstorage";
 import { AppRoutingModule } from "./app-routing.module";
 import { AsideComponent } from "./layout/aside/aside.component";
+import { ErrorComponent } from "./layout/error/error.component";
 import { FooterComponent } from "./layout/footer/footer.component";
 
 import { HeaderComponent } from "./layout/header/header.component";
@@ -16,6 +17,7 @@ import { MainComponent } from "./layout/main/main.component";
         AsideComponent,
         HeaderComponent,
         FooterComponent,
+        ErrorComponent,
         MainComponent
     ],
     imports: [
