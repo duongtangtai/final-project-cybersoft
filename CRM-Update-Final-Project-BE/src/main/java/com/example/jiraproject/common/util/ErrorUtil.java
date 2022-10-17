@@ -1,6 +1,7 @@
 package com.example.jiraproject.common.util;
 
 import com.example.jiraproject.common.exception.JiraAuthenticationException;
+import com.example.jiraproject.common.exception.JiraAuthorizationException;
 import com.example.jiraproject.notification.model.Notification;
 import com.example.jiraproject.operation.model.Operation;
 import com.example.jiraproject.task.model.Task;
@@ -51,6 +52,10 @@ public class ErrorUtil {
     }
 
     public static List<String> getErrorMessage(JiraAuthenticationException exception) {
+        return List.of(exception.getMessage());
+    }
+
+    public static List<String> getErrorMessage(JiraAuthorizationException exception) {
         return List.of(exception.getMessage());
     }
 }

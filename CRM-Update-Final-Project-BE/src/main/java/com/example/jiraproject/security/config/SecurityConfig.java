@@ -31,7 +31,7 @@ public class SecurityConfig {
         //CROSS-SITE REQUEST FORGERY -> DISABLE -> RECEIVE INPUT FROM BROWSERS
         http.cors().and().csrf().disable();
 
-        //STATELESS -> WON'T CREATE ANY SESSION
+        //STATELESS -> WON'T CREATE ANY SESSIONS
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         //contextPath = "/jira/api"
@@ -39,6 +39,8 @@ public class SecurityConfig {
         //swagger path = /jira/api/swagger-ui.html
         http.antMatcher("/v1/**").authorizeRequests()
                 .antMatchers("/v1/auth/login/**").permitAll()
+                .antMatchers("/v1/auth/refresh-token/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/v1/files/**").permitAll()
                 .anyRequest().authenticated();
 
         http.formLogin().disable();
