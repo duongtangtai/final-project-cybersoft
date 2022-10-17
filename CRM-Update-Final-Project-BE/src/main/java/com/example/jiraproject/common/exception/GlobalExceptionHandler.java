@@ -62,4 +62,12 @@ public class GlobalExceptionHandler {
         logError(exception);
         return ResponseUtil.error(exception, HttpStatus.UNAUTHORIZED);
     }
+    /**
+     * Exception from Authorization
+     */
+    @ExceptionHandler(JiraAuthorizationException.class)
+    public ResponseEntity<ResponseDto> handleJiraAuthorizationException(JiraAuthorizationException exception) {
+        logError(exception);
+        return ResponseUtil.error(exception, HttpStatus.FORBIDDEN);
+    }
 }

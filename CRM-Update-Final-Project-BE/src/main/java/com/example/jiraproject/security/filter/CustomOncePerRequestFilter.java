@@ -30,35 +30,31 @@ public class CustomOncePerRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getServletPath().equals("/login")) {
-            filterChain.doFilter(request, response);
-        } else {
-            String authorizationToken = request.getHeader(AUTHORIZATION);
-            System.out.println("authorizationToken: " + authorizationToken);
-            if (authorizationToken != null && authorizationToken.startsWith("Bearer ")) {
-                String token = authorizationToken.substring("Bearer ".length());
-                log.info("Trying to verify token: {}", token);
-                try {
-                    UsernamePasswordAuthenticationToken authenticationToken = jwtUtil.verifyToken(token);
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                    filterChain.doFilter(request, response);
-                    log.info("Token is valid");
-                } catch (Exception e) {
-                    log.error("Token is invalid: " + e.getMessage());
-                    response.setStatus(UNAUTHORIZED.value());
-                    response.setContentType(APPLICATION_JSON_VALUE);
-                    new ObjectMapper().writeValue(response.getOutputStream(),
-                            ResponseDto.builder()
-                                    .content(null)
-                                    .hasErrors(true)
-                                    .errors(List.of(e.getMessage()))
-                                    .timeStamp(DateTimeUtil.now())
-                                    .statusCode(401)
+        String authorizationToken = request.getHeader(AUTHORIZATION);
+        System.out.println("authorizationToken: " + authorizationToken);
+        if (authorizationToken != null && authorizationToken.startsWith("Bearer ")) {
+            String token = authorizationToken.substring("Bearer ".length());
+            log.info("Trying to verify token: {}", token);
+            try {
+                UsernamePasswordAuthenticationToken authenticationToken = jwtUtil.verifyToken(token);
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                filterChain.doFilter(request, response);
+                log.info("Token is valid");
+            } catch (Exception e) {
+                log.error("Token is invalid: " + e.getMessage());
+                response.setStatus(UNAUTHORIZED.value());
+                response.setContentType(APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(),
+                        ResponseDto.builder()
+                                .content(null)
+                                .hasErrors(true)
+                                .errors(List.of(e.getMessage()))
+                                .timeStamp(DateTimeUtil.now())
+                                .statusCode(401)
                                 .build());
-                }
-            } else {
-                filterChain.doFilter(request, response); //SecurityContextHolder will handle this.
             }
+        } else {
+            filterChain.doFilter(request, response); //SecurityContextHolder will handle this.
         }
     }
 }

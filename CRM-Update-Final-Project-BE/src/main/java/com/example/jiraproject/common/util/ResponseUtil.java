@@ -2,6 +2,7 @@ package com.example.jiraproject.common.util;
 
 import com.example.jiraproject.common.dto.ResponseDto;
 import com.example.jiraproject.common.exception.JiraAuthenticationException;
+import com.example.jiraproject.common.exception.JiraAuthorizationException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.experimental.UtilityClass;
 import org.springframework.http.HttpStatus;
@@ -70,6 +71,20 @@ public class ResponseUtil {
     }
 
     public static ResponseEntity<ResponseDto> error(JiraAuthenticationException exception, HttpStatus status) {
+        return new ResponseEntity<>(
+                ResponseDto
+                        .builder()
+                        .content(null)
+                        .hasErrors(true)
+                        .errors(ErrorUtil.getErrorMessage(exception))
+                        .timeStamp(DateTimeUtil.now())
+                        .statusCode(status.value())
+                        .build(),
+                status
+        );
+    }
+
+    public static ResponseEntity<ResponseDto> error(JiraAuthorizationException exception, HttpStatus status) {
         return new ResponseEntity<>(
                 ResponseDto
                         .builder()

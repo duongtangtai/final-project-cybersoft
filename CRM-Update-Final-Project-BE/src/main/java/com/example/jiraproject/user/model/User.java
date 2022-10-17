@@ -128,6 +128,13 @@ public class User extends BaseEntity {
     private Set<Notification> receivers;
 
     //------------------ENTITY LIFE CYCLES-------------------
+    @PrePersist
+    private void beforeSaveUser() {
+        if (accountStatus == null) {
+            accountStatus = AccountStatus.ACTIVE;
+        }
+    }
+
     @PreRemove
     private void beforeRemoveUser() { //set null to relative projects and tasks
         log.info("PreRemoveUser - Trying to set nulls to relative projects and tasks");
