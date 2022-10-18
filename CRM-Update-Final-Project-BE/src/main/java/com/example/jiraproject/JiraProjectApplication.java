@@ -5,6 +5,7 @@ import com.example.jiraproject.comment.repository.CommentRepository;
 import com.example.jiraproject.comment.service.CommentService;
 import com.example.jiraproject.common.model.BaseEntity;
 import com.example.jiraproject.common.util.ApiUtil;
+import com.example.jiraproject.file.service.FileService;
 import com.example.jiraproject.notification.model.Notification;
 import com.example.jiraproject.notification.repository.NotificationRepository;
 import com.example.jiraproject.notification.service.NotificationService;
@@ -31,7 +32,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -54,6 +54,7 @@ public class JiraProjectApplication implements CommandLineRunner {
     private final NotificationRepository notificationRepository;
     private final NotificationService notificationService;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final FileService fileService;
     public static void main(String[] args) {
         SpringApplication.run(JiraProjectApplication.class, args);
     }
@@ -265,8 +266,29 @@ public class JiraProjectApplication implements CommandLineRunner {
         saveOperation(operation1, operation2, operation3);
         //add to ROLE EMPLOYEE
         addOperationsToRole(role4, operation1, operation2, operation3);
-
-
+        //----------FILE API-----------
+        operation1 = Operation
+                .builder()
+                .name(ApiUtil.FILE)
+                .description("Lấy thông tin file")
+                .type(Operation.Type.FETCH)
+                .build();
+        operation2 = Operation
+                .builder()
+                .name(ApiUtil.FILE)
+                .description("Lưu thông tin file")
+                .type(Operation.Type.SAVE_OR_UPDATE)
+                .build();
+        operation3 = Operation
+                .builder()
+                .name(ApiUtil.FILE)
+                .description("Xóa file")
+                .type(Operation.Type.REMOVE)
+                .build();
+        saveOperation(operation1, operation2, operation3);
+        //add to ROLE ADMIN, EMPLOYEE
+        addOperationsToRole(role1, operation3);
+        addOperationsToRole(role4, operation1, operation2);
 
         //-----------------------------ADD USERS------------------------------
         User user1 = User.builder()

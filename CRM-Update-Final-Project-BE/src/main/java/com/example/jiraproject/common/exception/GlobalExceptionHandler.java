@@ -70,4 +70,12 @@ public class GlobalExceptionHandler {
         logError(exception);
         return ResponseUtil.error(exception, HttpStatus.FORBIDDEN);
     }
+    /**
+     * Exception from FileUpload
+     */
+    @ExceptionHandler(JiraFileUploadException.class)
+    public ResponseEntity<ResponseDto> handleJiraFileUploadException(JiraFileUploadException exception) {
+        logError(exception);
+        return ResponseUtil.error(exception, HttpStatus.BAD_REQUEST);
+    }
 }
