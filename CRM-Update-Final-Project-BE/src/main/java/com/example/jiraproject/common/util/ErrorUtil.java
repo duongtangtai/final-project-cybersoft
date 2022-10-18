@@ -1,6 +1,6 @@
 package com.example.jiraproject.common.util;
 
-import com.example.jiraproject.common.exception.JiraException;
+import com.example.jiraproject.common.exception.JiraAuthenticationException;
 import com.example.jiraproject.notification.model.Notification;
 import com.example.jiraproject.operation.model.Operation;
 import com.example.jiraproject.task.model.Task;
@@ -50,7 +50,7 @@ public class ErrorUtil {
         return exception.getConstraintViolations().stream().map(ConstraintViolation::getMessage).toList();
     }
 
-    public static List<String> getErrorMessage(JiraException exception) {
+    public static List<String> getErrorMessage(JiraAuthenticationException exception) {
         return List.of(exception.getMessage());
     }
 }

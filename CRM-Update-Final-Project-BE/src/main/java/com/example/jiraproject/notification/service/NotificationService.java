@@ -25,7 +25,6 @@ public interface NotificationService extends GenericService<Notification, Notifi
     NotificationWithInfoDto findByIdWithInfo(UUID id);
     List<NotificationWithInfoDto> findAllWithInfo();
     List<NotificationWithInfoDto> findAllWithInfoWithPaging(int size, int pageIndex);
-    List<NotificationWithInfoDto> findAllWithInfoByReceiverId(UUID userId);
     NotificationWithInfoDto saveNotification(NotificationDto dto, UUID fromId, UUID toId);
     NotificationWithInfoDto updateNotification(UUID id);
 }
@@ -66,15 +65,6 @@ class NotificationServiceImpl implements NotificationService {
     @Override
     public List<NotificationWithInfoDto> findAllWithInfoWithPaging(int size, int pageIndex) {
         return repository.findAllWithInfoWithPaging(PageRequest.of(pageIndex, size, Sort.by("createdAt")))
-                .stream()
-                .map(model -> mapper.map(model, NotificationWithInfoDto.class))
-                .toList();
-    }
-
-    @Override
-    public List<NotificationWithInfoDto> findAllWithInfoByReceiverId(UUID userId) {
-        User user = userService.findUserById(userId);
-        return repository.findAllWithInfoByReceiverId(user.getId())
                 .stream()
                 .map(model -> mapper.map(model, NotificationWithInfoDto.class))
                 .toList();

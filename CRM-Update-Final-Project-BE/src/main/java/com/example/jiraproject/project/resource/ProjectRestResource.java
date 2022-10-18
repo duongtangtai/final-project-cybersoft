@@ -1,17 +1,14 @@
 package com.example.jiraproject.project.resource;
 
 import com.example.jiraproject.common.dto.ResponseDto;
-import com.example.jiraproject.common.util.ApiUtil;
 import com.example.jiraproject.common.util.MessageUtil;
 import com.example.jiraproject.common.util.ResponseUtil;
 import com.example.jiraproject.common.validation.annotation.UUIDConstraint;
 import com.example.jiraproject.common.validation.group.SaveInfo;
 import com.example.jiraproject.common.validation.group.UpdateInfo;
-import com.example.jiraproject.operation.model.Operation;
 import com.example.jiraproject.project.dto.ProjectDto;
 import com.example.jiraproject.project.model.Project;
 import com.example.jiraproject.project.service.ProjectService;
-import com.example.jiraproject.security.aop.Authorized;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -31,84 +28,71 @@ public class ProjectRestResource {
     private final ProjectService service;
     private final MessageSource messageSource;
 
-    @Authorized(operation = ApiUtil.PROJECT)
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDto> findById(@PathVariable("id") @UUIDConstraint String id) {
         return ResponseUtil.get(service.findById(ProjectDto.class, UUID.fromString(id)), HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.PROJECT)
     @GetMapping
     public ResponseEntity<ResponseDto> findAll() {
         return ResponseUtil.get(service.findAll(ProjectDto.class), HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.PROJECT)
     @GetMapping("/paging")
     public ResponseEntity<ResponseDto> findAllWithPaging(@RequestParam("size") int size,
                                                          @RequestParam("pageIndex") int pageIndex) {
         return ResponseUtil.get(service.findAllWithPaging(ProjectDto.class, size, pageIndex), HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.PROJECT)
     @GetMapping("/{id}/with-info")
     public ResponseEntity<ResponseDto> findByIdWithInfo(@PathVariable("id") @UUIDConstraint String id) {
         return ResponseUtil.get(service.findByIdWithInfo(UUID.fromString(id)), HttpStatus.OK);
     }
 
 
-    @Authorized(operation = ApiUtil.PROJECT)
     @GetMapping("/with-info")
     public ResponseEntity<ResponseDto> findAllWithInfo() {
         return ResponseUtil.get(service.findAllWithInfo(), HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.PROJECT)
     @GetMapping("/with-info/paging")
     public ResponseEntity<ResponseDto> findAllWithInfoWithPaging(@RequestParam("size") int size,
                                                                  @RequestParam("pageIndex") int pageIndex) {
         return ResponseUtil.get(service.findAllWithInfoWithPaging(size, pageIndex), HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.PROJECT, type = Operation.Type.SAVE_OR_UPDATE)
     @PostMapping
     public ResponseEntity<ResponseDto> save(@RequestBody @Validated(SaveInfo.class) ProjectDto dto) {
         return ResponseUtil.get(service.save(Project.class, dto), HttpStatus.CREATED);
     }
 
-    @Authorized(operation = ApiUtil.PROJECT, type = Operation.Type.SAVE_OR_UPDATE)
     @PostMapping("/{id}/add-creator")
     public ResponseEntity<ResponseDto> addCreator(@PathVariable("id") @UUIDConstraint String projectId,
                                                   @RequestParam("userId") @UUIDConstraint String userId) {
         return ResponseUtil.get(service.addCreator(UUID.fromString(projectId), UUID.fromString(userId)), HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.PROJECT, type = Operation.Type.SAVE_OR_UPDATE)
     @PostMapping("/{id}/remove-creator")
     public ResponseEntity<ResponseDto> removeCreator(@PathVariable("id") @UUIDConstraint String projectId) {
         return ResponseUtil.get(service.removeCreator(UUID.fromString(projectId)), HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.PROJECT, type = Operation.Type.SAVE_OR_UPDATE)
     @PostMapping("/{id}/add-leader")
     public ResponseEntity<ResponseDto> addLeader(@PathVariable("id") @UUIDConstraint String projectId,
                                                   @RequestParam("userId") @UUIDConstraint String userId) {
         return ResponseUtil.get(service.addLeader(UUID.fromString(projectId), UUID.fromString(userId)), HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.PROJECT, type = Operation.Type.SAVE_OR_UPDATE)
     @PostMapping("/{id}/remove-leader")
     public ResponseEntity<ResponseDto> removeLeader(@PathVariable("id") @UUIDConstraint String projectId) {
         return ResponseUtil.get(service.removeLeader(UUID.fromString(projectId)), HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.PROJECT, type = Operation.Type.SAVE_OR_UPDATE)
     @PutMapping
     public ResponseEntity<ResponseDto> update(@RequestBody @Validated(UpdateInfo.class) ProjectDto dto) {
         return ResponseUtil.get(service.update(dto.getId(), dto), HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.PROJECT, type = Operation.Type.REMOVE)
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDto> deleteById(@PathVariable("id") @UUIDConstraint String id) {
         service.deleteById(UUID.fromString(id));

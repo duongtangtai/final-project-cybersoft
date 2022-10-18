@@ -27,7 +27,6 @@ public interface CommentService extends GenericService<Comment, CommentDto, UUID
     CommentWithInfoDto findByIdWithInfo(UUID id);
     List<CommentWithInfoDto> findAllWithInfo();
     List<CommentWithInfoDto> findAllWithInfoWithPaging(int size, int pageIndex);
-    List<CommentWithInfoDto> findAllWithInfoByTaskId(UUID taskId);
     CommentWithInfoDto saveComment(CommentDto commentDto, UUID taskId, UUID userId);
     CommentWithInfoDto addResponseToCmt(UUID id, UUID respondedCmtId);
 }
@@ -69,15 +68,6 @@ class CommentServiceImpl implements CommentService {
     @Override
     public List<CommentWithInfoDto> findAllWithInfoWithPaging(int size, int pageIndex) {
         return repository.findAllWithInfoWithPaging(PageRequest.of(pageIndex, size, Sort.by("createdAt")))
-                .stream()
-                .map(model -> mapper.map(model, CommentWithInfoDto.class))
-                .toList();
-    }
-
-    @Override
-    public List<CommentWithInfoDto> findAllWithInfoByTaskId(UUID taskId) {
-        Task task = taskService.findTaskById(taskId);
-        return repository.findAllWithInfoByTaskId(task.getId())
                 .stream()
                 .map(model -> mapper.map(model, CommentWithInfoDto.class))
                 .toList();
