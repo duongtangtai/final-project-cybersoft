@@ -1,25 +1,165 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8a998d7f-4e61-4c79-9b90-4ebafd745255" name="Changes" comment="add guards for final project">
-      <change beforePath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/comment/resource/CommentRestResource.class" beforeDir="false" afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/comment/resource/CommentRestResource.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/common/config/JpaConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/common/config/JpaConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/common/exception/GlobalExceptionHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/common/exception/GlobalExceptionHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/common/util/ErrorUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/common/util/ErrorUtil.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/common/util/ResponseUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/common/util/ResponseUtil.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/notification/resource/NotificationRestResource.class" beforeDir="false" afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/notification/resource/NotificationRestResource.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/operation/resource/OperationRestResource.class" beforeDir="false" afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/operation/resource/OperationRestResource.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/project/resource/ProjectRestResource.class" beforeDir="false" afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/project/resource/ProjectRestResource.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/role/resource/RoleRestResource.class" beforeDir="false" afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/role/resource/RoleRestResource.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/security/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/security/config/SecurityConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/security/filter/CustomOncePerRequestFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/security/filter/CustomOncePerRequestFilter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/security/util/JwtUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/security/util/JwtUtil.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/task/resource/TaskRestResource.class" beforeDir="false" afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/task/resource/TaskRestResource.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/user/model/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/user/model/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/user/resource/UserRestResource.class" beforeDir="false" afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/classes/com/example/jiraproject/user/resource/UserRestResource.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-BE/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/package.json" beforeDir="false" />
+    <list default="true" id="8a998d7f-4e61-4c79-9b90-4ebafd745255" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/.browserslistrc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/.editorconfig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/.vscode/extensions.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/.vscode/launch.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/.vscode/tasks.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/angular.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/karma.conf.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/app-routing.module.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/app.constaint.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/app.module.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/core/config/app.config.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/core/guard/auth.guard.spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/core/guard/auth.guard.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/core/service/auth.service.spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/core/service/auth.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/layout/aside/aside.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/layout/aside/aside.component.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/layout/aside/aside.component.spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/layout/aside/aside.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/layout/error/error.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/layout/error/error.component.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/layout/error/error.component.spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/layout/error/error.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/layout/footer/footer.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/layout/footer/footer.component.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/layout/footer/footer.component.spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/layout/footer/footer.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/layout/header/header.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/layout/header/header.component.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/layout/header/header.component.spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/layout/header/header.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/layout/main/main.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/layout/main/main.component.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/layout/main/main.component.spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/layout/main/main.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/model/user.model.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/login/login-routing.module.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/login/login.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/login/login.component.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/login/login.component.spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/login/login.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/login/login.module.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/project/project-routing.module.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/project/project.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/project/project.component.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/project/project.component.spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/project/project.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/project/project.module.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/task/task-routing.module.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/task/task.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/task/task.component.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/task/task.component.spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/task/task.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/task/task.module.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/user/user-routing.module.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/user/user.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/user/user.component.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/user/user.component.spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/user/user.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/user/user.module.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/service/common.service.spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/service/common.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/.gitkeep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/css/demo.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/avatars/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/avatars/5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/avatars/6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/avatars/7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/backgrounds/18.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/elements/1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/elements/11.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/elements/12.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/elements/13.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/elements/17.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/elements/18.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/elements/19.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/elements/2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/elements/20.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/elements/3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/elements/4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/elements/5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/elements/7.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/favicon/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/icons/brands/asana.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/icons/brands/behance.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/icons/brands/dribbble.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/icons/brands/facebook.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/icons/brands/github.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/icons/brands/google.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/icons/brands/instagram.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/icons/brands/mailchimp.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/icons/brands/slack.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/icons/brands/twitter.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/icons/unicons/cc-primary.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/icons/unicons/cc-success.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/icons/unicons/cc-warning.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/icons/unicons/chart-success.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/icons/unicons/chart.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/icons/unicons/paypal.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/icons/unicons/wallet-info.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/icons/unicons/wallet.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/illustrations/girl-doing-yoga-light.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/illustrations/man-with-laptop-light.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/illustrations/page-misc-error-light.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/layouts/layout-container-light.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/layouts/layout-fluid-light.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/layouts/layout-without-menu-light.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/img/layouts/layout-without-navbar-light.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/js/config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/js/dashboards-analytics.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/js/extended-ui-perfect-scrollbar.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/js/form-basic-inputs.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/js/main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/js/pages-account-settings-account.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/js/ui-modals.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/js/ui-popover.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/js/ui-toasts.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/css/core.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/css/pages/page-account-settings.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/css/pages/page-auth.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/css/pages/page-icons.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/css/pages/page-misc.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/css/theme-default.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/fonts/boxicons.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/fonts/boxicons/boxicons.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/fonts/boxicons/boxicons.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/fonts/boxicons/boxicons.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/fonts/boxicons/boxicons.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/fonts/boxicons/boxicons.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/js/bootstrap.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/js/helpers.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/js/menu.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/libs/apex-charts/apex-charts.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/libs/apex-charts/apexcharts.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/libs/highlight/highlight-github.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/libs/highlight/highlight.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/libs/highlight/highlight.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/libs/jquery/jquery.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/libs/masonry/masonry.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets/vendor/libs/popper/popper.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/environments/environment.prod.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/environments/environment.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/main.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/polyfills.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/styles.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/test.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/tsconfig.app.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/tsconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRM-Update-Final-Project-FE/tsconfig.spec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,7 +207,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/CRM-Update-Final-Project-FE/node_modules/prettier" />
@@ -79,7 +219,10 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src" />
       <recent name="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/assets" />
+      <recent name="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app/pages/login" />
+      <recent name="$PROJECT_DIR$/CRM-Update-Final-Project-FE/src/app" />
     </key>
   </component>
   <component name="RunManager" selected="npm.CRM Project FE">
