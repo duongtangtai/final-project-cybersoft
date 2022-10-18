@@ -1,5 +1,8 @@
 package com.example.jiraproject.file.service;
 
+import com.example.jiraproject.common.exception.JiraFileUploadException;
+import com.example.jiraproject.file.util.FileUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -11,7 +14,6 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 public interface FileService {
@@ -22,55 +24,66 @@ public interface FileService {
     Stream<Path> loadAll();
 }
 @Service
-class FileServiceImpl implements FileService{
-    private final Path root = Paths.get("./src/main/resources/uploads");
+@Slf4j
+class FileServiceImpl implements FileService {
+    public static final Path ROOT = Paths.get("./src/main/resources/uploads");
 
     @Override
     public void init() {
         try {
-            Files.createDirectory(root);
-            System.out.println("created root");
+            Files.createDirectories(ROOT);
+            log.info("Created ROOT for file uploads");
         } catch (IOException e) {
-//           throw new RuntimeException("Could not initialize folder for upload!");
+           throw new JiraFileUploadException("Could not initialize folder for upload!");
         }
     }
 
     @Override
-    public void save(String userId, MultipartFile file) {
+    public void save(String username, MultipartFile file){
+        String fileName = username + FileUtil.SUFFIX;
+        if (!ROOT.toFile().exists()) { //create ROOT if ROOT doesn't exist
+            init();
+        }
         try {
-            Files.copy(file.getInputStream(), this.root.resolve(userId));
-            System.out.println("fileName: " + file.getOriginalFilename());
+            if (ROOT.resolve(fileName).toFile().exists()) {
+                log.info("OLD FILE EXISTED");
+                Files.delete(ROOT.resolve(fileName));
+                log.info("DELETED OLD FILE");
+            }
+            Files.copy(file.getInputStream(), ROOT.resolve(username + FileUtil.SUFFIX));
         } catch (IOException e) {
-            throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+            throw new JiraFileUploadException("Không thể lưu được file. Lỗi: " + e.getMessage());
         }
     }
 
     @Override
     public Resource load(String fileId) {
         try {
-            Path file = root.resolve(fileId);
+            Path file = ROOT.resolve(fileId + FileUtil.SUFFIX);
             Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()) {
                 return resource;
             } else {
-                throw new RuntimeException("Could not read the file!");
+                throw new JiraFileUploadException("Không đọc được mã file trùng khớp");
             }
         } catch (MalformedURLException e) {
-            throw new RuntimeException("Error: " + e.getMessage());
+            throw new JiraFileUploadException("Lỗi: " + e.getMessage());
         }
     }
 
     @Override
     public void deleteAll() {
-        FileSystemUtils.deleteRecursively(root.toFile());
+        FileSystemUtils.deleteRecursively(ROOT.toFile());
     }
 
     @Override
     public Stream<Path> loadAll() {
         try {
-            return Files.walk(this.root, 1).filter(path -> !path.equals(this.root)).map(this.root::relativize);
+            return Files.walk(ROOT, 1)
+                    .filter(path -> !path.equals(ROOT))
+                    .map(ROOT::relativize);
         } catch (IOException e) {
-            throw new RuntimeException("Could not load the files!");
+            throw new JiraFileUploadException("Không thể load hết files");
         }
     }
 }

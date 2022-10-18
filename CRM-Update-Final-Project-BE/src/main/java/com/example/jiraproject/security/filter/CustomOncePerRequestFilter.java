@@ -31,10 +31,8 @@ public class CustomOncePerRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorizationToken = request.getHeader(AUTHORIZATION);
-        System.out.println("authorizationToken: " + authorizationToken);
         if (authorizationToken != null && authorizationToken.startsWith("Bearer ")) {
             String token = authorizationToken.substring("Bearer ".length());
-            log.info("Trying to verify token: {}", token);
             try {
                 UsernamePasswordAuthenticationToken authenticationToken = jwtUtil.verifyToken(token);
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);

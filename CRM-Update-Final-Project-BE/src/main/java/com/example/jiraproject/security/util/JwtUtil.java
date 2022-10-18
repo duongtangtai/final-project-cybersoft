@@ -11,7 +11,10 @@ import com.example.jiraproject.user.model.User;
 import com.example.jiraproject.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -42,6 +45,18 @@ public class JwtUtil {
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                 .sign(algorithm);
+    }
+
+    public String getAuthenticatedUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            return null;
+        }
+        if (authentication.getPrincipal() instanceof String principal) {
+            return principal;
+        }
+        UserDetails userDetails = (UserDetails) authentication;
+        return userDetails.getUsername();
     }
 
     public UsernamePasswordAuthenticationToken verifyToken(String token) {
