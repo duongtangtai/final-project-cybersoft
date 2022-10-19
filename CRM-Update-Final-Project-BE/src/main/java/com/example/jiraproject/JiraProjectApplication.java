@@ -3,7 +3,9 @@ package com.example.jiraproject;
 import com.example.jiraproject.comment.model.Comment;
 import com.example.jiraproject.comment.repository.CommentRepository;
 import com.example.jiraproject.comment.service.CommentService;
+import com.example.jiraproject.common.model.BaseEntity;
 import com.example.jiraproject.common.util.ApiUtil;
+import com.example.jiraproject.file.service.FileService;
 import com.example.jiraproject.notification.model.Notification;
 import com.example.jiraproject.notification.repository.NotificationRepository;
 import com.example.jiraproject.notification.service.NotificationService;
@@ -29,9 +31,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @SpringBootApplication
 @RequiredArgsConstructor
@@ -51,25 +54,33 @@ public class JiraProjectApplication implements CommandLineRunner {
     private final NotificationRepository notificationRepository;
     private final NotificationService notificationService;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final FileService fileService;
     public static void main(String[] args) {
         SpringApplication.run(JiraProjectApplication.class, args);
     }
 
     @Override
     public void run(String... args) throws Exception {
+        //4 ROLES: ADMIN - MANAGER -
         Role role1 = Role
+                .builder()
+                .name("ADMIN")
+                .code("AD")
+                .description("Quyền của admin")
+                .build();
+        Role role2 = Role
                 .builder()
                 .name("MANAGER")
                 .code("MGR")
                 .description("Quyền của giám đốc")
                 .build();
-        Role role2 = Role
+        Role role3 = Role
                 .builder()
-                .name("TEAM LEADER")
-                .code("TL")
+                .name("LEADER")
+                .code("LEAD")
                 .description("Quyền của trưởng nhóm")
                 .build();
-        Role role3 = Role
+        Role role4 = Role
                 .builder()
                 .name("EMPLOYEE")
                 .code("EMP")
@@ -78,7 +89,27 @@ public class JiraProjectApplication implements CommandLineRunner {
         roleRepository.save(role1);
         roleRepository.save(role2);
         roleRepository.save(role3);
+        roleRepository.save(role4);
 
+        //-------------------------AUTHORIZATION-----------------------------------
+        //----------ADMIN-------------
+        // + can fetch, update and remove in OPERATION API and ROLE API and USER API
+        //----------MANAGER-------------
+        // + can update and remove in PROJECT API
+        //-----------LEADER--------------
+        // + can fetch in PROJECT API
+        // + can update and remove in TASK API
+        // + can remove in COMMENT API
+        //-----------EMPLOYEE--------------
+        // + can fetch in TASK API
+        // + can fetch, update in COMMENT API
+        // + can fetch, update, remove in NOTIFICATION API
+
+
+
+
+        //--------------------------ADD OPERATIONS-------------------------------
+        //----------OPERATION API-----------
         Operation operation1 = Operation
                 .builder()
                 .name(ApiUtil.OPERATION)
@@ -97,18 +128,169 @@ public class JiraProjectApplication implements CommandLineRunner {
                 .description("Xóa chức năng")
                 .type(Operation.Type.REMOVE)
                 .build();
-        operationRepository.save(operation1);
-        operationRepository.save(operation2);
-        operationRepository.save(operation3);
+        saveOperation(operation1, operation2, operation3);
+        //add to ROLE ADMIN
+        addOperationsToRole(role1, operation1, operation2, operation3);
+        //----------ROLE API-----------
+        operation1 = Operation
+                .builder()
+                .name(ApiUtil.ROLE)
+                .description("Lấy thông tin quyền")
+                .type(Operation.Type.FETCH)
+                .build();
+        operation2 = Operation
+                .builder()
+                .name(ApiUtil.ROLE)
+                .description("Lưu thông tin quyền")
+                .type(Operation.Type.SAVE_OR_UPDATE)
+                .build();
+        operation3 = Operation
+                .builder()
+                .name(ApiUtil.ROLE)
+                .description("Xóa quyền")
+                .type(Operation.Type.REMOVE)
+                .build();
+        saveOperation(operation1, operation2, operation3);
+        //add to ROLE ADMIN
+        addOperationsToRole(role1, operation1, operation2, operation3);
+        //----------USER API-----------
+        operation1 = Operation
+                .builder()
+                .name(ApiUtil.USER)
+                .description("Lấy thông tin người dùng")
+                .type(Operation.Type.FETCH)
+                .build();
+        operation2 = Operation
+                .builder()
+                .name(ApiUtil.USER)
+                .description("Lưu thông tin người dùng")
+                .type(Operation.Type.SAVE_OR_UPDATE)
+                .build();
+        operation3 = Operation
+                .builder()
+                .name(ApiUtil.USER)
+                .description("Xóa người dùng")
+                .type(Operation.Type.REMOVE)
+                .build();
+        saveOperation(operation1, operation2, operation3);
+        //add to ROLE ADMIN
+        addOperationsToRole(role1, operation1, operation2, operation3);
+        //----------PROJECT API-----------
+        operation1 = Operation
+                .builder()
+                .name(ApiUtil.PROJECT)
+                .description("Lấy thông tin dự án")
+                .type(Operation.Type.FETCH)
+                .build();
+        operation2 = Operation
+                .builder()
+                .name(ApiUtil.PROJECT)
+                .description("Lưu thông tin dự án")
+                .type(Operation.Type.SAVE_OR_UPDATE)
+                .build();
+        operation3 = Operation
+                .builder()
+                .name(ApiUtil.PROJECT)
+                .description("Xóa dự án")
+                .type(Operation.Type.REMOVE)
+                .build();
+        saveOperation(operation1, operation2, operation3);
+        //add to ROLE MANAGER, LEADER
+        addOperationsToRole(role2, operation2, operation3);
+        addOperationsToRole(role3, operation1);
+        //----------TASK API-----------
+        operation1 = Operation
+                .builder()
+                .name(ApiUtil.TASK)
+                .description("Lấy thông tin công việc")
+                .type(Operation.Type.FETCH)
+                .build();
+        operation2 = Operation
+                .builder()
+                .name(ApiUtil.TASK)
+                .description("Lưu thông tin công việc")
+                .type(Operation.Type.SAVE_OR_UPDATE)
+                .build();
+        operation3 = Operation
+                .builder()
+                .name(ApiUtil.TASK)
+                .description("Xóa công việc")
+                .type(Operation.Type.REMOVE)
+                .build();
+        saveOperation(operation1, operation2, operation3);
+        //add to ROLE LEADER and EMPLOYEE
+        addOperationsToRole(role3, operation2, operation3);
+        addOperationsToRole(role4, operation1);
+        //----------COMMENT API-----------
+        operation1 = Operation
+                .builder()
+                .name(ApiUtil.COMMENT)
+                .description("Lấy thông tin bình luận")
+                .type(Operation.Type.FETCH)
+                .build();
+        operation2 = Operation
+                .builder()
+                .name(ApiUtil.COMMENT)
+                .description("Lưu thông tin bình luận")
+                .type(Operation.Type.SAVE_OR_UPDATE)
+                .build();
+        operation3 = Operation
+                .builder()
+                .name(ApiUtil.COMMENT)
+                .description("Xóa bình luận")
+                .type(Operation.Type.REMOVE)
+                .build();
+        saveOperation(operation1, operation2, operation3);
+        //add to ROLE LEADER, EMPLOYEE
+        addOperationsToRole(role3, operation3);
+        addOperationsToRole(role4, operation1, operation2);
+        //----------NOTIFICATION API-----------
+        operation1 = Operation
+                .builder()
+                .name(ApiUtil.NOTIFICATION)
+                .description("Lấy thông tin thông báo")
+                .type(Operation.Type.FETCH)
+                .build();
+        operation2 = Operation
+                .builder()
+                .name(ApiUtil.NOTIFICATION)
+                .description("Lưu thông tin thông báo")
+                .type(Operation.Type.SAVE_OR_UPDATE)
+                .build();
+        operation3 = Operation
+                .builder()
+                .name(ApiUtil.NOTIFICATION)
+                .description("Xóa thông báo")
+                .type(Operation.Type.REMOVE)
+                .build();
+        saveOperation(operation1, operation2, operation3);
+        //add to ROLE EMPLOYEE
+        addOperationsToRole(role4, operation1, operation2, operation3);
+        //----------FILE API-----------
+        operation1 = Operation
+                .builder()
+                .name(ApiUtil.FILE)
+                .description("Lấy thông tin file")
+                .type(Operation.Type.FETCH)
+                .build();
+        operation2 = Operation
+                .builder()
+                .name(ApiUtil.FILE)
+                .description("Lưu thông tin file")
+                .type(Operation.Type.SAVE_OR_UPDATE)
+                .build();
+        operation3 = Operation
+                .builder()
+                .name(ApiUtil.FILE)
+                .description("Xóa file")
+                .type(Operation.Type.REMOVE)
+                .build();
+        saveOperation(operation1, operation2, operation3);
+        //add to ROLE ADMIN, EMPLOYEE
+        addOperationsToRole(role1, operation3);
+        addOperationsToRole(role4, operation1, operation2);
 
-        //Add operations to role
-        Set<UUID> uuids = new HashSet<>();
-        uuids.add(operation1.getId());
-        uuids.add(operation2.getId());
-        uuids.add(operation3.getId());
-        roleService.addOperations(role1.getId(), uuids);
-
-        //ADD USERS
+        //-----------------------------ADD USERS------------------------------
         User user1 = User.builder()
                 .username("admin")
                 .password(passwordEncoder.encode("admin"))
@@ -120,7 +302,6 @@ public class JiraProjectApplication implements CommandLineRunner {
                 .occupation("administrator")
                 .department("MANAGING DEPARTMENT")
                 .hobbies("Listen to music, watching TV")
-                .accountStatus(User.AccountStatus.ACTIVE)
                 .build();
         User user2 = User.builder()
                 .username("duongtangtai")
@@ -133,7 +314,6 @@ public class JiraProjectApplication implements CommandLineRunner {
                 .occupation("Java developer")
                 .department("IT DEPARTMENT")
                 .hobbies("Doing some kinda magic")
-                .accountStatus(User.AccountStatus.TEMPORARILY_BLOCKED)
                 .build();
         User user3 = User.builder()
                 .username("tranmynhi")
@@ -143,21 +323,35 @@ public class JiraProjectApplication implements CommandLineRunner {
                 .avatar("avatar3 url")
                 .email("tranmynhi@gmail.com")
                 .facebookUrl("facebook3 url")
-                .occupation("STAFF")
+                .occupation("Business")
                 .department("WORKING DEPARTMENT")
                 .hobbies("Pet lover")
-                .accountStatus(User.AccountStatus.PERMANENTLY_BLOCKED)
                 .build();
-        userRepository.save(user1);
-        userRepository.save(user2);
-        userRepository.save(user3);
+        User user4 = User.builder()
+                .username("lexuanhieu")
+                .password(passwordEncoder.encode("12345"))
+                .firstName("Hiếu")
+                .lastName("Lê")
+                .avatar("avatar4 url")
+                .email("lexuanhieu@gmail.com")
+                .facebookUrl("facebook4 url")
+                .occupation("Java developer")
+                .department("IT DEPARTMENT")
+                .hobbies("Doing some stuff")
+                .build();
+        user1 = userRepository.save(user1);
+        user2 = userRepository.save(user2);
+        user3 = userRepository.save(user3);
+        user4 = userRepository.save(user4);
 
-        //ADD ROLES TO USERS
-        uuids.clear();
-        uuids.add(role1.getId());
-        uuids.add(role2.getId());
-        uuids.add(role3.getId());
-        userService.addRoles(user1.getId(), uuids);
+        //ADD ROLES TO ADMIN
+        addRolesToUser(user1, role1, role2, role3, role4);
+        //ADD ROLES TO MANAGER
+        addRolesToUser(user2, role2, role3, role4);
+        //ADD ROLES TO LEADER
+        addRolesToUser(user3, role3, role4);
+        //ADD ROLES TO EMPLOYEE
+        addRolesToUser(user4, role4);
 
         //ADD PROJECT
         Project project1 = Project.builder()
@@ -269,5 +463,16 @@ public class JiraProjectApplication implements CommandLineRunner {
         notificationRepository.save(notification1);
         notificationRepository.save(notification2);
         notificationRepository.save(notification3);
+    }
+    private void saveOperation(Operation...operation) {
+        Arrays.stream(operation).forEach(operationRepository::save);
+    }
+    private void addOperationsToRole(Role role, Operation...operation) {
+        Set<UUID> operationIds = Arrays.stream(operation).map(BaseEntity::getId).collect(Collectors.toSet());;
+        roleService.addOperations(role.getId(), operationIds);
+    }
+    private void addRolesToUser(User user, Role...role) {
+        Set<UUID> roleIds = Arrays.stream(role).map(BaseEntity::getId).collect(Collectors.toSet());
+        userService.addRoles(user.getId(), roleIds);
     }
 }

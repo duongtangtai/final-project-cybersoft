@@ -5,11 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -31,7 +29,7 @@ public class SecurityConfig {
         //CROSS-SITE REQUEST FORGERY -> DISABLE -> RECEIVE INPUT FROM BROWSERS
         http.cors().and().csrf().disable();
 
-        //STATELESS -> WON'T CREATE ANY SESSION
+        //STATELESS -> WON'T CREATE ANY SESSIONS
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         //contextPath = "/jira/api"
@@ -39,6 +37,8 @@ public class SecurityConfig {
         //swagger path = /jira/api/swagger-ui.html
         http.antMatcher("/v1/**").authorizeRequests()
                 .antMatchers("/v1/auth/login/**").permitAll()
+                .antMatchers("/v1/auth/refresh-token/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/v1/files/**").permitAll()
                 .anyRequest().authenticated();
 
         http.formLogin().disable();

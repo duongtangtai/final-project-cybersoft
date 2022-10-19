@@ -10,6 +10,7 @@ com/example/jiraproject/operation/model/Operation.class
 com/example/jiraproject/role/repository/RoleRepository.class
 com/example/jiraproject/comment/model/Comment$CommentEntity.class
 com/example/jiraproject/common/exception/GlobalExceptionHandler.class
+com/example/jiraproject/security/service/UserDetailServiceImpl.class
 com/example/jiraproject/common/util/ResponseUtil.class
 com/example/jiraproject/common/validation/validator/FieldNotNullValidator.class
 com/example/jiraproject/role/service/RoleServiceImpl.class
@@ -17,7 +18,6 @@ com/example/jiraproject/role/dto/RoleDto.class
 com/example/jiraproject/comment/resource/CommentRestResource.class
 com/example/jiraproject/task/dto/TaskWithInfoDto.class
 com/example/jiraproject/task/dto/TaskDto.class
-com/example/jiraproject/security/dto/LoginResultDto.class
 com/example/jiraproject/common/util/JoinTableUtil.class
 com/example/jiraproject/task/model/Task$TaskEntity.class
 com/example/jiraproject/user/repository/UserRepository.class
@@ -36,10 +36,9 @@ com/example/jiraproject/common/config/ValidationConfig.class
 com/example/jiraproject/role/validation/validator/UniqueRoleValidator.class
 com/example/jiraproject/comment/service/CommentServiceImpl.class
 com/example/jiraproject/notification/dto/NotificationDto.class
+com/example/jiraproject/security/filter/CustomAuthenticationFilter.class
 com/example/jiraproject/notification/repository/NotificationRepository.class
 com/example/jiraproject/notification/service/NotificationServiceImpl.class
-com/example/jiraproject/security/dto/LoginResultDto$LoginResultDtoBuilder.class
-com/example/jiraproject/security/service/AuthServiceImpl.class
 com/example/jiraproject/notification/service/NotificationService.class
 com/example/jiraproject/project/repository/ProjectRepository.class
 com/example/jiraproject/operation/dto/OperationDto$OperationDtoBuilder.class
@@ -55,7 +54,6 @@ com/example/jiraproject/task/model/Task$Status.class
 com/example/jiraproject/notification/resource/NotificationRestResource.class
 com/example/jiraproject/user/validation/validator/UniqueUserValidator.class
 com/example/jiraproject/common/model/BaseEntity$BaseEntityBuilderImpl.class
-com/example/jiraproject/common/exception/JiraAuthenticationException.class
 com/example/jiraproject/task/service/TaskServiceImpl.class
 com/example/jiraproject/task/validation/annotation/UniqueTask.class
 com/example/jiraproject/user/dto/UserDto.class
@@ -74,14 +72,12 @@ com/example/jiraproject/user/service/UserServiceImpl.class
 com/example/jiraproject/comment/dto/CommentWithInfoDto.class
 com/example/jiraproject/user/dto/UserWithInfoDto.class
 com/example/jiraproject/operation/repository/OperationRepository.class
-com/example/jiraproject/security/dto/LoginFormDto.class
 com/example/jiraproject/common/validation/annotation/FieldNotNull.class
 com/example/jiraproject/operation/validation/annotation/UniqueOperation.class
 com/example/jiraproject/security/filter/CustomOncePerRequestFilter.class
 com/example/jiraproject/role/model/Role$RoleBuilder.class
 com/example/jiraproject/common/validation/group/UpdateInfo.class
 com/example/jiraproject/role/model/Role.class
-com/example/jiraproject/security/resource/AuthRestResource.class
 com/example/jiraproject/operation/dto/OperationDto.class
 com/example/jiraproject/user/dto/UserDto$UserDtoBuilder.class
 com/example/jiraproject/operation/model/Operation$Type.class
@@ -119,7 +115,6 @@ com/example/jiraproject/project/dto/ProjectDto.class
 com/example/jiraproject/common/service/GenericService.class
 com/example/jiraproject/task/service/TaskService.class
 com/example/jiraproject/common/util/DateTimeUtil.class
-com/example/jiraproject/security/service/AuthService.class
 com/example/jiraproject/comment/dto/CommentDto.class
 com/example/jiraproject/role/resource/RoleRestResource.class
 com/example/jiraproject/task/resource/TaskRestResource.class
