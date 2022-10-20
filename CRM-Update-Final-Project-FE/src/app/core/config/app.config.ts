@@ -1,6 +1,6 @@
 import { InjectionToken } from "@angular/core";
 
-const apiUrl = "http://localhost:8088";
+const apiUrl = "http://localhost:8088/jira/api";
 export let APP_CONFIG = new InjectionToken("app.config");
 
 export interface PTSAppConfig {

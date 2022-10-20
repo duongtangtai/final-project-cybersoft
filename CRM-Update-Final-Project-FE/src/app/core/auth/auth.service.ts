@@ -55,6 +55,7 @@ export class AuthService {
   };
 
   private setUserData(userData: IUserModel) {
+    console.log(userData)
     const userModel = new UserModel(
       userData.username,
       userData.email,
