@@ -9,7 +9,7 @@ export class StaffComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {  
   }
 
 }
