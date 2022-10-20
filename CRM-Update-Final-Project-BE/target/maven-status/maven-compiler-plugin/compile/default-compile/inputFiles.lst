@@ -14,9 +14,11 @@
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/role/resource/RoleRestResource.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/notification/repository/NotificationRepository.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/common/util/ResponseUtil.java
+/Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/common/exception/JiraException.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/project/dto/ProjectDto.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/operation/model/Operation.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/task/model/Task.java
+/Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/common/exception/JiraFileUploadException.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/common/exception/JiraAuthenticationException.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/security/service/AuthService.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/project/validation/validator/UniqueProjectValidator.java
@@ -33,10 +35,13 @@
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/project/validation/annotation/UniqueProject.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/common/util/MessageUtil.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/security/util/JwtUtil.java
+/Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/security/aop/AuthorizationAspect.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/common/config/ValidationConfig.java
-/Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/security/service/AuthServiceImpl.java
+/Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/security/dto/RefreshTokenDto.java
+/Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/security/aop/Authorized.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/user/resource/UserRestResource.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/operation/validation/validator/UniqueOperationValidator.java
+/Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/file/util/FileUtil.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/role/model/Role.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/common/validation/group/SaveInfo.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/project/repository/ProjectRepository.java
@@ -50,6 +55,7 @@
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/common/exception/GlobalExceptionHandler.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/user/service/UserService.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/project/resource/ProjectRestResource.java
+/Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/file/service/FileService.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/common/util/DateTimeUtil.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/operation/dto/OperationDto.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/user/dto/UserDto.java
@@ -62,6 +68,7 @@
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/comment/resource/CommentRestResource.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/task/dto/TaskDto.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/project/service/ProjectService.java
+/Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/common/exception/JiraAuthorizationException.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/security/dto/LoginFormDto.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/security/resource/AuthRestResource.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/comment/service/CommentService.java
@@ -71,11 +78,13 @@
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/common/validation/group/UpdateInfo.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/user/repository/UserRepository.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/role/dto/RoleWithInfo.java
+/Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/file/dto/FileInfoDto.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/task/validation/annotation/UniqueTask.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/operation/validation/annotation/UniqueOperation.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/role/service/RoleService.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/project/model/Project.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/notification/dto/NotificationDto.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/notification/resource/NotificationRestResource.java
+/Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/file/resource/FileRestResource.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/notification/dto/NotificationWithInfoDto.java
 /Users/hieule/Desktop/Project Cybersoft/final-project-cybersoft/CRM-Update-Final-Project-BE/src/main/java/com/example/jiraproject/operation/resource/OperationRestResource.java
