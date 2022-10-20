@@ -60,3 +60,5 @@ baseline.json
 # system
 
 package-lock.json 
+.vscode
+.angular
