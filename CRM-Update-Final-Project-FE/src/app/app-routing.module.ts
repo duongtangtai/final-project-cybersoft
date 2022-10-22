@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
+import {AuthGuard} from "./core/guards/auth.guard";
 import {ErrorComponent} from "./layouts/error/error.component";
 
 @NgModule({
@@ -12,15 +13,18 @@ import {ErrorComponent} from "./layouts/error/error.component";
                 },
                 {
                     path: 'project',
-                    loadChildren: () => import('../app/pages/components/project/project.module').then(m => m.ProjectModule)
+                    loadChildren: () => import('../app/pages/components/project/project.module').then(m => m.ProjectModule),
+                    canActivate: [AuthGuard]
                 },
                 {
                     path: 'task',
-                    loadChildren: () => import('../app/pages/components/task/task.module').then(m => m.TaskModule)
+                    loadChildren: () => import('../app/pages/components/task/task.module').then(m => m.TaskModule),
+                    canActivate: [AuthGuard]
                 },
                 {
                     path: 'user',
-                    loadChildren: () => import('../app/pages/components/staff/staff.module').then(m => m.StaffModule)
+                    loadChildren: () => import('../app/pages/components/staff/staff.module').then(m => m.StaffModule),
+                    canActivate: [AuthGuard]
                 },
                 {
                     path: '',
@@ -32,7 +36,7 @@ import {ErrorComponent} from "./layouts/error/error.component";
                     component: ErrorComponent
                 }
             ],
-            {enableTracing: true}
+            // {enableTracing: true}
         ),
     ],
     exports: [RouterModule],

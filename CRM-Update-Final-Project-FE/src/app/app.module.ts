@@ -4,6 +4,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgxWebstorageModule} from 'ngx-webstorage';
 import {AppRoutingModule} from './app-routing.module';
 import {APP_CONFIG, AppConfig} from "./core/config/app.config";
+import {AuthGuard} from "./core/guards/auth.guard";
 import {AsideComponent} from './layouts/aside/aside.component';
 import {ErrorComponent} from './layouts/error/error.component';
 import {FooterComponent} from './layouts/footer/footer.component';

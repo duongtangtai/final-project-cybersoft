@@ -3,6 +3,7 @@ package com.example.jiraproject.security.dto;
 import lombok.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -10,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginResultDto {
+    private UUID id;
     private String username;
     private String email;
     private String firstName;

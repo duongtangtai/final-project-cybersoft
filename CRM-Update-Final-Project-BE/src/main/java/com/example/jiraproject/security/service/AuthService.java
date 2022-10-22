@@ -33,6 +33,7 @@ class AuthServiceImpl implements AuthService {
             throw new JiraAuthenticationException("Mật khẩu không chính xác");
         } else {
             return LoginResultDto.builder()
+                    .id(user.getId())
                     .username(user.getUsername())
                     .email(user.getEmail())
                     .firstName(user.getFirstName())

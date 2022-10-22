@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {LocalStorageService} from "ngx-webstorage";
+import {AuthService} from "../../core/auth/auth.service";
 
 @Component({
     selector: 'app-main',
@@ -6,10 +8,18 @@ import {Component, OnInit} from '@angular/core';
 })
 export class MainComponent implements OnInit {
 
-    constructor() {
+    isLogin: boolean = false;
+
+    constructor(
+        private authService: AuthService,
+        private localStorageService: LocalStorageService
+    ) {
     }
 
     ngOnInit() {
+        this.authService.isAuthenticated.subscribe(isAuth => {
+            this.isLogin = isAuth;
+        })
     }
 
 }
