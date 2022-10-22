@@ -2,7 +2,8 @@ import {HttpClient} from "@angular/common/http";
 import {Inject, Injectable} from "@angular/core";
 import {Router} from "@angular/router";
 import {LocalStorageService} from "ngx-webstorage";
-import {BehaviorSubject, map, Observable, tap} from "rxjs";
+import {BehaviorSubject, from, map, Observable, tap} from "rxjs";
+import {AppSettings} from "../../app.constants";
 import {IUserModel, UserModel} from "../../model/user.model";
 import {APP_CONFIG, PTSAppConfig} from "../config/app.config";
 import {IRequestModel} from "../request/request.model";
@@ -12,12 +13,12 @@ import {IRequestModel} from "../request/request.model";
 })
 export class AuthService {
 
-    private _user = new BehaviorSubject<UserModel>({});
+    private _user = new BehaviorSubject<any>(this.localStorageService.retrieve(AppSettings.AUTH_DATA));
 
     constructor(
-        private storageService: LocalStorageService,
-        private http: HttpClient,
         private router: Router,
+        private http: HttpClient,
+        private localStorageService: LocalStorageService,
         @Inject(APP_CONFIG) private config: PTSAppConfig
     ) {
     }
@@ -44,21 +45,38 @@ export class AuthService {
         );
     }
 
+    get userId() {
+        return this._user.asObservable().pipe(
+            map((user: UserModel) => {
+                if (user) {
+                    return user.id;
+                }
+                return null;
+            })
+        );
+    }
+
     login(username: string, password: string): Observable<UserModel> {
         const body = {
             username, password
         };
         return this.http
                    .post<IRequestModel>(`${this.config.endpoints.auth.login}`, body)
-                   .pipe(map((val: IRequestModel) => val.content))
                    .pipe(
-                       tap(this.setUserData)
-                   );
-    };
+                       map((val: IRequestModel) => val.content),
+                       tap(this.setUserData.bind(this)))
+    }
+
+    logout() {
+        this._user.next(null);
+        this.localStorageService.clear();
+    }
+
+    autoLogin() {}
 
     private setUserData(userData: IUserModel) {
-        console.log(userData)
-        const userModel = new UserModel(
+        this._user.next(new UserModel(
+            userData.id,
             userData.username,
             userData.email,
             userData.firstName,
@@ -66,7 +84,11 @@ export class AuthService {
             userData.roleCodes,
             userData.accessToken,
             userData.refreshToken
-        );
-        this._user.next(userModel);
-    };
+        ));
+        this.storeAuthData(userData);
+    }
+
+    private storeAuthData(userData: IUserModel) {
+        this.localStorageService.store(AppSettings.AUTH_DATA, userData);
+    }
 }
