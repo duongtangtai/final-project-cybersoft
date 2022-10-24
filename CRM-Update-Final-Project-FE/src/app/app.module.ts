@@ -1,10 +1,10 @@
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {NgxWebstorageModule} from 'ngx-webstorage';
 import {AppRoutingModule} from './app-routing.module';
 import {APP_CONFIG, AppConfig} from "./core/config/app.config";
-import {AuthGuard} from "./core/guards/auth.guard";
+import {TokenInterceptor} from "./core/interceptor/token.interceptor";
 import {AsideComponent} from './layouts/aside/aside.component';
 import {ErrorComponent} from './layouts/error/error.component';
 import {FooterComponent} from './layouts/footer/footer.component';
@@ -19,7 +19,8 @@ import {MainComponent} from './layouts/main/main.component';
         NgxWebstorageModule.forRoot(),
     ],
     providers: [
-        {provide: APP_CONFIG, useValue: AppConfig}
+        {provide: APP_CONFIG, useValue: AppConfig},
+        {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}
     ],
     declarations: [MainComponent, ErrorComponent, FooterComponent, HeaderComponent, AsideComponent],
     bootstrap: [MainComponent],

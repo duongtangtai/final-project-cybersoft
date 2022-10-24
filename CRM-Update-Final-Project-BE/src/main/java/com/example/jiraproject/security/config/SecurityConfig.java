@@ -37,7 +37,7 @@ public class SecurityConfig implements WebMvcConfigurer {
         //STATELESS -> WON'T CREATE ANY SESSIONS
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        //contextPath = "/jira/api"
+        //contextPath = "/jira/api" (config in application.yml)
         //api path = "/v1"
         //swagger path = /jira/api/swagger-ui.html
         http.antMatcher("/v1/**").authorizeRequests()

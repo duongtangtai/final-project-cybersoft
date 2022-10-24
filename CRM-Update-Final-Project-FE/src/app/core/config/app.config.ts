@@ -13,6 +13,9 @@ export const AppConfig: PTSAppConfig = {
     api: `${apiUrl}`,
     auth: {
       login: `${apiUrl}/v1/auth/login`
+    },
+    project: {
+      getAll: `${apiUrl}/v1/projects`
     }
   }
 };

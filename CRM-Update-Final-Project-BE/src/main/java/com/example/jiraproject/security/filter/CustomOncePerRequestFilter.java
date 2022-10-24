@@ -30,7 +30,6 @@ public class CustomOncePerRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println("GET INSIDE FILTER");
         String authorizationToken = request.getHeader(AUTHORIZATION);
         if (authorizationToken != null && authorizationToken.startsWith("Bearer ")) {
             String token = authorizationToken.substring("Bearer ".length());
