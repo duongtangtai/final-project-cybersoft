@@ -29,7 +29,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Set;
@@ -267,12 +269,12 @@ public class JiraProjectApplication implements CommandLineRunner {
         //add to ROLE EMPLOYEE
         addOperationsToRole(role4, operation1, operation2, operation3);
         //----------FILE API-----------
-        operation1 = Operation
-                .builder()
-                .name(ApiUtil.FILE)
-                .description("Lấy thông tin file")
-                .type(Operation.Type.FETCH)
-                .build();
+//        operation1 = Operation
+//                .builder()
+//                .name(ApiUtil.FILE)
+//                .description("Lấy thông tin file")
+//                .type(Operation.Type.FETCH)
+//                .build();
         operation2 = Operation
                 .builder()
                 .name(ApiUtil.FILE)
@@ -288,7 +290,7 @@ public class JiraProjectApplication implements CommandLineRunner {
         saveOperation(operation1, operation2, operation3);
         //add to ROLE ADMIN, EMPLOYEE
         addOperationsToRole(role1, operation3);
-        addOperationsToRole(role4, operation1, operation2);
+        addOperationsToRole(role4, operation2);
 
         //-----------------------------ADD USERS------------------------------
         User user1 = User.builder()
@@ -357,21 +359,18 @@ public class JiraProjectApplication implements CommandLineRunner {
         Project project1 = Project.builder()
                 .name("Dự án khởi điểm")
                 .description("Dự án đầu tiên trong tháng")
-                .symbol("Huy hiệu sư tử")
                 .creator(user1)
                 .leader(user2)
                 .build();
         Project project2 = Project.builder()
                 .name("Dự án thi công")
                 .description("Dự án thứ hai trong tháng")
-                .symbol("Huy hiệu đại bàng")
                 .creator(user1)
                 .leader(user3)
                 .build();
         Project project3 = Project.builder()
                 .name("Dự án bảo dưỡng")
                 .description("Dự án thứ ba trong tháng")
-                .symbol("Huy hiệu khủng long")
                 .creator(user1)
                 .leader(user3)
                 .build();

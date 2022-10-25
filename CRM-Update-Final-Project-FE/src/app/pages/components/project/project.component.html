@@ -81,6 +81,53 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-body">
+
+                <!-- PROJECT TABLE -->
+                <div>
+                    <mat-form-field>
+                        <mat-label>Search..?</mat-label>
+                        <input matInput placeholder="By keyword" (keyup)="filterByKeyword($event)">
+                    </mat-form-field>
+                    <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
+                        <ng-container matColumnDef="name">
+                          <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> Name </th>
+                          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="description">
+                          <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> Description </th>
+                          <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="symbol"> 
+                          <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> Symbol </th>
+                          <td mat-cell *matCellDef="let element">
+                                <img *ngIf= "element.symbol == null" src = "/assets/img/project-symbols/default.png" width="50" height="50">
+                                <img *ngIf= "element.symbol != null" [src]="element.symbol" width="50" height="50">
+                          </td>
+                        </ng-container>
+                        <ng-container matColumnDef="action">
+                            <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> Action </th>
+                            <td mat-cell *matCellDef="let element">
+                                <button mat-raised-button color="primary" (click)="updateProject(element.id)">Update</button> | 
+                                <button mat-raised-button color="warn" (click)="deleteProject(element.id)">Delete</button>
+                            </td>
+                          </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>    
+                    <mat-paginator [pageSizeOptions]="[5,10,20]" showFirstLastButtons>
+                    </mat-paginator>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
                     <div class="tab-content" id="top-tabContent">
                         <div class="tab-pane fade show active" id="top-home" role="tabpanel"
                              aria-labelledby="top-home-tab">

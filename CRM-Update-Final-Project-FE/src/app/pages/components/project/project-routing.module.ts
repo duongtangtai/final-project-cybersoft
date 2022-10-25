@@ -9,7 +9,7 @@ import {ProjectComponent} from "./project.component";
                 {
                     path: '',
                     component: ProjectComponent
-                }
+                },
             ]
         ),
     ],
