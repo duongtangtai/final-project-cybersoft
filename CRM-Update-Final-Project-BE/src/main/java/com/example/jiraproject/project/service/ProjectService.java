@@ -2,6 +2,7 @@ package com.example.jiraproject.project.service;
 
 import com.example.jiraproject.common.service.GenericService;
 import com.example.jiraproject.common.util.MessageUtil;
+import com.example.jiraproject.file.service.FileService;
 import com.example.jiraproject.project.dto.ProjectDto;
 import com.example.jiraproject.project.dto.ProjectWithInfoDto;
 import com.example.jiraproject.project.model.Project;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ValidationException;
 import java.util.List;
@@ -40,6 +42,7 @@ class ProjectServiceImpl implements ProjectService {
     private final MessageSource messageSource;
     private final UserService userService;
     private static final String UUID_NOT_FOUND = "project.id.not-found";
+    private final FileService fileService;
 
     @Override
     public JpaRepository<Project, UUID> getRepository() {

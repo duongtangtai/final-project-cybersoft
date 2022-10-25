@@ -15,7 +15,8 @@ import {ErrorComponent} from "./layouts/error/error.component";
                     path: 'project',
                     loadChildren: () => import('../app/pages/components/project/project.module').then(m => m.ProjectModule),
                     canActivate: [AuthGuard]
-                },
+                }
+                ,
                 {
                     path: 'task',
                     loadChildren: () => import('../app/pages/components/task/task.module').then(m => m.TaskModule),

@@ -16,6 +16,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -43,7 +45,7 @@ public class SecurityConfig implements WebMvcConfigurer {
         http.antMatcher("/v1/**").authorizeRequests()
                 .antMatchers("/v1/auth/login/**").permitAll()
                 .antMatchers("/v1/auth/refresh-token/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/v1/files/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/v1/files/**").permitAll()
                 .anyRequest().authenticated();
 
         http.formLogin().disable();
@@ -54,7 +56,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:4200");
+        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

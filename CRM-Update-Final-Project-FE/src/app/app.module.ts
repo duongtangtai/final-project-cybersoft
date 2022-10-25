@@ -1,3 +1,6 @@
+import { MaterialModule } from 'src/app/share/modules/material-module';
+import { ProjectModule } from './pages/components/project/project.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
@@ -14,13 +17,15 @@ import {MainComponent} from './layouts/main/main.component';
 @NgModule({
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
+        ProjectModule,
         AppRoutingModule,
         HttpClientModule,
         NgxWebstorageModule.forRoot(),
     ],
     providers: [
         {provide: APP_CONFIG, useValue: AppConfig},
-        {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}
+        {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
     ],
     declarations: [MainComponent, ErrorComponent, FooterComponent, HeaderComponent, AsideComponent],
     bootstrap: [MainComponent],

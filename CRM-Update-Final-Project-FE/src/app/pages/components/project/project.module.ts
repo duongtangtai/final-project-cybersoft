@@ -1,3 +1,4 @@
+import { MaterialModule } from 'src/app/share/modules/material-module';
 import {CommonModule} from "@angular/common";
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -8,6 +9,7 @@ import {ProjectComponent} from "./project.component";
     imports: [
         CommonModule, ReactiveFormsModule, FormsModule,
         ProjectRoutingModule,
+        MaterialModule
     ],
     declarations: [ProjectComponent],
 })

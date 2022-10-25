@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 
 public interface FileService {
     void init();
-    void save(String userId, MultipartFile file);
+    void save(String id, MultipartFile file);
     Resource load(String fileId);
     void deleteAll();
     Stream<Path> loadAll();
@@ -39,8 +39,8 @@ class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void save(String username, MultipartFile file){
-        String fileName = username + FileUtil.SUFFIX;
+    public void save(String id, MultipartFile file){
+        String fileName = id + FileUtil.SUFFIX;
         if (!ROOT.toFile().exists()) { //create ROOT if ROOT doesn't exist
             init();
         }
@@ -50,7 +50,7 @@ class FileServiceImpl implements FileService {
                 Files.delete(ROOT.resolve(fileName));
                 log.info("DELETED OLD FILE");
             }
-            Files.copy(file.getInputStream(), ROOT.resolve(username + FileUtil.SUFFIX));
+            Files.copy(file.getInputStream(), ROOT.resolve(id + FileUtil.SUFFIX));
         } catch (IOException e) {
             throw new JiraFileUploadException("Không thể lưu được file. Lỗi: " + e.getMessage());
         }

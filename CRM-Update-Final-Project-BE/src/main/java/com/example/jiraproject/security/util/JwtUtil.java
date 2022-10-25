@@ -32,7 +32,7 @@ public class JwtUtil {
     public String getAccessToken(User user) {
         return JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 120 * 60 * 1000))
                 .withClaim("roles", user.getRoles()
                         .stream()
                         .map(Role::getCode)
@@ -43,7 +43,7 @@ public class JwtUtil {
     public String getRefreshToken(User user) {
         return JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 24 * 60 * 1000L))
                 .sign(algorithm);
     }
 
