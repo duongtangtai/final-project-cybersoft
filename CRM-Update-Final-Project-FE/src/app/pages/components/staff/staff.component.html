@@ -1,1 +1,130 @@
-<p>staff works!</p>
+<div class="container-fluid">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-sm-6">
+                <h3>
+                    Project List</h3>
+            </div>
+            <div class="col-12 col-sm-6">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-home">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </a></li>
+                    <li class="breadcrumb-item">Dashboard</li>
+                    <li class="breadcrumb-item active">Staff List</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row project-cards">
+        <div class="col-md-12 project-list">
+            <div class="card">
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="nav nav-tabs border-tab" id="top-tab" role="tablist">
+                            <li class="nav-item"><button class="nav-link active" id="top-home-tab" data-bs-toggle="tab"
+                                                    href="#top-home" role="tab" aria-controls="top-home"
+                                                    aria-selected="true" (click)="getAllStaffs()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-target">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <circle cx="12" cy="12" r="6"></circle>
+                                    <circle cx="12" cy="12" r="2"></circle>
+                                </svg>
+                                All</button></li>   
+                            <li class="nav-item"><button class="nav-link" id="profile-top-tab" data-bs-toggle="tab"
+                                                    href="#top-profile" role="tab" aria-controls="top-profile"
+                                                    aria-selected="false" (click)="getAllStaffsWithAccountStatus(accountStatus[0])">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-unlock-fill" viewBox="0 0 16 16">
+                                    <path d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2z"/>
+                                </svg>
+                                Active</button>
+                            </li>
+                            <li class="nav-item"><button class="nav-link" id="contact-top-tab" data-bs-toggle="tab"
+                                                    href="#top-contact" role="tab" aria-controls="top-contact"
+                                                    aria-selected="false" (click)="getAllStaffsWithAccountStatus(accountStatus[1])">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
+                                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
+                                </svg>
+                                Temporarily Blocked</button>
+                            </li>
+                            <li class="nav-item"><button class="nav-link" id="contact-top-tab" data-bs-toggle="tab"
+                                href="#top-contact" role="tab" aria-controls="top-contact"
+                                aria-selected="false" (click)="getAllStaffsWithAccountStatus(accountStatus[2])">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+                                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                            </svg>
+                                Permanently Blocked</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6 p-0">
+                        <div class="form-group mb-0 me-0"></div>
+                        <button class="btn btn-primary" href="projectcreate.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
+                                <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                                <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                            </svg>
+                            &nbsp;&nbsp;Create New Staff</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+
+                <!-- START STAFF TABLE -->
+                <div>
+                    <mat-form-field>
+                        <mat-label>Search..?</mat-label>
+                        <input matInput placeholder="By keyword" (keyup)="filterByKeyword($event)">
+                    </mat-form-field>
+                    <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
+                        <ng-container matColumnDef="avatar"> 
+                            <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic">Avatar</th>
+                            <td mat-cell *matCellDef="let element">
+                                  <img *ngIf= "element.avatar == null && element.gender == 'MALE'" src = "/assets/img/avatars/male-default.png" width="50" height="50">
+                                  <img *ngIf= "element.avatar == null && element.gender == 'FEMALE'" src = "/assets/img/avatars/female-default.png" width="50" height="50">
+                                  <img *ngIf= "element.avatar != null" [src]="element.symbol" width="50" height="50">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="firstName">
+                          <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> First Name </th>
+                          <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="email">
+                          <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> Email </th>
+                          <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="accountStatus">
+                            <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> Account Status </th>
+                            <td mat-cell *matCellDef="let element"> {{element.accountStatus}} </td>
+                          </ng-container>
+                        <ng-container matColumnDef="action">
+                            <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> Action </th>
+                            <td mat-cell *matCellDef="let element">
+                                <button mat-raised-button color="primary" (click)="updateStaff(element.id)">Update</button> | 
+                                <button mat-raised-button color="warn" (click)="deleteStaff(element.id)">Delete</button>
+                            </td>
+                          </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>    
+                    <mat-paginator [pageSizeOptions]="[5,10,20]" showFirstLastButtons>
+                    </mat-paginator>
+                </div>
+                <!-- END STAFF TABLE -->
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -43,6 +43,9 @@ public class UserDto {
     @NotBlank(message = "{user.lastName.not-blank}", groups = {SaveInfo.class, UpdateInfo.class})
     private String lastName;
 
+    @FieldNotNull(target = User.Gender.class, groups = {SaveInfo.class, UpdateInfo.class})
+    private User.Gender gender;
+
     @Size(max = 200, message = "{user.avatar.size}", groups = {SaveInfo.class, UpdateInfo.class})
     private String avatar;
 

@@ -39,6 +39,10 @@ public class Project extends BaseEntity{
     @Size(min = 5, max = 100, message = "{project.symbol.size}")
     private String symbol;
 
+    @Column(name = ProjectEntity.STATUS)
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = JoinTableUtil.PROJECT_CREATOR_REFERENCE_USER)
     private User creator;
@@ -77,11 +81,25 @@ public class Project extends BaseEntity{
                 '}';
     }
 
+    public enum Status {
+        DOING,
+        DONE
+    }
+
+    //------------------ENTITY LIFE CYCLES-----------------
+    @PrePersist
+    private void beforeSave() {
+        if (status == null) {
+            status = Status.DOING;
+        }
+    }
+
     @UtilityClass
     static class ProjectEntity {
         public static final String TABLE_NAME = "J_PROJECT";
         public static final String NAME = "J_NAME";
         public static final String DESCRIPTION = "J_DESCRIPTION";
         public static final String SYMBOL = "J_SYMBOL";
+        public static final String STATUS = "J_STATUS";
     }
 }
