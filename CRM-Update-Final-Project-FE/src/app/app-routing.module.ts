@@ -9,7 +9,7 @@ import {ErrorComponent} from "./layouts/error/error.component";
             [
                 {
                     path: 'login',
-                    loadChildren: () => import('../app/pages/components/login/login.module').then(m => m.LoginModule)
+                    loadChildren: () => import('../app/pages/components/login/login.module').then(m => m.LoginModule),
                 },
                 {
                     path: 'project',
@@ -23,7 +23,7 @@ import {ErrorComponent} from "./layouts/error/error.component";
                     canActivate: [AuthGuard]
                 },
                 {
-                    path: 'user',
+                    path: 'staff',
                     loadChildren: () => import('../app/pages/components/staff/staff.module').then(m => m.StaffModule),
                     canActivate: [AuthGuard]
                 },
