@@ -1,0 +1,38 @@
+<h1 mat-dialog-title>
+    {{title}}
+</h1>
+<form [formGroup]="form">
+    <div mat-dialog-content *ngIf="type == 'project'">
+        <mat-form-field class="form-group">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Name" class="form-control" formControlName="name">
+        </mat-form-field>
+        <mat-form-field class="form-group">
+            <mat-label>Description</mat-label>
+            <input matInput placeholder="Project's Name" class="form-control" formControlName="description">
+        </mat-form-field>
+        <mat-form-field class="form-group">
+            <mat-label>Status</mat-label>
+            <mat-select class="form-control" formControlName="status" disableOptionCentering panelClass="myPanelClass">
+                <mat-option value="DOING">DOING</mat-option>
+                <mat-option value="DONE">DONE</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-label class="form-group">Symbol</mat-label><br>
+        <mat-radio-group class="form-group" formControlName="symbol">
+            <mat-radio-button value="default">
+                <img src="/assets/img/project-symbols/default.png" width="50px" height="50px" alt="">
+            </mat-radio-button>
+            <mat-radio-button value="default1">
+                <img src="/assets/img/project-symbols/default.png" width="50px" height="50px" alt="">
+            </mat-radio-button>
+            <mat-radio-button value="default2">
+                <img src="/assets/img/project-symbols/default.png" width="50px" height="50px" alt="">
+            </mat-radio-button>
+        </mat-radio-group>
+    </div>
+    <div mat-dialog-actions class="d-flex justify-content-between">
+        <button class="btn btn-secondary" (click)="close()">Close</button>
+        <button class="btn btn-success" (click)="submit()">Submit</button>
+    </div>
+</form>
