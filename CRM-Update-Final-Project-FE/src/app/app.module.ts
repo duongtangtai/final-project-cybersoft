@@ -1,10 +1,10 @@
-import { MaterialModule } from 'src/app/share/modules/material-module';
-import { ProjectModule } from './pages/components/project/project.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
+import {ReactiveFormsModule} from "@angular/forms";
 import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgxWebstorageModule} from 'ngx-webstorage';
+import {MaterialModule} from 'src/app/share/modules/material-module';
 import {AppRoutingModule} from './app-routing.module';
 import {APP_CONFIG, AppConfig} from "./core/config/app.config";
 import {TokenInterceptor} from "./core/interceptor/token.interceptor";
@@ -13,6 +13,9 @@ import {ErrorComponent} from './layouts/error/error.component';
 import {FooterComponent} from './layouts/footer/footer.component';
 import {HeaderComponent} from './layouts/header/header.component';
 import {MainComponent} from './layouts/main/main.component';
+import {ProjectModule} from './pages/components/project/project.module';
+import {DialogComponent} from './share/components/dialog/dialog.component';
+import {ShareModule} from "./share/share.module";
 
 @NgModule({
     imports: [
@@ -22,6 +25,9 @@ import {MainComponent} from './layouts/main/main.component';
         AppRoutingModule,
         HttpClientModule,
         NgxWebstorageModule.forRoot(),
+        ReactiveFormsModule,
+        MaterialModule,
+        ShareModule
     ],
     providers: [
         {provide: APP_CONFIG, useValue: AppConfig},
