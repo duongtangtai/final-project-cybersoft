@@ -5,20 +5,6 @@
                 <h3>
                     Project List</h3>
             </div>
-            <div class="col-12 col-sm-6">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                             class="feather feather-home">
-                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                        </svg>
-                    </a></li>
-                    <li class="breadcrumb-item">Dashboard</li>
-                    <li class="breadcrumb-item active">Project List</li>
-                </ol>
-            </div>
         </div>
     </div>
 </div>
@@ -29,38 +15,47 @@
                 <div class="row">
                     <div class="col-md-6">
                         <ul class="nav nav-tabs border-tab" id="top-tab" role="tablist">
-                            <li class="nav-item"><button class="nav-link active" id="top-home-tab" data-bs-toggle="tab"
-                                                    href="#top-home" role="tab" aria-controls="top-home"
-                                                    aria-selected="true" (click)="getAllProject()">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-target">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <circle cx="12" cy="12" r="6"></circle>
-                                    <circle cx="12" cy="12" r="2"></circle>
-                                </svg>
-                                All</button></li>   
-                            <li class="nav-item"><button class="nav-link" id="profile-top-tab" data-bs-toggle="tab"
-                                                    href="#top-profile" role="tab" aria-controls="top-profile"
-                                                    aria-selected="false" (click)="getAllProjectWithStatus(projectStatus[0])">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-info">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <line x1="12" y1="16" x2="12" y2="12"></line>
-                                    <line x1="12" y1="8" x2="12" y2="8"></line>
-                                </svg>
-                                Doing</button></li>
-                            <li class="nav-item"><button class="nav-link" id="contact-top-tab" data-bs-toggle="tab"
-                                                    href="#top-contact" role="tab" aria-controls="top-contact"
-                                                    aria-selected="false" (click)="getAllProjectWithStatus(projectStatus[1])">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-check-circle">
-                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                                </svg>
-                                Done</button></li>
+                            <li class="nav-item">
+                                <button class="nav-link active" id="top-home-tab" data-bs-toggle="tab"
+                                        href="#top-home" role="tab" aria-controls="top-home"
+                                        aria-selected="true" (click)="getAllProject()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="feather feather-target">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <circle cx="12" cy="12" r="6"></circle>
+                                        <circle cx="12" cy="12" r="2"></circle>
+                                    </svg>
+                                    All
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" id="profile-top-tab" data-bs-toggle="tab"
+                                        href="#top-profile" role="tab" aria-controls="top-profile"
+                                        aria-selected="false" (click)="getAllProjectWithStatus(projectStatus[0])">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="feather feather-info">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                                        <line x1="12" y1="8" x2="12" y2="8"></line>
+                                    </svg>
+                                    Doing
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" id="contact-top-tab" data-bs-toggle="tab"
+                                        href="#top-contact" role="tab" aria-controls="top-contact"
+                                        aria-selected="false" (click)="getAllProjectWithStatus(projectStatus[1])">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="feather feather-check-circle">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                    Done
+                                </button>
+                            </li>
                         </ul>
                     </div>
                     <div class="col-md-6 p-0">
@@ -73,7 +68,8 @@
                                 <line x1="12" y1="8" x2="12" y2="16"></line>
                                 <line x1="8" y1="12" x2="16" y2="12"></line>
                             </svg>
-                            &nbsp;&nbsp;Create New Project</button>
+                            &nbsp;&nbsp;Create New Project
+                        </button>
                     </div>
                 </div>
             </div>
@@ -82,47 +78,56 @@
             <div class="card">
                 <div class="card-body">
 
-                <!-- START PROJECT TABLE -->
-                <div>
-                    <mat-form-field>
-                        <mat-label>Search..?</mat-label>
-                        <input matInput placeholder="By keyword" (keyup)="filterByKeyword($event)">
-                    </mat-form-field>
-                    <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
-                        <ng-container matColumnDef="symbol"> 
-                            <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic">Symbol</th>
-                            <td mat-cell *matCellDef="let element">
-                                  <img *ngIf= "element.symbol == null" src = "/assets/img/project-symbols/default.png" width="50" height="50">
-                                  <img *ngIf= "element.symbol != null" [src]="element.symbol" width="50" height="50">
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="name">
-                          <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> Name </th>
-                          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="description">
-                          <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> Description </th>
-                          <td mat-cell *matCellDef="let element"> {{element.description}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="status">
-                            <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> Status </th>
-                            <td mat-cell *matCellDef="let element"> {{element.status}} </td>
-                          </ng-container>
-                        <ng-container matColumnDef="action">
-                            <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> Action </th>
-                            <td mat-cell *matCellDef="let element">
-                                <button mat-raised-button color="primary" (click)="updateProject(element.id)">Update</button> | 
-                                <button mat-raised-button color="warn" (click)="deleteProject(element.id)">Delete</button>
-                            </td>
-                          </ng-container>
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                    </table>    
-                    <mat-paginator [pageSizeOptions]="[5,10,20]" showFirstLastButtons>
-                    </mat-paginator>
-                </div>
-                <!-- END PROJECT TABLE -->
+                    <!-- START PROJECT TABLE -->
+                    <div>
+                        <mat-form-field>
+                            <mat-label>Search..?</mat-label>
+                            <input matInput placeholder="By keyword" (keyup)="filterByKeyword($event)">
+                        </mat-form-field>
+                        <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
+                            <ng-container matColumnDef="symbol">
+                                <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic">Symbol</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <img *ngIf="element.symbol == null" src="/assets/img/project-symbols/default.png"
+                                         width="50" height="50">
+                                    <img *ngIf="element.symbol != null" [src]="element.symbol" width="50" height="50">
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="name">
+                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> Name</th>
+                                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="description">
+                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic">
+                                    Description
+                                </th>
+                                <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="status">
+                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> Status
+                                </th>
+                                <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="action">
+                                <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> Action</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <button mat-raised-button color="primary" (click)="updateProject(element.id)">
+                                        Update
+                                    </button>
+                                    |
+                                    <button mat-raised-button color="warn" (click)="deleteProject(element.id)">Delete
+                                    </button>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+                        <mat-paginator [pageSizeOptions]="[5,10,20]" showFirstLastButtons>
+                        </mat-paginator>
+                    </div>
+                    <!-- END PROJECT TABLE -->
 
+                </div>
             </div>
         </div>
     </div>

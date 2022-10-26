@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
-import {Router} from "@angular/router";
+import {NavigationEnd, Router, RoutesRecognized} from "@angular/router";
 import {LocalStorageService} from "ngx-webstorage";
+import {filter, pairwise} from "rxjs";
 import { AuthService } from 'src/app/core/auth/auth.service';
 import {AppSettings} from "../../../app.constants";
 
@@ -25,9 +26,7 @@ export class LoginComponent implements OnInit {
     ) {
     }
 
-    ngOnInit(): void {
-        console.log(this.localStorageService.retrieve(AppSettings.AUTH_DATA))
-    }
+    ngOnInit(): void {}
 
     login() {
         const username = this.formLogin.controls['username'].value;
