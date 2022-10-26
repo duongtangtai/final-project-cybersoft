@@ -1,4 +1,4 @@
-import { IProject } from './../../../model/project.model';
+import { IProjectModel } from './../../../model/project.model';
 import { MatPaginator} from '@angular/material/paginator';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {ProjectService} from "../../services/project.service";
@@ -14,8 +14,9 @@ import { MatSort } from '@angular/material/sort';
 export class ProjectComponent implements OnInit {
   dataSource: any;
   projects: any;
+  projectStatus: string[] = ['DOING', 'DONE']
   
-  displayedColumns: string[] = ['name', 'description', 'symbol', 'action'];
+  displayedColumns: string[] = ['symbol', 'name', 'description', 'status', 'action'];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -27,13 +28,32 @@ export class ProjectComponent implements OnInit {
   ngOnInit(): void {
     this.getAllProject(); 
   }
+  
+  pagingAndSorting() {
+    this.dataSource = new MatTableDataSource<IProjectModel>(this.projects)
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 
-  private getAllProject() {
+  getAllProject() {
     this.projectService.getProjects().subscribe(result => {
       this.projects = result;
-      this.dataSource = new MatTableDataSource<IProject>(this.projects)
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      this.pagingAndSorting()
+    });
+  }
+
+  getAllProjectWithStatus(status: string) {
+    this.projectService.getProjects().subscribe(result => {
+      this.projects = result;
+      switch (status) {
+        case this.projectStatus[0]:
+          this.projects = this.projects.filter((element: any) => element.status == this.projectStatus[0])
+          break;
+        case this.projectStatus[1]:
+          this.projects = this.projects.filter((element: any) => element.status == this.projectStatus[1])
+          break;
+      }
+      this.pagingAndSorting()
     });
   }
 
@@ -42,11 +62,11 @@ export class ProjectComponent implements OnInit {
     this.dataSource.filter = keyword;
   }
 
-  updateProject(elementId: any) {
-    console.log(elementId)
+  updateProject(projectId: any) {
+    console.log("update project with ID: " + projectId)
   }
 
-  deleteProject(elementId: any) {
-    console.log(elementId)
+  deleteProject(projectId: any) {
+    console.log("delete project with ID: " + projectId)
   }
 }

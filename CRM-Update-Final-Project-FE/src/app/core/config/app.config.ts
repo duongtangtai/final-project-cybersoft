@@ -16,6 +16,12 @@ export const AppConfig: PTSAppConfig = {
     },
     project: {
       getAll: `${apiUrl}/v1/projects`
+    },
+    staff: {
+      getAll: `${apiUrl}/v1/users`
+    },
+    task: {
+      getAll: `${apiUrl}/v1/tasks`
     }
   }
 };

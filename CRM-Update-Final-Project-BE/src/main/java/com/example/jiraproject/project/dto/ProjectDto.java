@@ -1,8 +1,10 @@
 package com.example.jiraproject.project.dto;
 
+import com.example.jiraproject.common.validation.annotation.FieldNotNull;
 import com.example.jiraproject.common.validation.annotation.UUIDConstraint;
 import com.example.jiraproject.common.validation.group.SaveInfo;
 import com.example.jiraproject.common.validation.group.UpdateInfo;
+import com.example.jiraproject.project.model.Project;
 import com.example.jiraproject.project.validation.annotation.UniqueProject;
 import lombok.*;
 
@@ -31,4 +33,7 @@ public class ProjectDto {
 
     @Size(min = 5, max = 100, message = "{project.symbol.size}", groups = {SaveInfo.class, UpdateInfo.class})
     private String symbol;
+
+    @FieldNotNull(target = Project.Status.class, groups = {SaveInfo.class, UpdateInfo.class})
+    private Project.Status status;
 }

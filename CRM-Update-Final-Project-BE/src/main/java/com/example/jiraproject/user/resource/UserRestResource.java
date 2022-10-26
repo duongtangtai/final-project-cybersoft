@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -41,7 +42,9 @@ public class UserRestResource {
     @Authorized(operation = ApiUtil.USER)
     @GetMapping
     public ResponseEntity<ResponseDto> findAll() {
-        return ResponseUtil.get(service.findAll(UserDto.class), HttpStatus.OK);
+        List<UserDto> userList = service.findAll(UserDto.class);
+        userList.forEach(user -> user.setPassword(null));
+        return ResponseUtil.get(userList, HttpStatus.OK);
     }
 
     @Authorized(operation = ApiUtil.USER)

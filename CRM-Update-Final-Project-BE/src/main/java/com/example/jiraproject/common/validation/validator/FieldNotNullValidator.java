@@ -4,6 +4,7 @@ import com.example.jiraproject.common.util.MessageUtil;
 import com.example.jiraproject.common.validation.annotation.FieldNotNull;
 import com.example.jiraproject.notification.model.Notification;
 import com.example.jiraproject.operation.model.Operation;
+import com.example.jiraproject.project.model.Project;
 import com.example.jiraproject.task.model.Task;
 import com.example.jiraproject.user.model.User;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,10 @@ public class FieldNotNullValidator implements ConstraintValidator<FieldNotNull, 
             message = MessageUtil.getMessage(messageSource, "operation.type.not-null");
         } else if (User.AccountStatus.class.equals(target)) {
             message = MessageUtil.getMessage(messageSource, "user.accountStatus.not-null");
+        } else if (User.Gender.class.equals(target)) {
+            message = MessageUtil.getMessage(messageSource, "user.gender.not-null");
+        } else if (Project.Status.class.equals(target)) {
+            message = MessageUtil.getMessage(messageSource, "project.status.not-null");
         } else if (Task.Status.class.equals(target)) {
             message = MessageUtil.getMessage(messageSource, "task.status.not-null");
         } else if (Notification.Status.class.equals(target)) {

@@ -50,6 +50,10 @@ public class User extends BaseEntity {
     @NotBlank(message = "{user.lastName.not-blank}")
     private String lastName;
 
+    @Column(name = UserEntity.GENDER, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
     @Column(name = UserEntity.AVATAR)
     @Size(max = 200, message = "{user.avatar.size}")
     private String avatar;
@@ -178,6 +182,11 @@ public class User extends BaseEntity {
                 '}';
     }
 
+    public enum Gender {
+        MALE,
+        FEMALE
+    }
+
     public enum AccountStatus {
         ACTIVE,
         TEMPORARILY_BLOCKED,
@@ -191,6 +200,7 @@ public class User extends BaseEntity {
         public static final String PASSWORD = "J_PASSWORD";
         public static final String FIRST_NAME = "J_FIRST_NAME";
         public static final String LAST_NAME = "J_LAST_NAME";
+        public static final String GENDER = "J_GENDER";
         public static final String AVATAR = "J_AVATAR";
         public static final String EMAIL = "J_EMAIL";
         public static final String FACEBOOK_URL = "J_FACEBOOK_URL";
