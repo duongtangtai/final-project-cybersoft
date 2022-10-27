@@ -32,7 +32,7 @@
         </mat-radio-group>
     </div>
     <div mat-dialog-actions class="d-flex justify-content-between">
-        <button class="btn btn-secondary" (click)="close()">Close</button>
-        <button class="btn btn-success" (click)="submit()">Submit</button>
+        <app-button (onClick)="cancelFunc($event)" [label]=appSettings.BUTTON_CANCEL></app-button>
+        <app-button (onClick)="okFunc($event)" [label]=appSettings.BUTTON_CANCEL></app-button>
     </div>
 </form>

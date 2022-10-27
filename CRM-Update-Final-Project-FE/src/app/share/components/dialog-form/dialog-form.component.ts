@@ -1,13 +1,14 @@
 import {Component, Inject, Input, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {AppSettings} from "../../../app.constants";
 
 @Component({
     selector: 'app-dialog',
-    templateUrl: './dialog.component.html',
-    styleUrls: ['./dialog.component.scss']
+    templateUrl: './dialog-form.component.html',
+    styleUrls: ['./dialog-form.component.scss']
 })
-export class DialogComponent implements OnInit {
+export class DialogFormComponent implements OnInit {
 
     @Input() title: string = '';
     @Input() type: string = 'project | staff | task';
@@ -20,9 +21,11 @@ export class DialogComponent implements OnInit {
         symbol: ['', Validators.required],
     })
 
+    appSettings = AppSettings;
+
     constructor(
         private formBuilder: FormBuilder,
-        public dialogRef: MatDialogRef<DialogComponent>,
+        public dialogRef: MatDialogRef<DialogFormComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
     }
@@ -32,11 +35,12 @@ export class DialogComponent implements OnInit {
         this.type = this.data.type;
     }
 
-    close() {
+    cancelFunc($event: any) {
         this.dialogRef.close();
     }
 
-    submit() {
-        // code something here
+    okFunc($event: any) {
+        this.dialogRef.close({status: true});
     }
+
 }

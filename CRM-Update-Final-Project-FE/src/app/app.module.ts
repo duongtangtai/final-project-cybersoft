@@ -14,7 +14,6 @@ import {FooterComponent} from './layouts/footer/footer.component';
 import {HeaderComponent} from './layouts/header/header.component';
 import {MainComponent} from './layouts/main/main.component';
 import {ProjectModule} from './pages/components/project/project.module';
-import {DialogComponent} from './share/components/dialog/dialog.component';
 import {ShareModule} from "./share/share.module";
 
 @NgModule({

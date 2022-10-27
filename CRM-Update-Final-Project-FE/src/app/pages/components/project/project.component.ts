@@ -4,7 +4,7 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {AppSettings} from "../../../app.constants";
-import {DialogComponent} from "../../../share/components/dialog/dialog.component";
+import {DialogComponent} from "../../../share/components/dialog-form/dialog-form.component";
 import {ProjectService} from "../../services/project.service";
 import {IProjectModel} from './../../../model/project.model';
 

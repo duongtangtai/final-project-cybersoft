@@ -4,7 +4,9 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgxWebstorageModule} from 'ngx-webstorage';
-import {DialogComponent} from "./components/dialog/dialog.component";
+import {ButtonComponent} from './components/button/button.component';
+import {DialogFormComponent} from "./components/dialog-form/dialog-form.component";
+import {DialogNotifyComponent} from './components/dialog-notify/dialog-notify.component';
 import {MaterialModule} from "./modules/material-module";
 
 @NgModule({
@@ -16,7 +18,7 @@ import {MaterialModule} from "./modules/material-module";
         ReactiveFormsModule,
         MaterialModule
     ],
-    declarations: [DialogComponent],
+    declarations: [DialogFormComponent, DialogNotifyComponent, DialogNotifyComponent, ButtonComponent],
 })
 export class ShareModule {
 }
