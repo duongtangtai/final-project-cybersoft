@@ -5,6 +5,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { DialogFormComponent } from 'src/app/share/components/dialog-form/dialog-form.component';
+import { MatDialog } from '@angular/material/dialog';
+import { AppSettings } from 'src/app/app.constants';
+import { DialogNotifyComponent } from 'src/app/share/components/dialog-notify/dialog-notify.component';
 
 @Component({
   selector: 'app-staff',
@@ -22,7 +26,8 @@ export class StaffComponent implements OnInit {
 
 
   constructor(
-      private staffService: StaffService
+      private staffService: StaffService,
+      private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -64,12 +69,35 @@ export class StaffComponent implements OnInit {
     const keyword = (event.target as HTMLInputElement).value;
     this.dataSource.filter = keyword;
   }
+  
+  addStaff() {
+    this.dialog.open(DialogFormComponent, {
+      data: {
+        title: AppSettings.FORM_ADD_STAFF,
+        type: AppSettings.TYPE_STAFF,
+      },
+      width: "80%",
+      height: "80%",
+    }).afterClosed().subscribe(() => this.getAllStaffs())
+  }
 
-  updateStaff(staffId: any) {
-    console.log("update staff with ID: " + staffId)
+  updateStaff(staff: any) {
+    this.dialog.open(DialogFormComponent, {
+      data: {
+        title: AppSettings.FORM_UPDATE_STAFF,
+        type: AppSettings.TYPE_STAFF,
+        element: staff,
+      },
+    }).afterClosed().subscribe(() => this.getAllStaffs())
   }
 
   deleteStaff(staffId: any) {
-    console.log("delete staff with ID: " + staffId)
+    this.dialog.open(DialogNotifyComponent, {
+      data: {
+          title: AppSettings.FORM_DELETE_STAFF,
+          message: AppSettings.MESSAGE_DELETE_STAFF,
+          id: staffId,
+      },
+    }).afterClosed().subscribe(() => this.getAllStaffs())
   }
 }

@@ -9,7 +9,6 @@ import com.example.jiraproject.common.validation.group.SaveInfo;
 import com.example.jiraproject.common.validation.group.UpdateInfo;
 import com.example.jiraproject.operation.model.Operation;
 import com.example.jiraproject.project.dto.ProjectDto;
-import com.example.jiraproject.project.model.Project;
 import com.example.jiraproject.project.service.ProjectService;
 import com.example.jiraproject.security.aop.Authorized;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -70,42 +69,24 @@ public class ProjectRestResource {
         return ResponseUtil.get(service.findAllWithInfoWithPaging(size, pageIndex), HttpStatus.OK);
     }
 
+    @Authorized(operation = ApiUtil.PROJECT)
+    @GetMapping("/status")
+    public ResponseEntity<ResponseDto> findAllProjectStatus() {
+        return ResponseUtil.get(service.findAllProjectStatus(), HttpStatus.OK);
+    }
+
     @Authorized(operation = ApiUtil.PROJECT, type = Operation.Type.SAVE_OR_UPDATE)
     @PostMapping
     public ResponseEntity<ResponseDto> save(@RequestBody @Validated(SaveInfo.class) ProjectDto dto) {
-        return ResponseUtil.get(service.save(Project.class, dto), HttpStatus.CREATED);
-    }
-
-    @Authorized(operation = ApiUtil.PROJECT, type = Operation.Type.SAVE_OR_UPDATE)
-    @PostMapping("/{id}/add-creator")
-    public ResponseEntity<ResponseDto> addCreator(@PathVariable("id") @UUIDConstraint String projectId,
-                                                  @RequestParam("userId") @UUIDConstraint String userId) {
-        return ResponseUtil.get(service.addCreator(UUID.fromString(projectId), UUID.fromString(userId)), HttpStatus.OK);
-    }
-
-    @Authorized(operation = ApiUtil.PROJECT, type = Operation.Type.SAVE_OR_UPDATE)
-    @PostMapping("/{id}/remove-creator")
-    public ResponseEntity<ResponseDto> removeCreator(@PathVariable("id") @UUIDConstraint String projectId) {
-        return ResponseUtil.get(service.removeCreator(UUID.fromString(projectId)), HttpStatus.OK);
-    }
-
-    @Authorized(operation = ApiUtil.PROJECT, type = Operation.Type.SAVE_OR_UPDATE)
-    @PostMapping("/{id}/add-leader")
-    public ResponseEntity<ResponseDto> addLeader(@PathVariable("id") @UUIDConstraint String projectId,
-                                                  @RequestParam("userId") @UUIDConstraint String userId) {
-        return ResponseUtil.get(service.addLeader(UUID.fromString(projectId), UUID.fromString(userId)), HttpStatus.OK);
-    }
-
-    @Authorized(operation = ApiUtil.PROJECT, type = Operation.Type.SAVE_OR_UPDATE)
-    @PostMapping("/{id}/remove-leader")
-    public ResponseEntity<ResponseDto> removeLeader(@PathVariable("id") @UUIDConstraint String projectId) {
-        return ResponseUtil.get(service.removeLeader(UUID.fromString(projectId)), HttpStatus.OK);
+        service.save(dto);
+        return ResponseUtil.get(MessageUtil.getMessage(messageSource, "project.saved"), HttpStatus.CREATED);
     }
 
     @Authorized(operation = ApiUtil.PROJECT, type = Operation.Type.SAVE_OR_UPDATE)
     @PutMapping
     public ResponseEntity<ResponseDto> update(@RequestBody @Validated(UpdateInfo.class) ProjectDto dto) {
-        return ResponseUtil.get(service.update(dto.getId(), dto), HttpStatus.OK);
+        service.update(dto.getId(), dto);
+        return ResponseUtil.get(MessageUtil.getMessage(messageSource, "project.updated"), HttpStatus.OK);
     }
 
     @Authorized(operation = ApiUtil.PROJECT, type = Operation.Type.REMOVE)

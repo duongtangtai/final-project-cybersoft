@@ -73,10 +73,23 @@ public class UserRestResource {
         return ResponseUtil.get(service.findAllWithInfoWithPaging(size, pageIndex), HttpStatus.OK);
     }
 
+    @Authorized(operation = ApiUtil.USER)
+    @GetMapping("/account-status")
+    public ResponseEntity<ResponseDto> findAllAccountStatus() {
+        return ResponseUtil.get(service.findAllAccountStatus(), HttpStatus.OK);
+    }
+
+    @Authorized(operation = ApiUtil.USER)
+    @GetMapping("/genders")
+    public ResponseEntity<ResponseDto> findAllGenders() {
+        return ResponseUtil.get(service.findAllGenders(), HttpStatus.OK);
+    }
+
     @Authorized(operation = ApiUtil.USER, type = Operation.Type.SAVE_OR_UPDATE)
     @PostMapping
     public ResponseEntity<ResponseDto> save(@RequestBody @Validated(SaveInfo.class) UserDto dto) {
-        return ResponseUtil.get(service.save(User.class, dto), HttpStatus.OK);
+        service.save(User.class, dto);
+        return ResponseUtil.get(MessageUtil.getMessage(messageSource, "user.saved"), HttpStatus.OK);
     }
 
     @Authorized(operation = ApiUtil.USER, type = Operation.Type.SAVE_OR_UPDATE)
@@ -96,7 +109,8 @@ public class UserRestResource {
     @Authorized(operation = ApiUtil.USER, type = Operation.Type.SAVE_OR_UPDATE)
     @PutMapping
     public ResponseEntity<ResponseDto> update(@RequestBody @Validated(UpdateInfo.class) UserDto dto) {
-        return ResponseUtil.get(service.update(dto.getId(), dto), HttpStatus.OK);
+        service.update(dto.getId(), dto);
+        return ResponseUtil.get(MessageUtil.getMessage(messageSource, "user.updated"), HttpStatus.OK);
     }
 
     @Authorized(operation = ApiUtil.USER, type = Operation.Type.REMOVE)

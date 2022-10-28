@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ValidationException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -27,6 +28,8 @@ public interface UserService extends GenericService<User, UserDto, UUID> {
     UserWithInfoDto findByIdWithInfo(UUID userId);
     List<UserWithInfoDto> findAllWithInfo();
     List<UserWithInfoDto> findAllWithInfoWithPaging(int size, int pageIndex);
+    List<String> findAllAccountStatus();
+    List<String> findAllGenders();
     UserWithInfoDto addRoles(UUID userId, Set<UUID> roleIds);
     UserWithInfoDto removeRoles(UUID userId, Set<UUID> roleIds);
 }
@@ -40,6 +43,7 @@ class UserServiceImpl implements UserService {
     private final RoleService roleService;
     private final MessageSource messageSource;
     private static final String UUID_NOT_FOUND = "user.id.not-found";
+    private static final String USERNAME_NOT_FOUND = "user.username.not-found";
 
     @Override
     public JpaRepository<User, UUID> getRepository() {
@@ -60,7 +64,7 @@ class UserServiceImpl implements UserService {
     @Override
     public User findByUsername(String username) {
         return repository.findByUsername(username).orElseThrow(() ->
-                new ValidationException(MessageUtil.getMessage(messageSource, UUID_NOT_FOUND)));
+                new ValidationException(MessageUtil.getMessage(messageSource, USERNAME_NOT_FOUND)));
     }
 
     @Override
@@ -84,6 +88,16 @@ class UserServiceImpl implements UserService {
                 .stream()
                 .map(model -> mapper.map(model, UserWithInfoDto.class))
                 .toList();
+    }
+
+    @Override
+    public List<String> findAllAccountStatus() {
+        return Arrays.stream(User.AccountStatus.values()).map(Enum::toString).toList();
+    }
+
+    @Override
+    public List<String> findAllGenders() {
+        return Arrays.stream(User.Gender.values()).map(Enum::toString).toList();
     }
 
     @Override

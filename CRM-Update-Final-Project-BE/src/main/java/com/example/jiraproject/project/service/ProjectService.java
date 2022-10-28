@@ -2,7 +2,6 @@ package com.example.jiraproject.project.service;
 
 import com.example.jiraproject.common.service.GenericService;
 import com.example.jiraproject.common.util.MessageUtil;
-import com.example.jiraproject.file.service.FileService;
 import com.example.jiraproject.project.dto.ProjectDto;
 import com.example.jiraproject.project.dto.ProjectWithInfoDto;
 import com.example.jiraproject.project.model.Project;
@@ -17,21 +16,20 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ValidationException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 public interface ProjectService extends GenericService<Project, ProjectDto, UUID> {
     Project findProjectById(UUID projectId);
+    Project findProjectByName(String name);
     ProjectWithInfoDto findByIdWithInfo(UUID projectId);
     List<ProjectWithInfoDto> findAllWithInfo();
     List<ProjectWithInfoDto> findAllWithInfoWithPaging(int size, int pageIndex);
-    ProjectWithInfoDto addCreator(UUID projectId, UUID userId);
-    ProjectWithInfoDto removeCreator(UUID projectId);
-    ProjectWithInfoDto addLeader(UUID projectId, UUID userId);
-    ProjectWithInfoDto removeLeader(UUID projectId);
+    List<String> findAllProjectStatus();
+    ProjectDto save(ProjectDto dto);
 }
 @Service
 @Transactional
@@ -42,7 +40,6 @@ class ProjectServiceImpl implements ProjectService {
     private final MessageSource messageSource;
     private final UserService userService;
     private static final String UUID_NOT_FOUND = "project.id.not-found";
-    private final FileService fileService;
 
     @Override
     public JpaRepository<Project, UUID> getRepository() {
@@ -59,6 +56,13 @@ class ProjectServiceImpl implements ProjectService {
         return repository.findById(projectId)
                 .orElseThrow(() ->
                         new ValidationException(MessageUtil.getMessage(messageSource, UUID_NOT_FOUND)));
+    }
+
+    @Override
+    public Project findProjectByName(String name) {
+        return repository.findByName(name)
+                .orElseThrow(() ->
+                        new ValidationException(MessageUtil.getMessage(messageSource, "project.name.not-found")));
     }
 
     @Override
@@ -84,40 +88,17 @@ class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectWithInfoDto addCreator(UUID projectId, UUID userId) {
-        Project project = repository.findById(projectId)
-                .orElseThrow(() ->
-                        new ValidationException(MessageUtil.getMessage(messageSource, UUID_NOT_FOUND)));
-        User user = userService.findUserById(userId);
-        project.setCreator(user);
-        return mapper.map(project, ProjectWithInfoDto.class);
+    public List<String> findAllProjectStatus() {
+        return Arrays.stream(Project.Status.values()).map(Enum::toString).toList();
     }
 
     @Override
-    public ProjectWithInfoDto removeCreator(UUID projectId) {
-        Project project = repository.findById(projectId)
-                .orElseThrow(() ->
-                        new ValidationException(MessageUtil.getMessage(messageSource, UUID_NOT_FOUND)));
-        project.setCreator(null);
-        return mapper.map(project, ProjectWithInfoDto.class);
-    }
-
-    @Override
-    public ProjectWithInfoDto addLeader(UUID projectId, UUID userId) {
-        Project project = repository.findById(projectId)
-                .orElseThrow(() ->
-                        new ValidationException(MessageUtil.getMessage(messageSource, UUID_NOT_FOUND)));
-        User user = userService.findUserById(userId);
-        project.setLeader(user);
-        return mapper.map(project, ProjectWithInfoDto.class);
-    }
-
-    @Override
-    public ProjectWithInfoDto removeLeader(UUID projectId) {
-        Project project = repository.findById(projectId)
-                .orElseThrow(() ->
-                        new ValidationException(MessageUtil.getMessage(messageSource, UUID_NOT_FOUND)));
-        project.setLeader(null);
-        return mapper.map(project, ProjectWithInfoDto.class);
+    public ProjectDto save(ProjectDto dto) {
+        User creator = userService.findByUsername(dto.getCreatorUsername());
+        User leader = userService.findByUsername(dto.getLeaderUsername());
+        Project project = mapper.map(dto, Project.class);
+        project.setCreator(creator);
+        project.setLeader(leader);
+        return mapper.map(repository.save(project), ProjectDto.class);
     }
 }

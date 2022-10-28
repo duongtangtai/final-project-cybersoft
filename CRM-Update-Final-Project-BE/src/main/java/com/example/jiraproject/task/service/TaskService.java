@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ValidationException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,8 +29,9 @@ public interface TaskService extends GenericService<Task, TaskDto, UUID> {
     TaskWithInfoDto findByIdWithInfo(UUID taskId);
     List<TaskWithInfoDto> findAllWithInfo();
     List<TaskWithInfoDto> findAllWithInfoWithPaging(int size, int pageIndex);
-    TaskWithInfoDto createTask(TaskDto taskDto, UUID projectId, UUID reporterID);
-    TaskWithInfoDto updateTask(TaskDto taskDto, UUID reporterId);
+    List<String> findAllStatus();
+    TaskDto save(TaskDto taskDto);
+    TaskDto update(TaskDto taskDto);
 }
 @Service
 @Transactional
@@ -80,22 +82,28 @@ class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskWithInfoDto createTask(TaskDto taskDto, UUID projectId, UUID reporterId) {
-        Project project = projectService.findProjectById(projectId);
-        User reporter = userService.findUserById(reporterId);
-        Task task = mapper.map(taskDto, Task.class);
-        task.setProject(project);
-        task.setReporter(reporter);
-        return mapper.map(repository.save(task), TaskWithInfoDto.class);
+    public List<String> findAllStatus() {
+        return Arrays.stream(Task.Status.values()).map(Enum::toString).toList();
     }
 
     @Override
-    public TaskWithInfoDto updateTask(TaskDto taskDto, UUID reporterId) {
-        Task task = repository.findById(taskDto.getId())
-                .orElseThrow(() -> new ValidationException(MessageUtil.getMessage(messageSource, UUID_NOT_FOUND)));
-        User user = userService.findUserById(reporterId);
+    public TaskDto save(TaskDto taskDto) {
+        Project project = projectService.findProjectByName(taskDto.getProjectName());
+        User reporter = userService.findByUsername(taskDto.getReporterUsername());
+        Task task = mapper.map(taskDto, Task.class);
+        task.setProject(project);
+        task.setReporter(reporter);
+        return mapper.map(repository.save(task), TaskDto.class);
+    }
+
+    @Override
+    public TaskDto update(TaskDto taskDto) {
+        Task task = findTaskById(taskDto.getId());
+        Project project = projectService.findProjectByName(taskDto.getProjectName());
+        User user = userService.findByUsername(taskDto.getReporterUsername());
         mapper.map(taskDto, task);
         task.setReporter(user);
-        return mapper.map(task, TaskWithInfoDto.class);
+        task.setProject(project);
+        return mapper.map(task, TaskDto.class);
     }
 }

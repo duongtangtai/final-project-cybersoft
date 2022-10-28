@@ -34,6 +34,14 @@ public class ProjectDto {
     @Size(min = 5, max = 100, message = "{project.symbol.size}", groups = {SaveInfo.class, UpdateInfo.class})
     private String symbol;
 
-    @FieldNotNull(target = Project.Status.class, groups = {SaveInfo.class, UpdateInfo.class})
+    @FieldNotNull(message = "{project.status.not-null}", groups = {SaveInfo.class, UpdateInfo.class})
     private Project.Status status;
+
+    @Size(min = 5, max = 25, message = "{project.creatorUsername.size}", groups = {SaveInfo.class, UpdateInfo.class})
+    @NotBlank(message = "{project.creatorUsername.not-blank}", groups = {SaveInfo.class, UpdateInfo.class})
+    private String creatorUsername;
+
+    @Size(min = 5, max = 25, message = "{project.leaderUsername.size}", groups = {SaveInfo.class, UpdateInfo.class})
+    @NotBlank(message = "{project.leaderUsername.not-blank}", groups = {SaveInfo.class, UpdateInfo.class})
+    private String leaderUsername;
 }

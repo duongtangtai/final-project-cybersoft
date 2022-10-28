@@ -2,12 +2,33 @@ export class AppSettings {
     public static API_ENDPOINT="http://localhost:8088/jira/api";
 
     public static AUTH_DATA="auth_data";
+    // notification's titles
+    public static TITLE_SUCCESS = "SUCCESS";
+    public static TITLE_ERROR = "ERROR";
+    public static TITLE_INFO = "INFO";
 
-    // notify form
-    public static TITLE_ADD_PROJECT = 'Create Project';
+    // FORM FOR PROJECT
     public static TYPE_PROJECT = 'project';
+    public static FORM_ADD_PROJECT = 'Create Project';
+    public static FORM_UPDATE_PROJECT = 'Update Project';
+    public static FORM_DELETE_PROJECT = 'Delete Project';
+    public static MESSAGE_DELETE_PROJECT = 'Do you really want to delete this project?'
+
+    // FORM FOR STAFF
+    public static TYPE_STAFF = 'staff';
+    public static FORM_ADD_STAFF = 'Create Staff';
+    public static FORM_UPDATE_STAFF = 'Update Staff';
+    public static FORM_DELETE_STAFF= 'Delete Staff';
+    public static MESSAGE_DELETE_STAFF = 'Do you really want to delete this staff?'
+
+    // FORM FOR TASK
+    public static TYPE_TASK = 'task';
+    public static FORM_ADD_TASK = 'Create Task';
+    public static FORM_UPDATE_TASK = 'Update Task';
+    public static FORM_DELETE_TASK= 'Delete Task';
+    public static MESSAGE_DELETE_TASK = 'Do you really want to delete this task?'
 
     // notify button
-    public static BUTTON_CANCEL = 'Cancel';
-    public static BUTTON_OK = 'Ok';
+    public static BUTTON_CANCEL = 'CANCEL';
+    public static BUTTON_OK = 'OK';
 }

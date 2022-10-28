@@ -43,7 +43,7 @@ public class UserDto {
     @NotBlank(message = "{user.lastName.not-blank}", groups = {SaveInfo.class, UpdateInfo.class})
     private String lastName;
 
-    @FieldNotNull(target = User.Gender.class, groups = {SaveInfo.class, UpdateInfo.class})
+    @FieldNotNull(message = "{user.gender.not-null}", groups = {SaveInfo.class, UpdateInfo.class})
     private User.Gender gender;
 
     @Size(max = 200, message = "{user.avatar.size}", groups = {SaveInfo.class, UpdateInfo.class})
@@ -65,6 +65,6 @@ public class UserDto {
     @Size(min = 5, max = 200, message = "{user.hobbies.size}", groups = {SaveInfo.class, UpdateInfo.class})
     private String hobbies;
 
-    @FieldNotNull(target = User.AccountStatus.class, groups = {SaveInfo.class, UpdateInfo.class})
+    @FieldNotNull(message = "{user.accountStatus.not-null}", groups = {SaveInfo.class, UpdateInfo.class})
     private User.AccountStatus accountStatus;
 }

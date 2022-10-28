@@ -2,6 +2,9 @@
     {{title}}
 </h1>
 <form [formGroup]="form">
+
+    <!---------------------------------PROJECT FORM-------------------------------------->
+
     <div mat-dialog-content *ngIf="type == 'project'">
         <mat-form-field class="form-group">
             <mat-label>Name</mat-label>
@@ -13,26 +16,148 @@
         </mat-form-field>
         <mat-form-field class="form-group">
             <mat-label>Status</mat-label>
-            <mat-select class="form-control" formControlName="status" disableOptionCentering panelClass="myPanelClass">
-                <mat-option value="DOING">DOING</mat-option>
-                <mat-option value="DONE">DONE</mat-option>
+            <mat-select class="form-control" formControlName="status" disableOptionCentering panelClass="myPanelClass" [(value)]="compare1">
+                <mat-option *ngFor="let status of projectStatusData" [value]="status">{{status}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="form-group">
+            <mat-label>Creator</mat-label>
+            <input matInput placeholder="Creator's name" class="form-control" formControlName="creatorUsername">
+        </mat-form-field>
+        <mat-form-field class="form-group">
+            <mat-label>Leader</mat-label>
+            <mat-select class="form-control" formControlName="leaderUsername" disableOptionCentering panelClass="myPanelClass" [(value)]="compare2">
+                <mat-option *ngFor="let staff of staffData" [value]="staff.id">{{staff.username}}</mat-option>
             </mat-select>
         </mat-form-field>
         <mat-label class="form-group">Symbol</mat-label><br>
-        <mat-radio-group class="form-group" formControlName="symbol">
-            <mat-radio-button value="default">
-                <img src="/assets/img/project-symbols/default.png" width="50px" height="50px" alt="">
+        <mat-radio-group class="form-group" formControlName="symbol" [(ngModel)]="projectSymbol">
+            <mat-radio-button value="default1" [checked]="projectSymbol == 'default1'">
+                <img src="/assets/img/project-symbols/default1.png" width="50px" height="50px" alt="">
             </mat-radio-button>
-            <mat-radio-button value="default1">
-                <img src="/assets/img/project-symbols/default.png" width="50px" height="50px" alt="">
+            <mat-radio-button value="default2" [checked]="projectSymbol == 'default2'">
+                <img src="/assets/img/project-symbols/default2.png" width="50px" height="50px" alt="">
             </mat-radio-button>
-            <mat-radio-button value="default2">
-                <img src="/assets/img/project-symbols/default.png" width="50px" height="50px" alt="">
+            <mat-radio-button value="default3" [checked]="projectSymbol == 'default3'">
+                <img src="/assets/img/project-symbols/default3.png" width="50px" height="50px" alt="">
             </mat-radio-button>
         </mat-radio-group>
     </div>
+    <!------------------------------END PROJECT FORM-------------------------------------->
+
+    <!-------------------------------START STAFF FORM-------------------------------------->
+
+    <div mat-dialog-content *ngIf="type == 'staff'">
+        <mat-form-field class="form-group">
+            <mat-label>Username</mat-label>
+            <input matInput placeholder="Username" class="form-control" formControlName="username">
+        </mat-form-field>
+        <mat-form-field class="form-group">
+            <mat-label>Password</mat-label>
+            <input matInput placeholder="Password" class="form-control" formControlName="password">
+        </mat-form-field>
+        <mat-form-field class="form-group">
+            <mat-label>First Name</mat-label>
+            <input matInput placeholder="First Name" class="form-control" formControlName="firstName">
+        </mat-form-field>
+        <mat-form-field class="form-group">
+            <mat-label>Last Name</mat-label>
+            <input matInput placeholder="Last Name" class="form-control" formControlName="lastName">
+        </mat-form-field>
+        <mat-form-field class="form-group">
+            <mat-label>Gender</mat-label>
+            <mat-select class="form-control" formControlName="gender" disableOptionCentering panelClass="myPanelClass" [(value)]="compare1">
+                <mat-option *ngFor="let gender of staffGenderData" [value]="gender">{{gender}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="form-group">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Email" class="form-control" formControlName="email" type="email">
+        </mat-form-field>
+        <mat-form-field class="form-group">
+            <mat-label>Facebook</mat-label>
+            <input matInput placeholder="Facebook URL" class="form-control" formControlName="facebookUrl">
+        </mat-form-field>
+        <mat-form-field class="form-group">
+            <mat-label>Occupation</mat-label>
+            <input matInput placeholder="Occupation" class="form-control" formControlName="occupation">
+        </mat-form-field>
+        <mat-form-field class="form-group">
+            <mat-label>Department</mat-label>
+            <input matInput placeholder="Department" class="form-control" formControlName="department">
+        </mat-form-field>
+        <mat-form-field class="form-group">
+            <mat-label>Hobbies</mat-label>
+            <input matInput placeholder="Hobbies" class="form-control" formControlName="hobbies">
+        </mat-form-field>
+        <mat-form-field class="form-group">
+            <mat-label>Account Status</mat-label>
+            <mat-select class="form-control" formControlName="accountStatus" disableOptionCentering panelClass="myPanelClass" [(value)]="compare2">
+                <mat-option *ngFor="let status of staffStatusData" [value]="status">{{status}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <!-------------------------------END STAFF FORM-------------------------------------->
+    <!-------------------------------START TASK FORM-------------------------------------->
+    <div mat-dialog-content *ngIf="type == 'task'">
+        <mat-form-field class="form-group">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Name" class="form-control" formControlName="name">
+        </mat-form-field>
+        <mat-form-field class="form-group">
+            <mat-label>Description</mat-label>
+            <input matInput placeholder="Description" class="form-control" formControlName="description">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Start Date Expected</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="startDateExpected">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>End Date Expected</mat-label>
+            <input matInput [matDatepicker]="picker1" formControlName="endDateExpected">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Start Date In Fact</mat-label>
+            <input matInput [matDatepicker]="picker2" formControlName="startDateInFact">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>End Date In Fact</mat-label>
+            <input matInput [matDatepicker]="picker3" formControlName="endDateInFact">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+            <mat-datepicker #picker3></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="form-group">
+            <mat-label>Status</mat-label>
+            <mat-select class="form-control" formControlName="status" disableOptionCentering panelClass="myPanelClass" [(value)]="compare1">
+                <mat-option *ngFor="let status of taskStatusData" [value]="status">{{status}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="form-group">
+            <mat-label>Project Name</mat-label>
+            <mat-select class="form-control" formControlName="projectName" disableOptionCentering panelClass="myPanelClass" [(value)]="compare2">
+                <mat-option *ngFor="let project of projectData" [value]="project.name">{{project.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="form-group">
+            <mat-label>Reporter Username</mat-label>
+            <mat-select class="form-control" formControlName="reporterUsername" disableOptionCentering panelClass="myPanelClass" [(value)]="compare3">
+                <mat-option *ngFor="let staff of staffData" [value]="staff.username">{{staff.username}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <!-------------------------------END TASK FORM-------------------------------------->
     <div mat-dialog-actions class="d-flex justify-content-between">
         <app-button (onClick)="cancelFunc($event)" [label]=appSettings.BUTTON_CANCEL></app-button>
-        <app-button (onClick)="okFunc($event)" [label]=appSettings.BUTTON_CANCEL></app-button>
+        <app-button (onClick)="okFunc($event)" [label]=appSettings.BUTTON_OK></app-button>
     </div>
 </form>

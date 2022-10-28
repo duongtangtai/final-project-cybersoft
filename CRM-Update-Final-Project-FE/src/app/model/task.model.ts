@@ -6,5 +6,7 @@ export interface ITaskModel {
     endDateExpected?: string,
     startDateInFact?: string,
     endDateInFact?: string,
-    status?: string
+    status?: string,
+    projectName?: string,
+    reporterUsername?: string,
 }

@@ -16,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @UniqueRole(groups = {SaveInfo.class, UpdateInfo.class})
-public class RoleDto implements Comparable<RoleDto> {
+public class RoleDto {
 
     @UUIDConstraint(groups = UpdateInfo.class)
     private UUID id;
@@ -32,9 +32,4 @@ public class RoleDto implements Comparable<RoleDto> {
     @Size(min = 2, max = 500, message = "{role.description.size}", groups = {SaveInfo.class, UpdateInfo.class})
     @NotBlank(message = "{role.description.not-blank}", groups = {SaveInfo.class, UpdateInfo.class})
     private String description;
-
-    @Override
-    public int compareTo(RoleDto o) {
-        return 0;
-    }
 }
