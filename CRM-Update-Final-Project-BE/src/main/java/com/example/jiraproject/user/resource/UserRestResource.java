@@ -10,7 +10,6 @@ import com.example.jiraproject.common.validation.group.UpdateInfo;
 import com.example.jiraproject.operation.model.Operation;
 import com.example.jiraproject.security.aop.Authorized;
 import com.example.jiraproject.user.dto.UserDto;
-import com.example.jiraproject.user.model.User;
 import com.example.jiraproject.user.service.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
@@ -88,7 +87,7 @@ public class UserRestResource {
     @Authorized(operation = ApiUtil.USER, type = Operation.Type.SAVE_OR_UPDATE)
     @PostMapping
     public ResponseEntity<ResponseDto> save(@RequestBody @Validated(SaveInfo.class) UserDto dto) {
-        service.save(User.class, dto);
+        service.save(dto);
         return ResponseUtil.get(MessageUtil.getMessage(messageSource, "user.saved"), HttpStatus.OK);
     }
 
@@ -109,7 +108,7 @@ public class UserRestResource {
     @Authorized(operation = ApiUtil.USER, type = Operation.Type.SAVE_OR_UPDATE)
     @PutMapping
     public ResponseEntity<ResponseDto> update(@RequestBody @Validated(UpdateInfo.class) UserDto dto) {
-        service.update(dto.getId(), dto);
+        service.update(dto);
         return ResponseUtil.get(MessageUtil.getMessage(messageSource, "user.updated"), HttpStatus.OK);
     }
 

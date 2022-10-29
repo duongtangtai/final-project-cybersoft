@@ -19,7 +19,7 @@ export class TaskComponent implements OnInit {
     tasks: any;
     taskStatus: string[] = ['UNASSIGNED', 'STARTED', 'COMPLETED'];
 
-    displayedColumns: string[] = ['name', 'description', 'status', 'action'];
+    displayedColumns: string[] = ['name', 'projectName', 'status', 'action'];
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     @ViewChild(MatSort) sort!: MatSort;
 

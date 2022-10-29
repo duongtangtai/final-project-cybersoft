@@ -30,7 +30,7 @@ import java.util.Set;
 @Slf4j
 public class User extends BaseEntity {
 
-    @Column(name = UserEntity.USERNAME, nullable = false)
+    @Column(name = UserEntity.USERNAME, unique = true, nullable = false)
     @Size(min = 5, max = 25, message = "{user.username.size}")
     @NotBlank(message = "{user.username.not-blank}")
     private String username;
