@@ -69,20 +69,20 @@ export class StaffComponent implements OnInit {
     const keyword = (event.target as HTMLInputElement).value;
     this.dataSource.filter = keyword;
   }
-  
+
   addStaff() {
     this.dialog.open(DialogFormComponent, {
+      panelClass: 'widthDialogForm',
       data: {
         title: AppSettings.FORM_ADD_STAFF,
         type: AppSettings.TYPE_STAFF,
       },
-      width: "80%",
-      height: "80%",
     }).afterClosed().subscribe(() => this.getAllStaffs())
   }
 
   updateStaff(staff: any) {
     this.dialog.open(DialogFormComponent, {
+      panelClass: 'widthDialogForm',
       data: {
         title: AppSettings.FORM_UPDATE_STAFF,
         type: AppSettings.TYPE_STAFF,
@@ -93,6 +93,7 @@ export class StaffComponent implements OnInit {
 
   deleteStaff(staffId: any) {
     this.dialog.open(DialogNotifyComponent, {
+      panelClass: 'widthDialogForm',
       data: {
           title: AppSettings.FORM_DELETE_STAFF,
           message: AppSettings.MESSAGE_DELETE_STAFF,

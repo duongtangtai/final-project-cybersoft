@@ -2,7 +2,7 @@
 <div mat-dialog-content>
     {{message}}
 </div>
-<div mat-dialog-actions>
-    <app-button (onClick)="cancelFunc($event)" [label]=appSettings.BUTTON_CANCEL></app-button>
+<div mat-dialog-actions class="d-flex justify-content-end">
+    <app-button class="mx-2" (onClick)="cancelFunc($event)" [label]=appSettings.BUTTON_CANCEL></app-button>
     <app-button (onClick)="okFunc($event)" [label]=appSettings.BUTTON_OK></app-button>
 </div>

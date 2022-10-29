@@ -7,7 +7,7 @@ export class AppSettings {
     public static TITLE_ERROR = "ERROR";
     public static TITLE_INFO = "INFO";
 
-    // FORM FOR PROJECT
+    public static TITLE_ADD_PROJECT = 'Create Project';
     public static TYPE_PROJECT = 'project';
     public static FORM_ADD_PROJECT = 'Create Project';
     public static FORM_UPDATE_PROJECT = 'Update Project';
@@ -28,7 +28,11 @@ export class AppSettings {
     public static FORM_DELETE_TASK= 'Delete Task';
     public static MESSAGE_DELETE_TASK = 'Do you really want to delete this task?'
 
-    // notify button
+    // NOTIFY BUTTON
     public static BUTTON_CANCEL = 'CANCEL';
     public static BUTTON_OK = 'OK';
+
+    // DIALOG CONFIG
+    public static WITH = '40%'
+
 }

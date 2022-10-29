@@ -3,7 +3,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
-import { DialogNotifyComponent } from 'src/app/share/components/dialog-notify/dialog-notify.component';
+import {DialogNotifyComponent} from 'src/app/share/components/dialog-notify/dialog-notify.component';
 import {AppSettings} from "../../../app.constants";
 import {DialogFormComponent} from "../../../share/components/dialog-form/dialog-form.component";
 import {ProjectService} from "../../services/project.service";
@@ -70,25 +70,28 @@ export class ProjectComponent implements OnInit {
 
     addProject() {
         this.dialog.open(DialogFormComponent, {
-          data: {
-            title: AppSettings.FORM_ADD_PROJECT,
-            type: AppSettings.TYPE_PROJECT,
-          },
+            panelClass: 'widthDialogForm',
+            data: {
+                title: AppSettings.FORM_ADD_PROJECT,
+                type: AppSettings.TYPE_PROJECT,
+            },
         }).afterClosed().subscribe(() => this.getAllProject())
     }
 
     updateProject(project: any) {
         this.dialog.open(DialogFormComponent, {
+            panelClass: 'widthDialogForm',
             data: {
-              title: AppSettings.FORM_UPDATE_PROJECT,
-              type: AppSettings.TYPE_PROJECT,
-              element: project,
+                title: AppSettings.FORM_UPDATE_PROJECT,
+                type: AppSettings.TYPE_PROJECT,
+                element: project,
             },
         }).afterClosed().subscribe(() => this.getAllProject())
     }
 
     deleteProject(projectId: any) {
         this.dialog.open(DialogNotifyComponent, {
+            panelClass: 'widthDialogForm',
             data: {
                 title: AppSettings.FORM_DELETE_PROJECT,
                 message: AppSettings.MESSAGE_DELETE_PROJECT,
