@@ -8,6 +8,8 @@ import {NgxWebstorageModule} from 'ngx-webstorage';
 import {MaterialModule} from 'src/app/share/modules/material-module';
 import {AppRoutingModule} from './app-routing.module';
 import {APP_CONFIG, AppConfig} from "./core/config/app.config";
+import { HttpErrorInterceptor } from './core/interceptor/error-handle.interceptor';
+// import { HttpErrorInterceptor } from './core/interceptor/error-handle.interceptor';
 import {TokenInterceptor} from "./core/interceptor/token.interceptor";
 import {AsideComponent} from './layouts/aside/aside.component';
 import {ErrorComponent} from './layouts/error/error.component';
@@ -44,6 +46,7 @@ export const MY_DATE_FORMATS  = {
     providers: [
         {provide: APP_CONFIG, useValue: AppConfig},
         {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
+        {provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true},
     ],
     declarations: [MainComponent, ErrorComponent, FooterComponent, HeaderComponent, AsideComponent],
     bootstrap: [MainComponent],

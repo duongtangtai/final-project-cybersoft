@@ -1,3 +1,4 @@
+import { MyToastrService } from './../../services/my-toastr.service';
 import { StaffService } from './../../../pages/services/staff.service';
 import {Component, Inject, Input, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
@@ -24,6 +25,7 @@ export class DialogNotifyComponent implements OnInit {
         private projectService: ProjectService,
         private staffService: StaffService,
         private taskService: TaskService,
+        private myToastrService: MyToastrService,
     ) {
     }
 
@@ -41,12 +43,15 @@ export class DialogNotifyComponent implements OnInit {
         switch (this.title) {
             case AppSettings.FORM_DELETE_PROJECT:
                 this.projectService.deleteProject(this.id)
+                    .subscribe(content => this.myToastrService.success(content.toString()));
                 break;
             case AppSettings.FORM_DELETE_STAFF:
                 this.staffService.deleteStaff(this.id)
+                    .subscribe(content => this.myToastrService.success(content.toString()));
                 break;
             case AppSettings.FORM_DELETE_TASK:
                 this.taskService.deleteTask(this.id)
+                    .subscribe(content => this.myToastrService.success(content.toString()));
                 break;
             default:
                 break;

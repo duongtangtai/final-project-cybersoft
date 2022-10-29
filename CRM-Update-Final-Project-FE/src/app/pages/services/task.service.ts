@@ -26,27 +26,18 @@ export class TaskService {
         .pipe(map((val: IRequestModel) => val.content));
   }
 
-  saveTask(task: ITaskModel) {
-    this.http.post<IRequestModel>(`${this.config.endpoints.task.root}`, task)
-        .subscribe({
-            next: result => this.myToastrService.success(result.content),
-            error: exception => this.myToastrService.error(exception.error.errors)
-        })
+  saveTask(task: ITaskModel): Observable<ITaskModel> {
+    return this.http.post<IRequestModel>(`${this.config.endpoints.task.root}`, task)
+        .pipe(map((val: IRequestModel) => val.content));
   }
 
-  updateTask(task: ITaskModel){
-    this.http.put<IRequestModel>(`${this.config.endpoints.task.root}`, task)
-        .subscribe({
-            next: result => this.myToastrService.success(result.content),
-            error: exception => this.myToastrService.error(exception.error.errors)
-    })
+  updateTask(task: ITaskModel): Observable<ITaskModel>{
+    return this.http.put<IRequestModel>(`${this.config.endpoints.task.root}`, task)
+        .pipe(map((val: IRequestModel) => val.content));
   }
 
-  deleteTask(taskId: String){
+  deleteTask(taskId: String): Observable<ITaskModel>{
     return this.http.delete<IRequestModel>(`${this.config.endpoints.task.root}`+taskId)
-        .subscribe({
-            next: result => this.myToastrService.success(result.content),
-            error: exception => this.myToastrService.error(exception.error.error)
-    })
+        .pipe(map((val: IRequestModel) => val.content));
   }
 }

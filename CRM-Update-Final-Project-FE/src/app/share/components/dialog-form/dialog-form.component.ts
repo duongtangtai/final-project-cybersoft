@@ -1,3 +1,4 @@
+import { MyToastrService } from './../../services/my-toastr.service';
 import { ITaskModel } from 'src/app/model/task.model';
 import { TaskService } from './../../../pages/services/task.service';
 import { IStaffModel } from './../../../model/staff.model';
@@ -43,6 +44,7 @@ export class DialogFormComponent implements OnInit {
         private projectService: ProjectService,
         private staffService: StaffService,
         private taskService: TaskService,
+        private myToastrService: MyToastrService,
     ) {
     }
 
@@ -55,25 +57,16 @@ export class DialogFormComponent implements OnInit {
     }
 
     initForm(element: any) {
-        switch (this.title) {
-            case AppSettings.FORM_ADD_PROJECT:
-                this.getAddProjectForm()
+        switch (this.type) {
+            case AppSettings.TYPE_PROJECT:
+                this.getProjectForm(element)
                 break;
-            case AppSettings.FORM_UPDATE_PROJECT:
-                this.getUpdateProjectForm(element)
+            case AppSettings.TYPE_STAFF:
+                this.getStaffForm(element)
                 break;
-            case AppSettings.FORM_ADD_STAFF:
-                    this.getAddStaffForm()
+            case AppSettings.TYPE_TASK:
+                this.getTaskForm(element)
                 break;
-            case AppSettings.FORM_UPDATE_STAFF:
-                    this.getUpdateStaffForm(element)
-                break;
-            case AppSettings.FORM_ADD_TASK:
-                    this.getAddTaskForm()
-                break;
-            case AppSettings.FORM_UPDATE_TASK:
-                    this.getUpdateTaskForm(element)
-                break; 
             default:
                 break;
         }
@@ -101,10 +94,6 @@ export class DialogFormComponent implements OnInit {
         this.staffService.getStaffs().subscribe(val => {
             this.staffData = val
         })
-    }
-
-    getAddProjectForm() {
-        this.initProjectForm()
         this.form = this.formBuilder.group({
             id: ['',{disabled:true}],
             name: ['', Validators.required],
@@ -116,28 +105,29 @@ export class DialogFormComponent implements OnInit {
         })
     }
 
-    getUpdateProjectForm(projectForm: IProjectModel) {
-        this.initProjectForm()
-        this.form = this.formBuilder.group({
-            id: [projectForm.id,{disabled:true}],
-            name: [projectForm.name, Validators.required],
-            description: [projectForm.description, Validators.required],
-            status: [projectForm.status, Validators.required],
-            symbol: [this.projectSymbol = projectForm.symbol,Validators.required],
-            creatorUsername: [{value:projectForm.creatorUsername,disabled:true}],
-            leaderUsername: [projectForm.leaderUsername, Validators.required],
-        })
+    getProjectForm(projectForm: IProjectModel) {
+        this.initProjectForm() //ADD PROJECT
+        if (this.title == AppSettings.FORM_UPDATE_PROJECT) { //UPDATE PROJECT with OLD INFO
+            this.setProjectFormValues(projectForm)
+        }
     }
 
+    setProjectFormValues(projectForm: IProjectModel) {
+        this.form.setValue({
+            id : projectForm.id,
+            name : projectForm.name,
+            description : projectForm.description,
+            status : projectForm.status,
+            symbol: this.projectSymbol = projectForm.symbol,
+            creatorUsername : projectForm.creatorUsername,
+            leaderUsername : projectForm.leaderUsername,
+        })
+    }
     //-------------------END PROJECT FORM--------------------
     //-------------------START STAFF FORM--------------------
     initStaffForm() { //initialize account status and genders
         this.staffService.getStatus().subscribe(val => this.staffStatusData = val)
         this.staffService.getGenders().subscribe(val => this.staffGenderData = val)
-    }
-
-    getAddStaffForm() {
-        this.initStaffForm()
         this.form = this.formBuilder.group({
             id:['',{disabled:true}],
             username:['',Validators.required],
@@ -155,22 +145,28 @@ export class DialogFormComponent implements OnInit {
         })
     }
 
-    getUpdateStaffForm(staffForm: IStaffModel) {
-        this.initStaffForm();
-        this.form = this.formBuilder.group({
-            id:[staffForm.id,{disabled:true}],
-            username:[staffForm.username,Validators.required],
-            password:[staffForm.password, Validators.required],
-            firstName:[staffForm.firstName,Validators.required],
-            lastName:[staffForm.lastName,Validators.required],
-            gender: [staffForm.gender,Validators.required],
-            avatar:[],
-            email:[staffForm.email,Validators.compose([Validators.email, Validators.required])],
-            facebookUrl:[staffForm.facebookUrl],
-            occupation:[staffForm.occupation],
-            department:[staffForm.department],
-            hobbies:[staffForm.hobbies],
-            accountStatus:[staffForm.accountStatus,Validators.required]
+    getStaffForm(staffForm: IStaffModel) {
+        this.initStaffForm() //ADD STAFF
+        if (this.title == AppSettings.FORM_UPDATE_STAFF) { //UPDATE STAFF with OLD INFO
+            this.setStaffFormValues(staffForm)
+        }
+    }
+
+    setStaffFormValues(staffForm: IStaffModel) {
+        this.form.setValue({
+            id : staffForm.id,
+            username : staffForm.username,
+            password : staffForm.password,
+            firstName : staffForm.firstName,
+            lastName : staffForm.lastName,
+            gender : staffForm.gender,
+            avatar: staffForm.avatar,
+            email : staffForm.email,
+            facebookUrl : staffForm.facebookUrl,
+            occupation : staffForm.occupation,
+            department : staffForm.department,
+            hobbies : staffForm.hobbies,
+            accountStatus : staffForm.accountStatus
         })
     }
 
@@ -181,10 +177,6 @@ export class DialogFormComponent implements OnInit {
         this.staffService.getStaffs().subscribe(val => this.staffData = val)
         this.taskService.getStatus().subscribe(val => this.taskStatusData = val)
         this.projectService.getProjects().subscribe(val => this.projectData = val)
-    }
-
-    getAddTaskForm() {
-        this.initTaskForm();
         this.form = this.formBuilder.group({
             id: ['',{disabled:true}],
             name: ['',Validators.required],
@@ -199,71 +191,91 @@ export class DialogFormComponent implements OnInit {
         })
     }
 
-    getUpdateTaskForm(task: ITaskModel) {
-        this.initTaskForm();
+    getTaskForm(taskForm: ITaskModel) {
+        this.initTaskForm() //ADD TASK
+        if (this.title == AppSettings.FORM_UPDATE_TASK) { //UPDATE TASK with OLD INFO
+            this.setTaskFormValues(taskForm)
+        }
+    }
+
+    setTaskFormValues(taskForm: ITaskModel) {
         this.form = this.formBuilder.group({
-            id: [task.id,{disabled:true}],
-            name: [task.name,Validators.required],
-            description: [task.description,Validators.required],
-            startDateExpected: [task.startDateExpected, Validators.required],
-            endDateExpected: [task.endDateExpected,Validators.required],
-            startDateInFact: [task.startDateInFact],
-            endDateInFact: [task.endDateInFact],
-            status: [task.status,Validators.required],
-            projectName: [{value:task.projectName,disabled:true}],
-            reporterUsername: [task.reporterUsername,Validators.required],
+            id: taskForm.id,
+            name: taskForm.name,
+            description: taskForm.description,
+            startDateExpected: this.convertStringToDate(taskForm.startDateExpected),
+            endDateExpected: this.convertStringToDate(taskForm.endDateExpected),
+            startDateInFact: this.convertStringToDate(taskForm.startDateInFact),
+            endDateInFact: this.convertStringToDate(taskForm.endDateInFact),
+            status: taskForm.status,
+            projectName: taskForm.projectName,
+            reporterUsername: taskForm.reporterUsername,
         })
     }
+
     //-------------------END TASK FORM--------------------
-
-
-
-
     //-------------------HANDLE FUNCTIONS--------------------
-    cancelFunc($event: any) {
-        this.dialogRef.close();
-    }
-
-    transformDate(date: any) {
+    convertDateToString(date: any) {
+        //convert date to String with pattern ("dd/MM/yyyy") before sending a request to BE
         var datePipe = new DatePipe('en-US')
         return datePipe.transform(date, 'dd/MM/yyyy')
     }
 
-    transformTaskDate() {
-        let startDateExpected = this.transformDate(this.form.get('startDateExpected').value)
-        this.form.get('startDateExpected').patchValue(startDateExpected)
-        let endDateExpected = this.transformDate(this.form.get('endDateExpected').value)
-        this.form.get('endDateExpected').patchValue(endDateExpected)
-        let startDateInFact = this.transformDate(this.form.get('startDateInFact').value)
-        this.form.get('startDateInFact').patchValue(startDateInFact)
-        let endDateInFact = this.transformDate(this.form.get('endDateInFact').value)
-        this.form.get('endDateInFact').patchValue(endDateInFact)
+    convertStringToDate(inputPattern: any) {
+        //convert string with pattern "dd/MM/yyyy" to date to display
+        var array = inputPattern.split("/");
+        var formattedPattern = array[1] + '/' + array[0] + '/' + array[2];
+        return new Date(formattedPattern);
+    }
+
+    handleTaskDates() {
+        let startDateExpected = this.convertDateToString(this.form.get('startDateExpected').value)
+        let endDateExpected = this.convertDateToString(this.form.get('endDateExpected').value)
+        let startDateInFact = this.convertDateToString(this.form.get('startDateInFact').value)
+        let endDateInFact = this.convertDateToString(this.form.get('endDateInFact').value)
+        this.form.patchValue({
+            startDateExpected : startDateExpected,
+            endDateExpected : endDateExpected,
+            startDateInFact : startDateInFact,
+            endDateInFact : endDateInFact
+        })
+    }
+
+    showSuccessfulInfo(content: any) {
+        this.myToastrService.success(content.toString())
+        this.dialogRef.close()
     }
 
     okFunc($event: any) {
         if (this.form.valid) {
             if (this.type == AppSettings.TYPE_TASK) {
-                this.transformTaskDate()
+                this.handleTaskDates()
             }
             const submitForm = this.form.getRawValue()
             switch (this.title) {
                 case AppSettings.FORM_ADD_PROJECT: //ADD PROJECT 
                     this.projectService.saveProject(submitForm)
+                        .subscribe(content => this.showSuccessfulInfo(content));
                     break;
                 case AppSettings.FORM_UPDATE_PROJECT: // UPDATE PROJECT
                     this.projectService.updateProject(submitForm)
+                        .subscribe(content => this.showSuccessfulInfo(content));
                     break;
                 case AppSettings.FORM_ADD_STAFF: // ADD STAFF
                     this.staffService.saveStaff(submitForm)
+                        .subscribe(content => this.showSuccessfulInfo(content));
                     break;
                 case AppSettings.FORM_UPDATE_STAFF: // UPDATE STAFF
                     this.staffService.updateStaff(submitForm)
+                        .subscribe(content => this.showSuccessfulInfo(content));
                     break;
                 case AppSettings.FORM_ADD_TASK: // ADD TASK
                     this.taskService.saveTask(submitForm)
+                        .subscribe(content => this.showSuccessfulInfo(content));
                     break;  
                 case AppSettings.FORM_UPDATE_TASK: // UPDATE TASK
                     this.taskService.updateTask(submitForm)
+                        .subscribe(content => this.showSuccessfulInfo(content));
                     break;
                 default:
                     break;
@@ -272,6 +284,11 @@ export class DialogFormComponent implements OnInit {
     }
 
     afterClose(){
-        this.dialogRef.afterClosed
+        this.dialogRef.afterClosed()
+    }
+
+    cancelFunc($event: any) {
+        this.dialogRef.close();
     }
 }
+
