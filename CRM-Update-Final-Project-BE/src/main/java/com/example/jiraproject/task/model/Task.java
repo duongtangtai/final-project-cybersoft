@@ -27,10 +27,16 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = Task.TaskEntity.TABLE_NAME)
+@Table(name = Task.TaskEntity.TABLE_NAME,
+        uniqueConstraints = {
+            @UniqueConstraint(columnNames = {
+                    Task.TaskEntity.NAME,
+                    Task.TaskEntity.PROJECT
+            })
+})
 public class Task extends BaseEntity {
 
-    @Column(name = TaskEntity.NAME, unique = true, nullable = false)
+    @Column(name = TaskEntity.NAME, nullable = false)
     @Size(min = 5, max = 50, message = "{task.name.size}")
     @NotBlank(message = "{task.name.not-blank}")
     private String name;
@@ -122,5 +128,6 @@ public class Task extends BaseEntity {
         public static final String STARTED_DATE_IN_FACT = "J_STARTED_DATE_IN_FACT";
         public static final String END_DATE_IN_FACT = "J_END_DATE_IN_FACT";
         public static final String TASK_STATUS = "J_TASK_STATUS";
+        public static final String PROJECT = "PROJECT";
     }
 }

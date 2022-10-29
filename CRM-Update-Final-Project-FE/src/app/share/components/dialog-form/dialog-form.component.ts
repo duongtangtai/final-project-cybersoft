@@ -146,7 +146,7 @@ export class DialogFormComponent implements OnInit {
             lastName:['',Validators.required],
             gender: ['',Validators.required],
             avatar:[],
-            email:['',Validators.email],
+            email:['',Validators.compose([Validators.email, Validators.required])],
             facebookUrl:[],
             occupation:[],
             department:[],
@@ -165,7 +165,7 @@ export class DialogFormComponent implements OnInit {
             lastName:[staffForm.lastName,Validators.required],
             gender: [staffForm.gender,Validators.required],
             avatar:[],
-            email:[staffForm.email,Validators.email],
+            email:[staffForm.email,Validators.compose([Validators.email, Validators.required])],
             facebookUrl:[staffForm.facebookUrl],
             occupation:[staffForm.occupation],
             department:[staffForm.department],
@@ -210,7 +210,7 @@ export class DialogFormComponent implements OnInit {
             startDateInFact: [task.startDateInFact],
             endDateInFact: [task.endDateInFact],
             status: [task.status,Validators.required],
-            projectName: [task.projectName,{disabled:true}],
+            projectName: [{value:task.projectName,disabled:true}],
             reporterUsername: [task.reporterUsername,Validators.required],
         })
     }

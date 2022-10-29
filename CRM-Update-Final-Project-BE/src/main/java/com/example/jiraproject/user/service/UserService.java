@@ -13,6 +13,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +33,8 @@ public interface UserService extends GenericService<User, UserDto, UUID> {
     List<String> findAllGenders();
     UserWithInfoDto addRoles(UUID userId, Set<UUID> roleIds);
     UserWithInfoDto removeRoles(UUID userId, Set<UUID> roleIds);
+    UserDto save(UserDto dto);
+    UserDto update(UserDto dto);
 }
 
 @Service
@@ -44,6 +47,7 @@ class UserServiceImpl implements UserService {
     private final MessageSource messageSource;
     private static final String UUID_NOT_FOUND = "user.id.not-found";
     private static final String USERNAME_NOT_FOUND = "user.username.not-found";
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public JpaRepository<User, UUID> getRepository() {
@@ -118,4 +122,20 @@ class UserServiceImpl implements UserService {
         return mapper.map(user, UserWithInfoDto.class);
     }
 
+    @Override
+    public UserDto save(UserDto dto) {
+        User user = mapper.map(dto, User.class);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return mapper.map(repository.save(user), UserDto.class);
+    }
+
+    @Override
+    public UserDto update(UserDto dto) {
+        User user = repository.findById(dto.getId())
+                .orElseThrow(() ->
+                    new ValidationException(MessageUtil.getMessage(messageSource, UUID_NOT_FOUND)));
+        mapper.map(dto, user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return mapper.map(user, UserDto.class);
+    }
 }

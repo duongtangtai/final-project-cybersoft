@@ -13,7 +13,8 @@ import java.util.UUID;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, UUID> {
-    Optional<Task> findByName(String name);
+
+    Optional<Task> findByNameAndProjectName(String name, String projectName);
 
     @Query(value = "select t from Task t left join fetch t.project left join fetch t.reporter where t.id = ?1")
     Optional<Task> findByIdWithInfo(UUID taskId);

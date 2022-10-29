@@ -27,7 +27,7 @@
         <mat-form-field class="form-group">
             <mat-label>Leader</mat-label>
             <mat-select class="form-control" formControlName="leaderUsername" disableOptionCentering panelClass="myPanelClass" [(value)]="compare2">
-                <mat-option *ngFor="let staff of staffData" [value]="staff.id">{{staff.username}}</mat-option>
+                <mat-option *ngFor="let staff of staffData" [value]="staff.username">{{staff.username}}</mat-option>
             </mat-select>
         </mat-form-field>
         <mat-label class="form-group">Symbol</mat-label><br>
