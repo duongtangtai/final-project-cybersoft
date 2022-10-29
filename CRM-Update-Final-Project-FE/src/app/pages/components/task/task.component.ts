@@ -1,9 +1,13 @@
+import { MatDialog } from '@angular/material/dialog';
 import { ITaskModel } from 'src/app/model/task.model';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { TaskService } from '../../services/task.service';
+import { DialogFormComponent } from 'src/app/share/components/dialog-form/dialog-form.component';
+import { AppSettings } from 'src/app/app.constants';
+import { DialogNotifyComponent } from 'src/app/share/components/dialog-notify/dialog-notify.component';
 
 @Component({
   selector: 'app-task',
@@ -21,11 +25,12 @@ export class TaskComponent implements OnInit {
 
 
   constructor(
-      private taskService: TaskService
+      private taskService: TaskService,
+      private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
-    this.getAllStaffs(); 
+    this.getAllTasks(); 
   }
 
   pagingAndSorting() {
@@ -34,7 +39,7 @@ export class TaskComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  getAllStaffs() {
+  getAllTasks() {
     this.taskService.getTasks().subscribe(result => {
       this.tasks = result;
       this.pagingAndSorting()
@@ -64,12 +69,35 @@ export class TaskComponent implements OnInit {
     this.dataSource.filter = keyword;
   }
 
-  updateTask(taskId: any) {
-    console.log("update task with ID: " + taskId)
+  addTask() {
+    this.dialog.open(DialogFormComponent, {
+      data: {
+        title: AppSettings.FORM_ADD_TASK,
+        type: AppSettings.TYPE_TASK,
+      },
+      width: "80%",
+      height: "80%",
+    }).afterClosed().subscribe(() => this.getAllTasks())
+  }
+
+  updateTask(task: any) {
+    this.dialog.open(DialogFormComponent, {
+      data: {
+        title: AppSettings.FORM_UPDATE_TASK,
+        type: AppSettings.TYPE_TASK,
+        element: task,
+      },
+    }).afterClosed().subscribe(() => this.getAllTasks())
   }
 
   deleteTask(taskId: any) {
-    console.log("delete task with ID: " + taskId)
+    this.dialog.open(DialogNotifyComponent, {
+      data: {
+          title: AppSettings.FORM_DELETE_TASK,
+          message: AppSettings.MESSAGE_DELETE_TASK,
+          id: taskId,
+      },
+    }).afterClosed().subscribe(() => this.getAllTasks())
   }
 }
 

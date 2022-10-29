@@ -1,6 +1,7 @@
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {ReactiveFormsModule} from "@angular/forms";
+import { DateAdapter} from '@angular/material/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgxWebstorageModule} from 'ngx-webstorage';
@@ -15,6 +16,18 @@ import {HeaderComponent} from './layouts/header/header.component';
 import {MainComponent} from './layouts/main/main.component';
 import {ProjectModule} from './pages/components/project/project.module';
 import {ShareModule} from "./share/share.module";
+
+export const MY_DATE_FORMATS  = {
+    parse: {
+      dateInput: 'LL',
+    },
+    display: {
+      dateInput: 'YYYY-MM-DD',
+      monthYearLabel: 'YYYY',
+      dateA11yLabel: 'LL',
+      monthYearA11yLabel: 'YYYY',
+    },
+};
 
 @NgModule({
     imports: [
@@ -36,4 +49,7 @@ import {ShareModule} from "./share/share.module";
     bootstrap: [MainComponent],
 })
 export class AppModule {
+    constructor(private dateAdapter: DateAdapter<Date>) {
+        this.dateAdapter.setLocale('de'); //dd/MM/yyyy
+    }
 }

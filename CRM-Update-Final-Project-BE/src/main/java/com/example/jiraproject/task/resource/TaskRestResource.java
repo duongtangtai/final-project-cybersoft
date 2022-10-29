@@ -61,7 +61,6 @@ public class TaskRestResource {
         return ResponseUtil.get(service.findAllWithInfo(), HttpStatus.OK);
     }
 
-
     @Authorized(operation = ApiUtil.TASK)
     @GetMapping("/with-info/paging")
     public ResponseEntity<ResponseDto> findAllWithProjectAndUserWithPaging(@RequestParam("size") int size,
@@ -69,20 +68,24 @@ public class TaskRestResource {
         return ResponseUtil.get(service.findAllWithInfoWithPaging(size, pageIndex), HttpStatus.OK);
     }
 
+    @Authorized(operation = ApiUtil.TASK)
+    @GetMapping("/status")
+    public ResponseEntity<ResponseDto> findAllStatus() {
+        return ResponseUtil.get(service.findAllStatus(), HttpStatus.OK);
+    }
+
     @Authorized(operation = ApiUtil.TASK, type = Operation.Type.SAVE_OR_UPDATE)
     @PostMapping
-    public ResponseEntity<ResponseDto> save(@RequestBody @Validated(SaveInfo.class) TaskDto taskDto,
-                                            @RequestParam("projectId") @UUIDConstraint String projectId,
-                                            @RequestParam("reporterId") @UUIDConstraint String reporterId) {
-        return ResponseUtil.get(service.createTask(taskDto, UUID.fromString(projectId), UUID.fromString(reporterId)),
-                HttpStatus.OK);
+    public ResponseEntity<ResponseDto> save(@RequestBody @Validated(SaveInfo.class) TaskDto taskDto) {
+        service.save(taskDto);
+        return ResponseUtil.get(MessageUtil.getMessage(messageSource, "task.saved"), HttpStatus.OK);
     }
 
     @Authorized(operation = ApiUtil.TASK, type = Operation.Type.SAVE_OR_UPDATE)
     @PutMapping
-    public ResponseEntity<ResponseDto> update(@RequestBody @Validated(UpdateInfo.class) TaskDto taskDto,
-                                              @RequestParam("reporterId") @UUIDConstraint String reporterId) {
-        return ResponseUtil.get(service.updateTask(taskDto, UUID.fromString(reporterId)), HttpStatus.OK);
+    public ResponseEntity<ResponseDto> update(@RequestBody @Validated(UpdateInfo.class) TaskDto taskDto) {
+        service.update(taskDto);
+        return ResponseUtil.get(MessageUtil.getMessage(messageSource, "task.updated"), HttpStatus.OK);
     }
 
     @Authorized(operation = ApiUtil.TASK, type = Operation.Type.REMOVE)

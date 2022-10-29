@@ -51,7 +51,14 @@ public class TaskDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateTimeUtil.DATE_FORMAT)
     private LocalDate endDateInFact;
 
-    @FieldNotNull(target = Task.Status.class, groups = {SaveInfo.class, UpdateInfo.class})
+    @FieldNotNull(message = "{task.status.not-null}", groups = {SaveInfo.class, UpdateInfo.class})
     private Task.Status status;
 
+    @Size(min = 5, max = 50, message = "{project.name.size}")
+    @NotBlank(message = "{project.name.not-blank}")
+    private String projectName;
+
+    @Size(min = 5, max = 25, message = "{task.reporterUsername.size}", groups = {SaveInfo.class, UpdateInfo.class})
+    @NotBlank(message = "{task.reporterUsername.not-blank}", groups = {SaveInfo.class, UpdateInfo.class})
+    private String reporterUsername;
 }

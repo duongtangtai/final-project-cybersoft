@@ -15,13 +15,17 @@ export const AppConfig: PTSAppConfig = {
       login: `${apiUrl}/v1/auth/login`
     },
     project: {
-      getAll: `${apiUrl}/v1/projects`
+      root: `${apiUrl}/v1/projects/`,
+      getStatus: `${apiUrl}/v1/projects/status/`,
     },
     staff: {
-      getAll: `${apiUrl}/v1/users`
+      root: `${apiUrl}/v1/users/`,
+      getStatus: `${apiUrl}/v1/users/account-status/`,
+      getGenders: `${apiUrl}/v1/users/genders/`,
     },
     task: {
-      getAll: `${apiUrl}/v1/tasks`
+      root: `${apiUrl}/v1/tasks/`,
+      getStatus: `${apiUrl}/v1/tasks/status/`,
     }
   }
 };

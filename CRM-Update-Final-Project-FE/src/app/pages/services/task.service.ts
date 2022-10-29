@@ -1,3 +1,4 @@
+import { MyToastrService } from './../../share/services/my-toastr.service';
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
@@ -11,11 +12,41 @@ import { ITaskModel } from 'src/app/model/task.model';
 export class TaskService {
   constructor(
     private http: HttpClient,
-    @Inject(APP_CONFIG) private config: PTSAppConfig
+    @Inject(APP_CONFIG) private config: PTSAppConfig,
+    private myToastrService: MyToastrService,
 ) {}
 
   getTasks(): Observable<ITaskModel> {  
-    return this.http.get<IRequestModel>(`${this.config.endpoints.task.getAll}`)
+    return this.http.get<IRequestModel>(`${this.config.endpoints.task.root}`)
         .pipe(map((val: IRequestModel) => val.content));
+  }
+
+  getStatus(): Observable<ITaskModel> {  
+    return this.http.get<IRequestModel>(`${this.config.endpoints.task.getStatus}`)
+        .pipe(map((val: IRequestModel) => val.content));
+  }
+
+  saveTask(task: ITaskModel) {
+    this.http.post<IRequestModel>(`${this.config.endpoints.task.root}`, task)
+        .subscribe({
+            next: result => this.myToastrService.success(result.content),
+            error: exception => this.myToastrService.error(exception.error.errors)
+        })
+  }
+
+  updateTask(task: ITaskModel){
+    this.http.put<IRequestModel>(`${this.config.endpoints.task.root}`, task)
+        .subscribe({
+            next: result => this.myToastrService.success(result.content),
+            error: exception => this.myToastrService.error(exception.error.errors)
+    })
+  }
+
+  deleteTask(taskId: String){
+    return this.http.delete<IRequestModel>(`${this.config.endpoints.task.root}`+taskId)
+        .subscribe({
+            next: result => this.myToastrService.success(result.content),
+            error: exception => this.myToastrService.error(exception.error.error)
+    })
   }
 }

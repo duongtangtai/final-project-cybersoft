@@ -31,6 +31,6 @@ public class OperationDto {
     @NotBlank(message = "{operation.description.not-blank}", groups = {SaveInfo.class, UpdateInfo.class})
     private String description;
 
-    @FieldNotNull(target = Operation.Type.class, groups = {SaveInfo.class, UpdateInfo.class})
+    @FieldNotNull(message = "{operation.type.not-null}", groups = {SaveInfo.class, UpdateInfo.class})
     private Operation.Type type;
 }

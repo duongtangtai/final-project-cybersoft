@@ -14,7 +14,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface FieldNotNull {
     String message() default "Field cannot be null";
-    Class<?> target();
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

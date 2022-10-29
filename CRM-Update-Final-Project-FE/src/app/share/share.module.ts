@@ -3,6 +3,7 @@ import {NgModule} from '@angular/core';
 import {ReactiveFormsModule} from "@angular/forms";
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 import {NgxWebstorageModule} from 'ngx-webstorage';
 import {ButtonComponent} from './components/button/button.component';
 import {DialogFormComponent} from "./components/dialog-form/dialog-form.component";
@@ -16,7 +17,8 @@ import {MaterialModule} from "./modules/material-module";
         HttpClientModule,
         NgxWebstorageModule.forRoot(),
         ReactiveFormsModule,
-        MaterialModule
+        MaterialModule,
+        ToastrModule.forRoot()
     ],
     declarations: [DialogFormComponent, DialogNotifyComponent, DialogNotifyComponent, ButtonComponent],
 })
