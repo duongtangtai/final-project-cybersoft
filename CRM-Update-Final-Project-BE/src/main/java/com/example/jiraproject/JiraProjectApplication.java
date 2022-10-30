@@ -362,6 +362,7 @@ public class JiraProjectApplication implements CommandLineRunner {
                 .name("Dự án khởi điểm")
                 .description("Dự án đầu tiên trong tháng")
                 .status(Project.Status.DONE)
+                .symbol("default1")
                 .creator(user1)
                 .leader(user2)
                 .build();
@@ -369,12 +370,14 @@ public class JiraProjectApplication implements CommandLineRunner {
                 .name("Dự án thi công")
                 .description("Dự án thứ hai trong tháng")
                 .creator(user1)
+                .symbol("default1")
                 .leader(user3)
                 .build();
         Project project3 = Project.builder()
                 .name("Dự án bảo dưỡng")
                 .description("Dự án thứ ba trong tháng")
                 .creator(user1)
+                .symbol("default1")
                 .leader(user3)
                 .build();
         projectRepository.save(project1);

@@ -22,7 +22,7 @@
         </mat-form-field>
         <mat-form-field class="form-group">
             <mat-label>Creator</mat-label>
-            <input matInput placeholder="Creator's name" class="form-control" formControlName="creatorUsername">
+            <input matInput placeholder="Creator's name" class="form-control" formControlName="creatorUsername" [disabled]="data.title == appSettings.FORM_UPDATE_PROJECT">
         </mat-form-field>
         <mat-form-field class="form-group">
             <mat-label>Leader</mat-label>
@@ -142,9 +142,9 @@
                 <mat-option *ngFor="let status of taskStatusData" [value]="status">{{status}}</mat-option>
             </mat-select>
         </mat-form-field>
-        <mat-form-field class="form-group">
+        <mat-form-field class="form-group" >
             <mat-label>Project Name</mat-label>
-            <mat-select class="form-control" formControlName="projectName" disableOptionCentering panelClass="myPanelClass" [(value)]="compare2">
+            <mat-select class="form-control" [disabled]="data.title == appSettings.FORM_UPDATE_TASK" formControlName="projectName" disableOptionCentering panelClass="myPanelClass" [(value)]="compare2">
                 <mat-option *ngFor="let project of projectData" [value]="project.name">{{project.name}}</mat-option>
             </mat-select>
         </mat-form-field>

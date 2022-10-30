@@ -31,27 +31,18 @@ export class StaffService {
       .pipe(map((val: IRequestModel) => val.content));
   }
 
-  saveStaff(staff: IStaffModel) {
-    this.http.post<IRequestModel>(`${this.config.endpoints.staff.root}`, staff)
-        .subscribe({
-            next: result => this.myToastrService.success(result.content),
-            error: exception => this.myToastrService.error(exception.error.errors)
-        })
+  saveStaff(staff: IStaffModel): Observable<IStaffModel> {
+    return this.http.post<IRequestModel>(`${this.config.endpoints.staff.root}`, staff)
+      .pipe(map((val: IRequestModel) => val.content));
   }
 
-  updateStaff(staff: IStaffModel){
-    this.http.put<IRequestModel>(`${this.config.endpoints.staff.root}`, staff)
-        .subscribe({
-            next: result => this.myToastrService.success(result.content),
-            error: exception => this.myToastrService.error(exception.error.errors)
-    })
+  updateStaff(staff: IStaffModel): Observable<IStaffModel>{
+    return this.http.put<IRequestModel>(`${this.config.endpoints.staff.root}`, staff)
+      .pipe(map((val: IRequestModel) => val.content));
   }
 
-  deleteStaff(staffId: String){
+  deleteStaff(staffId: String): Observable<IStaffModel>{
     return this.http.delete<IRequestModel>(`${this.config.endpoints.staff.root}`+staffId)
-        .subscribe({
-            next: result => this.myToastrService.success(result.content),
-            error: exception => this.myToastrService.error(exception.error.error)
-    })
+      .pipe(map((val: IRequestModel) => val.content));
   }
 }
