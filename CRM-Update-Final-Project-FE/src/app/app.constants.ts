@@ -35,4 +35,6 @@ export class AppSettings {
     // DIALOG CONFIG
     public static WITH = '40%'
 
+    //PROFILE MESSAGE
+    public static UPDATE_PROFILE_SUCCESSFULLY = "Your profile has been updated!"
 }

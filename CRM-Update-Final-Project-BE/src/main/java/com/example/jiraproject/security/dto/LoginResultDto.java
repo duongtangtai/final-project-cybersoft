@@ -1,5 +1,6 @@
 package com.example.jiraproject.security.dto;
 
+import com.example.jiraproject.user.dto.UserDto;
 import lombok.*;
 
 import java.util.List;
@@ -11,11 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginResultDto {
-    private UUID id;
-    private String username;
-    private String email;
-    private String firstName;
-    private String lastName;
+    private UserDto userData;
     private List<String> roleCodes;
     private String accessToken;
     private String refreshToken;

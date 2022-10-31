@@ -21,6 +21,11 @@ export class StaffService {
         .pipe(map((val: IRequestModel) => val.content));
   }
 
+  getStaffById(staffId: string): Observable<IStaffModel> {  
+    return this.http.get<IRequestModel>(`${this.config.endpoints.staff.root}` + staffId)
+        .pipe(map((val: IRequestModel) => val.content));
+  }
+
   getStatus(): Observable<string> {
     return this.http.get<IRequestModel>(`${this.config.endpoints.staff.getStatus}`)
       .pipe(map((val: IRequestModel) => val.content));

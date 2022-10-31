@@ -28,6 +28,11 @@ import {ErrorComponent} from "./layouts/error/error.component";
                     canActivate: [AuthGuard]
                 },
                 {
+                    path: 'profile',
+                    loadChildren: () => import('../app/pages/components/profile/profile.module').then(m => m.ProfileModule),
+                    canActivate: [AuthGuard]
+                },
+                {
                     path: '',
                     redirectTo: 'login',
                     pathMatch: 'full'
@@ -35,7 +40,7 @@ import {ErrorComponent} from "./layouts/error/error.component";
                 {
                     path: '**',
                     component: ErrorComponent
-                }
+                },
             ],
             // {enableTracing: true}
         ),

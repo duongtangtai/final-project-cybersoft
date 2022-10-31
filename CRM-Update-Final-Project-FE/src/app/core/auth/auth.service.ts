@@ -49,7 +49,7 @@ export class AuthService {
         return this._user.asObservable().pipe(
             map((user: UserModel) => {
                 if (user) {
-                    return user.id;
+                    return user.userData.id;
                 }
                 return null;
             })
@@ -74,18 +74,14 @@ export class AuthService {
 
     autoLogin() {}
 
-    private setUserData(userData: IUserModel) {
+    private setUserData(user: IUserModel) {
         this._user.next(new UserModel(
-            userData.id,
-            userData.username,
-            userData.email,
-            userData.firstName,
-            userData.lastName,
-            userData.roleCodes,
-            userData.accessToken,
-            userData.refreshToken
+            user.userData,
+            user.roleCodes,
+            user.accessToken,
+            user.refreshToken
         ));
-        this.storeAuthData(userData);
+        this.storeAuthData(user);
     }
 
     private storeAuthData(userData: IUserModel) {

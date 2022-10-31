@@ -1,3 +1,5 @@
+import { AppSettings } from 'src/app/app.constants';
+import { LocalStorageService } from 'ngx-webstorage';
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {AuthService} from "../../core/auth/auth.service";
@@ -9,13 +11,22 @@ import {AuthService} from "../../core/auth/auth.service";
 })
 export class HeaderComponent implements OnInit {
 
+    avatar: string ='';
+
     constructor(
         private router: Router,
-        private authService: AuthService
+        private authService: AuthService,
+        private localStorageService: LocalStorageService,
     ) {
     }
 
-    ngOnInit(): void {
+    ngOnInit(): void { 
+        //init avatar
+        this.avatar = this.localStorageService.retrieve(AppSettings.AUTH_DATA).avatar;
+    }
+
+    getProfile() {
+        this.router.navigateByUrl("/profile").then(r => console.log)
     }
 
     logout() {

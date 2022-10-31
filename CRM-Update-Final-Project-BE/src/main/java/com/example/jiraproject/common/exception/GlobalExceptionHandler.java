@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Exception may throw from FIELD constraints
+     * Exception may throw from FIELD constraints such as (size, not-blank, our customized-constraints...)
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ResponseDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
@@ -37,6 +37,9 @@ public class GlobalExceptionHandler {
 
     /**
      * Exception may throw when trying to map the request body into the DTO
+     * example:
+     *      - Mapping an invalid UUID format into the "ID" field
+     *      - Mapping an invalid Date format into the "Date" field
      */
     @ExceptionHandler(InvalidFormatException.class)
     public ResponseEntity<ResponseDto> handleInvalidFormatException(InvalidFormatException exception) {
