@@ -1,7 +1,6 @@
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {ReactiveFormsModule} from "@angular/forms";
-import { DateAdapter} from '@angular/material/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgxWebstorageModule} from 'ngx-webstorage';
@@ -9,14 +8,12 @@ import {MaterialModule} from 'src/app/share/modules/material-module';
 import {AppRoutingModule} from './app-routing.module';
 import {APP_CONFIG, AppConfig} from "./core/config/app.config";
 import { HttpErrorInterceptor } from './core/interceptor/error-handle.interceptor';
-// import { HttpErrorInterceptor } from './core/interceptor/error-handle.interceptor';
 import {TokenInterceptor} from "./core/interceptor/token.interceptor";
 import {AsideComponent} from './layouts/aside/aside.component';
 import {ErrorComponent} from './layouts/error/error.component';
 import {FooterComponent} from './layouts/footer/footer.component';
 import {HeaderComponent} from './layouts/header/header.component';
 import {MainComponent} from './layouts/main/main.component';
-import {ProjectModule} from './pages/components/project/project.module';
 import {ShareModule} from "./share/share.module";
 
 export const MY_DATE_FORMATS  = {
@@ -35,7 +32,6 @@ export const MY_DATE_FORMATS  = {
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
-        ProjectModule,
         AppRoutingModule,
         HttpClientModule,
         NgxWebstorageModule.forRoot(),
@@ -52,7 +48,4 @@ export const MY_DATE_FORMATS  = {
     bootstrap: [MainComponent],
 })
 export class AppModule {
-    constructor(private dateAdapter: DateAdapter<Date>) {
-        this.dateAdapter.setLocale('de'); //dd/MM/yyyy
-    }
 }

@@ -35,7 +35,9 @@ public class UserRestResource {
     @Authorized(operation = ApiUtil.USER)
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDto> findById(@PathVariable("id") @UUIDConstraint String id) {
-        return ResponseUtil.get(service.findById(UserDto.class, UUID.fromString(id)), HttpStatus.OK);
+        UserDto userDto = service.findById(UserDto.class, UUID.fromString(id));
+        userDto.setPassword(null);
+        return ResponseUtil.get(userDto, HttpStatus.OK);
     }
 
     @Authorized(operation = ApiUtil.USER)

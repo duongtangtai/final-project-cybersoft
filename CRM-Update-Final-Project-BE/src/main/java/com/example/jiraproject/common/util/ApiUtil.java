@@ -12,4 +12,5 @@ public class ApiUtil {
     public static final String COMMENT = "COMMENT";
     public static final String NOTIFICATION = "NOTIFICATION";
     public static final String FILE = "FILE";
+    public static final String PROFILE = "PROFILE";
 }

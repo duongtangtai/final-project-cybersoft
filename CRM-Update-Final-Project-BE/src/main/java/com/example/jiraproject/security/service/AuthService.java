@@ -6,9 +6,11 @@ import com.example.jiraproject.security.dto.LoginFormDto;
 import com.example.jiraproject.security.dto.LoginResultDto;
 import com.example.jiraproject.security.dto.RefreshTokenDto;
 import com.example.jiraproject.security.util.JwtUtil;
+import com.example.jiraproject.user.dto.UserDto;
 import com.example.jiraproject.user.model.User;
 import com.example.jiraproject.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,7 @@ class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final ModelMapper mapper;
 
     @Override
     public LoginResultDto login(LoginFormDto dto) {
@@ -32,12 +35,10 @@ class AuthServiceImpl implements AuthService {
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) { // if password is incorrect
             throw new JiraAuthenticationException("Mật khẩu không chính xác");
         } else {
+            UserDto userDto = mapper.map(user, UserDto.class);
+            userDto.setPassword(null);
             return LoginResultDto.builder()
-                    .id(user.getId())
-                    .username(user.getUsername())
-                    .email(user.getEmail())
-                    .firstName(user.getFirstName())
-                    .lastName(user.getLastName())
+                    .userData(userDto)
                     .roleCodes(user.getRoles().stream().map(Role::getCode).toList())
                     .accessToken(jwtUtil.getAccessToken(user))
                     .refreshToken(jwtUtil.getRefreshToken(user))

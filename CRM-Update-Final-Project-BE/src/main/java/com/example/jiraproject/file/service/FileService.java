@@ -2,6 +2,8 @@ package com.example.jiraproject.file.service;
 
 import com.example.jiraproject.common.exception.JiraFileUploadException;
 import com.example.jiraproject.file.util.FileUtil;
+import com.example.jiraproject.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -25,8 +27,10 @@ public interface FileService {
 }
 @Service
 @Slf4j
+@RequiredArgsConstructor
 class FileServiceImpl implements FileService {
     public static final Path ROOT = Paths.get("./src/main/resources/uploads");
+    private final UserService userService;
 
     @Override
     public void init() {

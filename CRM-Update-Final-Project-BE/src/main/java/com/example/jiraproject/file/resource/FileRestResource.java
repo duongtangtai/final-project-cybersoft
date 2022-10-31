@@ -62,9 +62,9 @@ public class FileRestResource {
     }
 
     @Authorized(operation = ApiUtil.FILE, type = Operation.Type.SAVE_OR_UPDATE)
-    @PostMapping("/{userId}")
+    @PostMapping
     public ResponseEntity<ResponseDto> uploadFile(@RequestParam("file") MultipartFile file,
-                                                  @PathVariable("userId") @UUIDConstraint String userId) {
+                                                  @RequestParam("userId") @UUIDConstraint String userId) {
         service.save(userId, file);
         return ResponseUtil.get(MessageUtil.getMessage(messageSource, "file.uploaded"), HttpStatus.OK);
     }

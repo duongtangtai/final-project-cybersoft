@@ -34,6 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -64,34 +65,34 @@ public class JiraProjectApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         //4 ROLES: ADMIN - MANAGER -
-        Role role1 = Role
+        Role admin = Role
                 .builder()
                 .name("ADMIN")
                 .code("AD")
                 .description("Quyền của admin")
                 .build();
-        Role role2 = Role
+        Role manager = Role
                 .builder()
                 .name("MANAGER")
                 .code("MGR")
                 .description("Quyền của giám đốc")
                 .build();
-        Role role3 = Role
+        Role leader = Role
                 .builder()
                 .name("LEADER")
                 .code("LEAD")
                 .description("Quyền của trưởng nhóm")
                 .build();
-        Role role4 = Role
+        Role employee = Role
                 .builder()
                 .name("EMPLOYEE")
                 .code("EMP")
                 .description("Quyền của nhân viên")
                 .build();
-        roleRepository.save(role1);
-        roleRepository.save(role2);
-        roleRepository.save(role3);
-        roleRepository.save(role4);
+        roleRepository.save(admin);
+        roleRepository.save(manager);
+        roleRepository.save(leader);
+        roleRepository.save(employee);
 
         //-------------------------AUTHORIZATION-----------------------------------
         //----------ADMIN-------------
@@ -112,186 +113,191 @@ public class JiraProjectApplication implements CommandLineRunner {
 
         //--------------------------ADD OPERATIONS-------------------------------
         //----------OPERATION API-----------
-        Operation operation1 = Operation
+        Operation fetch = Operation
                 .builder()
                 .name(ApiUtil.OPERATION)
                 .description("Lấy thông tin chức năng")
                 .type(Operation.Type.FETCH)
                 .build();
-        Operation operation2 = Operation
+        Operation saveOrUpdate = Operation
                 .builder()
                 .name(ApiUtil.OPERATION)
                 .description("Lưu thông tin chức năng")
                 .type(Operation.Type.SAVE_OR_UPDATE)
                 .build();
-        Operation operation3 = Operation
+        Operation remove = Operation
                 .builder()
                 .name(ApiUtil.OPERATION)
                 .description("Xóa chức năng")
                 .type(Operation.Type.REMOVE)
                 .build();
-        saveOperation(operation1, operation2, operation3);
+        saveOperation(fetch, saveOrUpdate, remove);
         //add to ROLE ADMIN
-        addOperationsToRole(role1, operation1, operation2, operation3);
+        addOperationsToRole(admin, fetch, saveOrUpdate, remove);
         //----------ROLE API-----------
-        operation1 = Operation
+        fetch = Operation
                 .builder()
                 .name(ApiUtil.ROLE)
                 .description("Lấy thông tin quyền")
                 .type(Operation.Type.FETCH)
                 .build();
-        operation2 = Operation
+        saveOrUpdate = Operation
                 .builder()
                 .name(ApiUtil.ROLE)
                 .description("Lưu thông tin quyền")
                 .type(Operation.Type.SAVE_OR_UPDATE)
                 .build();
-        operation3 = Operation
+        remove = Operation
                 .builder()
                 .name(ApiUtil.ROLE)
                 .description("Xóa quyền")
                 .type(Operation.Type.REMOVE)
                 .build();
-        saveOperation(operation1, operation2, operation3);
+        saveOperation(fetch, saveOrUpdate, remove);
         //add to ROLE ADMIN
-        addOperationsToRole(role1, operation1, operation2, operation3);
+        addOperationsToRole(admin, fetch, saveOrUpdate, remove);
         //----------USER API-----------
-        operation1 = Operation
+        fetch = Operation
                 .builder()
                 .name(ApiUtil.USER)
                 .description("Lấy thông tin người dùng")
                 .type(Operation.Type.FETCH)
                 .build();
-        operation2 = Operation
+        saveOrUpdate = Operation
                 .builder()
                 .name(ApiUtil.USER)
                 .description("Lưu thông tin người dùng")
                 .type(Operation.Type.SAVE_OR_UPDATE)
                 .build();
-        operation3 = Operation
+        remove = Operation
                 .builder()
                 .name(ApiUtil.USER)
                 .description("Xóa người dùng")
                 .type(Operation.Type.REMOVE)
                 .build();
-        saveOperation(operation1, operation2, operation3);
+        saveOperation(fetch, saveOrUpdate, remove);
         //add to ROLE ADMIN
-        addOperationsToRole(role1, operation1, operation2, operation3);
+        addOperationsToRole(admin, saveOrUpdate, remove);
+        addOperationsToRole(employee, fetch);
         //----------PROJECT API-----------
-        operation1 = Operation
+        fetch = Operation
                 .builder()
                 .name(ApiUtil.PROJECT)
                 .description("Lấy thông tin dự án")
                 .type(Operation.Type.FETCH)
                 .build();
-        operation2 = Operation
+        saveOrUpdate = Operation
                 .builder()
                 .name(ApiUtil.PROJECT)
                 .description("Lưu thông tin dự án")
                 .type(Operation.Type.SAVE_OR_UPDATE)
                 .build();
-        operation3 = Operation
+        remove = Operation
                 .builder()
                 .name(ApiUtil.PROJECT)
                 .description("Xóa dự án")
                 .type(Operation.Type.REMOVE)
                 .build();
-        saveOperation(operation1, operation2, operation3);
+        saveOperation(fetch, saveOrUpdate, remove);
         //add to ROLE MANAGER, LEADER
-        addOperationsToRole(role2, operation2, operation3);
-        addOperationsToRole(role3, operation1);
+        addOperationsToRole(manager, saveOrUpdate, remove);
+        addOperationsToRole(employee, fetch);
         //----------TASK API-----------
-        operation1 = Operation
+        fetch = Operation
                 .builder()
                 .name(ApiUtil.TASK)
                 .description("Lấy thông tin công việc")
                 .type(Operation.Type.FETCH)
                 .build();
-        operation2 = Operation
+        saveOrUpdate = Operation
                 .builder()
                 .name(ApiUtil.TASK)
                 .description("Lưu thông tin công việc")
                 .type(Operation.Type.SAVE_OR_UPDATE)
                 .build();
-        operation3 = Operation
+        remove = Operation
                 .builder()
                 .name(ApiUtil.TASK)
                 .description("Xóa công việc")
                 .type(Operation.Type.REMOVE)
                 .build();
-        saveOperation(operation1, operation2, operation3);
+        saveOperation(fetch, saveOrUpdate, remove);
         //add to ROLE LEADER and EMPLOYEE
-        addOperationsToRole(role3, operation2, operation3);
-        addOperationsToRole(role4, operation1);
+        addOperationsToRole(leader, saveOrUpdate, remove);
+        addOperationsToRole(employee, fetch);
         //----------COMMENT API-----------
-        operation1 = Operation
+        fetch = Operation
                 .builder()
                 .name(ApiUtil.COMMENT)
                 .description("Lấy thông tin bình luận")
                 .type(Operation.Type.FETCH)
                 .build();
-        operation2 = Operation
+        saveOrUpdate = Operation
                 .builder()
                 .name(ApiUtil.COMMENT)
                 .description("Lưu thông tin bình luận")
                 .type(Operation.Type.SAVE_OR_UPDATE)
                 .build();
-        operation3 = Operation
+        remove = Operation
                 .builder()
                 .name(ApiUtil.COMMENT)
                 .description("Xóa bình luận")
                 .type(Operation.Type.REMOVE)
                 .build();
-        saveOperation(operation1, operation2, operation3);
+        saveOperation(fetch, saveOrUpdate, remove);
         //add to ROLE LEADER, EMPLOYEE
-        addOperationsToRole(role3, operation3);
-        addOperationsToRole(role4, operation1, operation2);
+        addOperationsToRole(leader, remove);
+        addOperationsToRole(employee, fetch, saveOrUpdate);
         //----------NOTIFICATION API-----------
-        operation1 = Operation
+        fetch = Operation
                 .builder()
                 .name(ApiUtil.NOTIFICATION)
                 .description("Lấy thông tin thông báo")
                 .type(Operation.Type.FETCH)
                 .build();
-        operation2 = Operation
+        saveOrUpdate = Operation
                 .builder()
                 .name(ApiUtil.NOTIFICATION)
                 .description("Lưu thông tin thông báo")
                 .type(Operation.Type.SAVE_OR_UPDATE)
                 .build();
-        operation3 = Operation
+        remove = Operation
                 .builder()
                 .name(ApiUtil.NOTIFICATION)
                 .description("Xóa thông báo")
                 .type(Operation.Type.REMOVE)
                 .build();
-        saveOperation(operation1, operation2, operation3);
+        saveOperation(fetch, saveOrUpdate, remove);
         //add to ROLE EMPLOYEE
-        addOperationsToRole(role4, operation1, operation2, operation3);
+        addOperationsToRole(employee, fetch, saveOrUpdate, remove);
         //----------FILE API-----------
-//        operation1 = Operation
-//                .builder()
-//                .name(ApiUtil.FILE)
-//                .description("Lấy thông tin file")
-//                .type(Operation.Type.FETCH)
-//                .build();
-        operation2 = Operation
+        //FETCH FILE => PUBLIC
+        saveOrUpdate = Operation
                 .builder()
                 .name(ApiUtil.FILE)
                 .description("Lưu thông tin file")
                 .type(Operation.Type.SAVE_OR_UPDATE)
                 .build();
-        operation3 = Operation
+        remove = Operation
                 .builder()
                 .name(ApiUtil.FILE)
                 .description("Xóa file")
                 .type(Operation.Type.REMOVE)
                 .build();
-        saveOperation(operation1, operation2, operation3);
+        saveOperation(saveOrUpdate, remove);
         //add to ROLE ADMIN, EMPLOYEE
-        addOperationsToRole(role1, operation3);
-        addOperationsToRole(role4, operation2);
-
+        addOperationsToRole(admin, remove);
+        addOperationsToRole(employee, saveOrUpdate);
+        //----------PROFILE API-----------
+        fetch = Operation
+                .builder()
+                .name(ApiUtil.PROFILE)
+                .description("Lưu thông tin cá nhân")
+                .type(Operation.Type.SAVE_OR_UPDATE)
+                .build();
+        saveOperation(fetch);
+        //add to ROLE EMPLOYEE
+        addOperationsToRole(employee, fetch);
         //-----------------------------ADD USERS------------------------------
         User user1 = User.builder()
                 .username("admin")
@@ -349,13 +355,13 @@ public class JiraProjectApplication implements CommandLineRunner {
         user4 = userRepository.save(user4);
 
         //ADD ROLES TO ADMIN
-        addRolesToUser(user1, role1, role2, role3, role4);
+        addRolesToUser(user1, admin, manager, leader, employee);
         //ADD ROLES TO MANAGER
-        addRolesToUser(user2, role2, role3, role4);
+        addRolesToUser(user2, manager, leader, employee);
         //ADD ROLES TO LEADER
-        addRolesToUser(user3, role3, role4);
+        addRolesToUser(user3, leader, employee);
         //ADD ROLES TO EMPLOYEE
-        addRolesToUser(user4, role4);
+        addRolesToUser(user4, employee);
 
         //ADD PROJECT
         Project project1 = Project.builder()
