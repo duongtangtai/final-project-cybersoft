@@ -12,6 +12,7 @@ import {AuthService} from "../../core/auth/auth.service";
 export class HeaderComponent implements OnInit {
 
     avatar: string ='';
+    gender: string ='';
 
     constructor(
         private router: Router,
@@ -22,7 +23,10 @@ export class HeaderComponent implements OnInit {
 
     ngOnInit(): void { 
         //init avatar
-        this.avatar = this.localStorageService.retrieve(AppSettings.AUTH_DATA).avatar;
+        const userData = this.localStorageService.retrieve(AppSettings.AUTH_DATA).userData;
+        this.avatar = userData.avatar;
+        this.gender = userData.gender;
+        console.log(this.avatar)
     }
 
     getProfile() {
