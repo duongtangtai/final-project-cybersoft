@@ -22,7 +22,35 @@
             <div class="card-body">
               <div class="d-flex align-items-start align-items-sm-center gap-4">
                 <img
-                  src="../assets/img/avatars/1.png"
+                  *ngIf="!newAvatarUrl && userAvatarUrl"
+                  [src]="userAvatarUrl"
+                  alt="user-avatar"
+                  class="d-block rounded"
+                  height="100"
+                  width="100"
+                  id="uploadedAvatar"
+                />
+                <img
+                  *ngIf="!newAvatarUrl && !userAvatarUrl && userGender == 'MALE'"
+                  src="/assets/img/avatars/male-default.png"
+                  alt="user-avatar"
+                  class="d-block rounded"
+                  height="100"
+                  width="100"
+                  id="uploadedAvatar"
+                />
+                <img
+                  *ngIf="!newAvatarUrl && !userAvatarUrl && userGender == 'FEMALE'"
+                  src="/assets/img/avatars/female-default.png"
+                  alt="user-avatar"
+                  class="d-block rounded"
+                  height="100"
+                  width="100"
+                  id="uploadedAvatar"
+                />
+                <img
+                  *ngIf="newAvatarUrl"
+                  [src]="newAvatarUrl"
                   alt="user-avatar"
                   class="d-block rounded"
                   height="100"
@@ -30,16 +58,22 @@
                   id="uploadedAvatar"
                 />
                 <div class="button-wrapper">
-                  <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
-                    <span class="d-none d-sm-block">Upload new photo</span>
-                    <i class="bx bx-upload d-block d-sm-none"></i>
+                  <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0" *ngIf="!newAvatarUrl">
+                      <span class="d-none d-sm-block">Upload New Photo</span>
+                      <i class="bx bx-upload d-block d-sm-none"></i>
                     <input
                       type="file"
                       id="upload"
                       class="account-file-input"
                       hidden
                       accept="image/png, image/jpeg"
+                      (change)="selectFile($event)"
                     />
+                  </label>
+                  <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0" *ngIf="newAvatarUrl"
+                    (click)="uploadAvatar()">
+                    <span class="d-none d-sm-block">Confirm New Photo</span>
+                    <i class="bx bx-upload d-block d-sm-none"></i>
                   </label>
                   <button type="button" class="btn btn-primary me-2 mb-4" (click)="updateProfile()">
                     <i class="bx bx-reset d-block d-sm-none"></i>

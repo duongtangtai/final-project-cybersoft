@@ -29,6 +29,9 @@ export const AppConfig: PTSAppConfig = {
     },
     profile: {
       root: `${apiUrl}/v1/profiles/`,
+    },
+    file: {
+      root: `${apiUrl}/v1/files/`,
     }
   }
 };

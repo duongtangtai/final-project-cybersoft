@@ -37,4 +37,5 @@ export class AppSettings {
 
     //PROFILE MESSAGE
     public static UPDATE_PROFILE_SUCCESSFULLY = "Your profile has been updated!"
+    public static UPLOAD_AVATAR_SUCCESSFULLY = "Your avatar has been changed!"
 }

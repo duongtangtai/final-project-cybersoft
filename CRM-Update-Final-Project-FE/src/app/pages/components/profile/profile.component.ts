@@ -6,7 +6,7 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { StaffService } from './../../services/staff.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Data, Router } from '@angular/router';
 import { AppSettings } from 'src/app/app.constants';
 
 @Component({
@@ -18,7 +18,8 @@ export class ProfileComponent implements OnInit {
 
   page = '';
   form: any;
-  userData: any;
+  userAvatarUrl = '';
+  userGender = '';
   staffStatusData: any;
   staffGenderData: any;
 
@@ -35,6 +36,11 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.page = this.router.url;
     this.initProfileForm()
+    //init user data
+    const user = this.localStorageService.retrieve(AppSettings.AUTH_DATA)
+    this.userAvatarUrl = user.userData.avatar;
+    this.userGender = user.userData.gender;
+    console.log(this.userAvatarUrl)
   }
 
   //-------------START PROFILE FORM-----------------
@@ -57,9 +63,8 @@ export class ProfileComponent implements OnInit {
     this.staffService.getStatus().subscribe(val => this.staffStatusData = val)
     this.staffService.getGenders().subscribe(val => this.staffGenderData = val)
     const userId = this.localStorageService.retrieve(AppSettings.AUTH_DATA).userData.id;
-    this.staffService.getStaffById(userId).subscribe(val => {
-      this.userData = val;
-      this.setProfileValue(this.userData)
+    this.staffService.getStaffById(userId).subscribe(userData => {
+      this.setProfileValue(userData)
     })
   }
   
@@ -89,7 +94,7 @@ export class ProfileComponent implements OnInit {
     return o1.name === o2.name && o1.id === o2.id;
   }
 
-  //------UPDATE PROFILE----------
+  //----------UPDATE PROFILE----------
   updateProfile() {
     const submitForm = this.form.getRawValue();
     console.log(submitForm);
@@ -104,6 +109,69 @@ export class ProfileComponent implements OnInit {
     const newData = new UserModel(
       userData.userData,
       userData.roleCodes,
+      oldData.accessToken,
+      oldData.refreshToken
+    )
+    this.localStorageService.store(AppSettings.AUTH_DATA, newData)
+  }
+
+  //----------UPLOAD AVATAR----------
+  newAvatarUrl: any;
+  newAvatar: any;
+
+  selectFile(event: any) {
+    if(!event.target.files[0] || event.target.files[0].length == 0) {
+			return;
+		}
+		
+		var mimeType = event.target.files[0].type;
+		
+		if (mimeType.match(/image\/*/) == null) { //HANDLE IF THAT'S NOT AN IMAGE
+      return;
+		}
+		
+    this.newAvatar = event.target.files[0];
+		var reader = new FileReader();
+		reader.readAsDataURL(event.target.files[0]);
+		
+		reader.onload = (_event) => {
+			this.newAvatarUrl = reader.result; 
+		}
+	}
+
+  uploadAvatar() { //send request to upload userAvatar
+    console.log("upload avatar")
+    let userData = this.localStorageService.retrieve(AppSettings.AUTH_DATA).userData;
+    const userId = userData.id;
+    let submitForm = new FormData()
+    submitForm.append("file", this.newAvatar)
+    submitForm.append("userId", userId)
+    this.profileService.uploadAvatar(submitForm)
+      .subscribe(newAvatarUrl => {
+        this.storeNewUserAvatar(newAvatarUrl)
+        this.myToastrService.success(AppSettings.UPLOAD_AVATAR_SUCCESSFULLY)
+      })
+  }
+
+  storeNewUserAvatar(newAvatarUrl: any) {
+    const oldData = this.localStorageService.retrieve(AppSettings.AUTH_DATA)
+    const oldUserData = oldData.userData;
+    const newData = new UserModel(
+      {
+        id: oldUserData.id,
+        username: oldUserData.username,
+        firstName: oldUserData.firstName,
+        lastName: oldUserData.lastName,
+        gender: oldUserData.gender,
+        avatar: newAvatarUrl,
+        email: oldUserData.email,
+        facebookUrl: oldUserData.facebookUrl,
+        occupation: oldUserData.occupation,
+        department: oldUserData.department,
+        hobbies: oldUserData.hobbies,
+        accountStatus: oldUserData.accountStatus,
+      },
+      oldData.roleCodes,
       oldData.accessToken,
       oldData.refreshToken
     )

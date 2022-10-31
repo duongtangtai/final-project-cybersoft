@@ -2,12 +2,14 @@ package com.example.jiraproject.file.service;
 
 import com.example.jiraproject.common.exception.JiraFileUploadException;
 import com.example.jiraproject.file.util.FileUtil;
+import com.example.jiraproject.user.model.User;
 import com.example.jiraproject.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,11 +18,12 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 public interface FileService {
     void init();
-    void save(String id, MultipartFile file);
+    String save(String id, MultipartFile file);
     Resource load(String fileId);
     void deleteAll();
     Stream<Path> loadAll();
@@ -42,8 +45,9 @@ class FileServiceImpl implements FileService {
         }
     }
 
+    @Transactional
     @Override
-    public void save(String id, MultipartFile file){
+    public String save(String id, MultipartFile file){
         String fileName = id + FileUtil.SUFFIX;
         if (!ROOT.toFile().exists()) { //create ROOT if ROOT doesn't exist
             init();
@@ -58,6 +62,10 @@ class FileServiceImpl implements FileService {
         } catch (IOException e) {
             throw new JiraFileUploadException("Không thể lưu được file. Lỗi: " + e.getMessage());
         }
+        User user = userService.findUserById(UUID.fromString(id));
+        String avatarUrl = FileUtil.URL + id;
+        user.setAvatar(avatarUrl);
+        return avatarUrl;
     }
 
     @Override
