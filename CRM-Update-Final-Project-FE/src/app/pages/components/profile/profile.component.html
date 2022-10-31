@@ -2,182 +2,166 @@
     <!-- Content -->
     <!-- PROFILE FORM -->
     <div class="container-xxl flex-grow-1 container-p-y" *ngIf="page=='/profile'">
-      <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Account Settings /</span> Account</h4>
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Account Settings /</span> Account</h4>
 
-      <div class="row">
-        <div class="col-md-12">
-          <ul class="nav nav-pills flex-column flex-md-row mb-3">
-            <li class="nav-item">
-              <a class="nav-link active"  href="/profile">
-                <i class="bx bx-user me-1"></i> Account</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/profile/change-password">
-                <i class="bx bx-bell me-1"></i> Change Password</a>
-            </li>
-          </ul>
-          <div class="card mb-4">
-            <h5 class="card-header">Profile Details</h5>
-            <!-- Account -->
-            <div class="card-body">
-              <div class="d-flex align-items-start align-items-sm-center gap-4">
-                <img
-                  *ngIf="!newAvatarUrl && userAvatarUrl"
-                  [src]="userAvatarUrl"
-                  alt="user-avatar"
-                  class="d-block rounded"
-                  height="100"
-                  width="100"
-                  id="uploadedAvatar"
-                />
-                <img
-                  *ngIf="!newAvatarUrl && !userAvatarUrl && userGender == 'MALE'"
-                  src="/assets/img/avatars/male-default.png"
-                  alt="user-avatar"
-                  class="d-block rounded"
-                  height="100"
-                  width="100"
-                  id="uploadedAvatar"
-                />
-                <img
-                  *ngIf="!newAvatarUrl && !userAvatarUrl && userGender == 'FEMALE'"
-                  src="/assets/img/avatars/female-default.png"
-                  alt="user-avatar"
-                  class="d-block rounded"
-                  height="100"
-                  width="100"
-                  id="uploadedAvatar"
-                />
-                <img
-                  *ngIf="newAvatarUrl"
-                  [src]="newAvatarUrl"
-                  alt="user-avatar"
-                  class="d-block rounded"
-                  height="100"
-                  width="100"
-                  id="uploadedAvatar"
-                />
-                <div class="button-wrapper">
-                  <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0" *ngIf="!newAvatarUrl">
-                      <span class="d-none d-sm-block">Upload New Photo</span>
-                      <i class="bx bx-upload d-block d-sm-none"></i>
-                    <input
-                      type="file"
-                      id="upload"
-                      class="account-file-input"
-                      hidden
-                      accept="image/png, image/jpeg"
-                      (change)="selectFile($event)"
-                    />
-                  </label>
-                  <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0" *ngIf="newAvatarUrl"
-                    (click)="uploadAvatar()">
-                    <span class="d-none d-sm-block">Confirm New Photo</span>
-                    <i class="bx bx-upload d-block d-sm-none"></i>
-                  </label>
-                  <button type="button" class="btn btn-primary me-2 mb-4" (click)="updateProfile()">
-                    <i class="bx bx-reset d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">Update Your Profile</span>
-                  </button>
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="nav nav-pills flex-column flex-md-row mb-3">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/profile">
+                            <em class="bx bx-user me-1"></em> Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/profile/change-password">
+                            <em class="bx bx-bell me-1"></em> Change Password</a>
+                    </li>
+                </ul>
+                <div class="card mb-4">
+                    <h5 class="card-header">Profile Details</h5>
+                    <!-- Account -->
+                    <div class="card-body">
+                        <div class="d-flex align-items-start align-items-sm-center gap-4">
+                            <img
+                                    *ngIf="!newAvatarUrl && userAvatarUrl"
+                                    [src]="userAvatarUrl"
+                                    alt="user-avatar"
+                                    class="d-block rounded"
+                                    height="100"
+                                    width="100"
+                            />
+                            <img
+                                    *ngIf="!newAvatarUrl && !userAvatarUrl && userGender == 'MALE'"
+                                    src="/assets/img/avatars/male-default.png"
+                                    alt="user-avatar"
+                                    class="d-block rounded"
+                                    height="100"
+                                    width="100"
+                            />
+                            <img
+                                    *ngIf="!newAvatarUrl && !userAvatarUrl && userGender == 'FEMALE'"
+                                    src="/assets/img/avatars/female-default.png"
+                                    alt="user-avatar"
+                                    class="d-block rounded"
+                                    height="100"
+                                    width="100"
+                            />
+                            <img
+                                    *ngIf="newAvatarUrl"
+                                    [src]="newAvatarUrl"
+                                    alt="user-avatar"
+                                    class="d-block rounded"
+                                    height="100"
+                                    width="100"
+                            />
+                            <div class="button-wrapper">
+                                <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0"
+                                       *ngIf="!newAvatarUrl || !isConfirm">
+                                    <span class="d-none d-sm-block">Upload New Photo</span>
+                                    <em class="bx bx-upload d-block d-sm-none"></em>
+                                    <input
+                                            type="file"
+                                            id="upload"
+                                            class="account-file-input"
+                                            hidden
+                                            accept="image/png, image/jpeg"
+                                            (change)="selectFile($event)"
+                                    />
+                                </label>
+                                <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0" *ngIf="newAvatarUrl && isConfirm == true"
+                                       (click)="uploadAvatar()">
+                                    <span class="d-none d-sm-block">Confirm New Photo</span>
+                                    <em class="bx bx-upload d-block d-sm-none"></em>
+                                </label>
+                                <button type="button" class="btn btn-primary me-2 mb-4" (click)="updateProfile()">
+                                    <em class="bx bx-reset d-block d-sm-none"></em>
+                                    <span class="d-none d-sm-block">Update Your Profile</span>
+                                </button>
 
-                  <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                                <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-0"/>
+                    <div class="card-body">
+                        <form [formGroup]="form">
+                            <div class="row">
+                                <div class="mb-3 col-md-6">
+                                    <mat-form-field class="form-group">
+                                        <mat-label>Username</mat-label>
+                                        <input matInput [disabled]="true" placeholder="Username" class="form-control"
+                                               formControlName="username">
+                                    </mat-form-field>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <mat-form-field class="form-group">
+                                        <mat-label>First Name</mat-label>
+                                        <input matInput placeholder="First Name" class="form-control"
+                                               formControlName="firstName">
+                                    </mat-form-field>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <mat-form-field class="form-group">
+                                        <mat-label>Last Name</mat-label>
+                                        <input matInput placeholder="Last Name" class="form-control"
+                                               formControlName="lastName">
+                                    </mat-form-field>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <mat-label>Gender</mat-label>
+                                    <mat-select class="form-control" formControlName="gender" disableOptionCentering
+                                                panelClass="myPanelClass" [(value)]="compare1">
+                                        <mat-option *ngFor="let gender of staffGenderData"
+                                                    [value]="gender">{{gender}}</mat-option>
+                                    </mat-select>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <mat-form-field class="form-group">
+                                        <mat-label>Email</mat-label>
+                                        <input matInput placeholder="Email" class="form-control" formControlName="email"
+                                               type="email">
+                                    </mat-form-field>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <mat-form-field class="form-group">
+                                        <mat-label>Facebook</mat-label>
+                                        <input matInput placeholder="Facebook URL" class="form-control"
+                                               formControlName="facebookUrl">
+                                    </mat-form-field>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <mat-form-field class="form-group">
+                                        <mat-label>Occupation</mat-label>
+                                        <input matInput placeholder="Occupation" class="form-control"
+                                               formControlName="occupation">
+                                    </mat-form-field>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <mat-form-field class="form-group">
+                                        <mat-label>Department</mat-label>
+                                        <input matInput placeholder="Department" class="form-control"
+                                               formControlName="department">
+                                    </mat-form-field>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <mat-form-field class="form-group">
+                                        <mat-label>Hobbies</mat-label>
+                                        <input matInput placeholder="Hobbies" class="form-control"
+                                               formControlName="hobbies">
+                                    </mat-form-field>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <mat-form-field class="form-group">
+                                        <mat-label>Account Status</mat-label>
+                                        <input matInput placeholder="Account Status" class="form-control"
+                                               formControlName="accountStatus">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /Account -->
                 </div>
-              </div>
             </div>
-            <hr class="my-0" />
-            <div class="card-body">
-              <form [formGroup]="form">
-                <div class="row">
-                  <div class="mb-3 col-md-6">
-                    <mat-form-field class="form-group">
-                        <mat-label>Username</mat-label>
-                        <input matInput [disabled]="true" placeholder="Username" class="form-control" formControlName="username">
-                    </mat-form-field>
-                  </div>
-                  <div class="mb-3 col-md-6">
-                    <mat-form-field class="form-group">
-                        <mat-label>First Name</mat-label>
-                        <input matInput placeholder="First Name" class="form-control" formControlName="firstName">
-                    </mat-form-field>
-                  </div>
-                  <div class="mb-3 col-md-6">
-                    <mat-form-field class="form-group">
-                        <mat-label>Last Name</mat-label>
-                        <input matInput placeholder="Last Name" class="form-control" formControlName="lastName">
-                    </mat-form-field>
-                  </div>
-                  <div class="mb-3 col-md-6">
-                    <mat-label>Gender</mat-label>
-                    <mat-select class="form-control" formControlName="gender" disableOptionCentering panelClass="myPanelClass" [(value)]="compare1">
-                        <mat-option *ngFor="let gender of staffGenderData" [value]="gender">{{gender}}</mat-option>
-                    </mat-select>
-                  </div>
-                  <div class="mb-3 col-md-6">
-                    <mat-form-field class="form-group">
-                        <mat-label>Email</mat-label>
-                        <input matInput placeholder="Email" class="form-control" formControlName="email" type="email">
-                    </mat-form-field>
-                  </div>
-                  <div class="mb-3 col-md-6">
-                    <mat-form-field class="form-group">
-                        <mat-label>Facebook</mat-label>
-                        <input matInput placeholder="Facebook URL" class="form-control" formControlName="facebookUrl">
-                    </mat-form-field>
-                  </div>
-                  <div class="mb-3 col-md-6">
-                    <mat-form-field class="form-group">
-                        <mat-label>Occupation</mat-label>
-                        <input matInput placeholder="Occupation" class="form-control" formControlName="occupation">
-                    </mat-form-field>
-                  </div>
-                  <div class="mb-3 col-md-6">
-                    <mat-form-field class="form-group">
-                        <mat-label>Department</mat-label>
-                        <input matInput placeholder="Department" class="form-control" formControlName="department">
-                    </mat-form-field>
-                  </div>
-                  <div class="mb-3 col-md-6">
-                    <mat-form-field class="form-group">
-                        <mat-label>Hobbies</mat-label>
-                        <input matInput placeholder="Hobbies" class="form-control" formControlName="hobbies">
-                    </mat-form-field>
-                  </div>
-                  <div class="mb-3 col-md-6">
-                    <mat-form-field class="form-group">
-                        <mat-label>Account Status</mat-label>
-                        <input matInput placeholder="Account Status" class="form-control" formControlName="accountStatus">
-                    </mat-form-field>
-                  </div>
-                </div>
-                </form>
-            </div>
-            <!-- /Account -->
-          </div>
-          <div class="card">
-            <h5 class="card-header">Delete Account</h5>
-            <div class="card-body">
-              <div class="mb-3 col-12 mb-0">
-                <div class="alert alert-warning">
-                  <h6 class="alert-heading fw-bold mb-1">Are you sure you want to delete your account?</h6>
-                  <p class="mb-0">Once you delete your account, there is no going back. Please be certain.</p>
-                </div>
-              </div>
-              <form id="formAccountDeactivation" onsubmit="return false">
-                <div class="form-check mb-3">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    name="accountActivation"
-                    id="accountActivation"
-                  />
-                  <label class="form-check-label" for="accountActivation"
-                    >I confirm my account deactivation</label
-                  >
-                </div>
-                <button type="submit" class="btn btn-danger deactivate-account">Deactivate Account</button>
-              </form>
-            </div>
-          </div>
         </div>
     </div>
 </div>
