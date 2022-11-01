@@ -15,9 +15,11 @@ import {StaffService} from './../../services/staff.service';
     styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-
-    page = '';
+    private PROFILE_PAGE: string = '/profile'
+    private CHANGE_PASSWORD_PAGE: string = '/profile/change-password'
+    page = this.PROFILE_PAGE || this.CHANGE_PASSWORD_PAGE;
     form: any;
+    user: any;
     userAvatarUrl = '';
     userGender = '';
     staffStatusData: any;
@@ -39,12 +41,20 @@ export class ProfileComponent implements OnInit {
 
     ngOnInit(): void {
         this.page = this.router.url;
-        this.initProfileForm()
+        switch (this.page) {
+            case this.PROFILE_PAGE:
+                this.initProfileForm()
+                break;
+            case this.CHANGE_PASSWORD_PAGE:
+                this.initChangePasswordForm()
+                break;
+            default:
+                break;
+        }
         //init user data
-        const user = this.localStorageService.retrieve(AppSettings.AUTH_DATA)
-        this.userAvatarUrl = user.userData.avatar;
-        this.userGender = user.userData.gender;
-        console.log(this.userAvatarUrl)
+        this.user = this.localStorageService.retrieve(AppSettings.AUTH_DATA)
+        this.userAvatarUrl = this.user.userData.avatar;
+        this.userGender = this.user.userData.gender;
     }
 
     //---------------END PROFILE FORM-----------------
@@ -101,7 +111,6 @@ export class ProfileComponent implements OnInit {
     //----------UPDATE PROFILE----------
     updateProfile() {
         const submitForm = this.form.getRawValue();
-        console.log(submitForm);
         this.profileService.updateProfile(submitForm)
             .subscribe(content => {
                 this.storeNewUserProfile(content)
@@ -145,7 +154,6 @@ export class ProfileComponent implements OnInit {
     uploadAvatar() {
         this.isConfirm = false;
         // request to upload userAvatar
-        console.log("upload avatar")
         let userData = this.localStorageService.retrieve(AppSettings.AUTH_DATA).userData;
         const userId = userData.id;
         let submitForm = new FormData()
@@ -182,4 +190,46 @@ export class ProfileComponent implements OnInit {
         )
         this.localStorageService.store(AppSettings.AUTH_DATA, newData)
     }
+
+    //-----------START CHANGE PASSWORD FORM--------------
+    isPasswordValid(oldPassword: string, newPassword: string, newPasswordConfirmed: string) {
+        if (newPassword != newPasswordConfirmed) {
+            this.myToastrService.error('Two new passwords doesn\'t match!')
+            return false;
+        } else if (oldPassword.length <= 4 || newPassword.length <= 4) {
+            this.myToastrService.error('Password length must be more than 5 characters')
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    initChangePasswordForm() {
+        this.form = this.formBuilder.group({
+            oldPassword: ['',Validators.required],
+            newPassword: ['',Validators.required],
+            newPasswordConfirmed: ['',Validators.required]
+        })
+    }
+
+    changePassword() {
+        const formData = this.form.getRawValue()
+        const userId = this.user.userData.id;
+        const oldPassword = formData.oldPassword;
+        const newPassword = formData.newPassword;
+        const newPasswordConfirmed = formData.newPasswordConfirmed
+        if (this.form.valid && this.isPasswordValid(oldPassword, newPassword, newPasswordConfirmed)) {
+            //send request if valid
+            let submitForm = {
+                userId : userId,
+                oldPassword : oldPassword,
+                newPassword : newPassword,
+            }
+            this.profileService.changePassword(submitForm).subscribe(content => 
+                this.myToastrService.success(content)   
+            )
+        } 
+    }
+
+    //-----------END CHANGE PASSWORD FORM--------------
 }
