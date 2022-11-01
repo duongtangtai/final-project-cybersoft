@@ -15,6 +15,8 @@ export class ProfileService {
 
   private avatarLink: BehaviorSubject<string> = new BehaviorSubject<string>('');
   data: Observable<string> = this.avatarLink.asObservable();
+  private UPDATE_PROFILE = 'update-profile';
+  private CHANGE_PASSWORD = 'change-password';
 
   constructor(
     private http: HttpClient,
@@ -24,7 +26,7 @@ export class ProfileService {
   ) {}
 
   updateProfile(profile: IStaffModel): Observable<IStaffModel>{
-    return this.http.put<IRequestModel>(`${this.config.endpoints.profile.root}`, profile)
+    return this.http.put<IRequestModel>(`${this.config.endpoints.profile.root}` + this.UPDATE_PROFILE, profile)
       .pipe(map((val: IRequestModel) => val.content));
   }
 
@@ -35,5 +37,15 @@ export class ProfileService {
 
   sendData(data: string) {
     this.avatarLink.next(data);
+  }
+
+  changePassword(submitForm: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({'Content-Type': 'application/json'})
+    }
+    console.log(submitForm)
+    console.log(this.config.endpoints.profile.root + this.CHANGE_PASSWORD)
+    return this.http.put(`${this.config.endpoints.profile.root}` + this.CHANGE_PASSWORD, submitForm)
+      .pipe(map((val: any) => val.content));
   }
 }

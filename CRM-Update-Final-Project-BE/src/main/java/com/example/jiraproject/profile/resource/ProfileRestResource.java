@@ -6,6 +6,7 @@ import com.example.jiraproject.common.util.MessageUtil;
 import com.example.jiraproject.common.util.ResponseUtil;
 import com.example.jiraproject.common.validation.group.UpdateInfo;
 import com.example.jiraproject.operation.model.Operation;
+import com.example.jiraproject.profile.dto.ChangePasswordForm;
 import com.example.jiraproject.profile.service.ProfileService;
 import com.example.jiraproject.security.aop.Authorized;
 import com.example.jiraproject.user.dto.UserDto;
@@ -17,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/v1/profiles")
 @RequiredArgsConstructor
@@ -26,8 +29,15 @@ public class ProfileRestResource {
     private final MessageSource messageSource;
 
     @Authorized(operation = ApiUtil.PROFILE, type = Operation.Type.SAVE_OR_UPDATE)
-    @PutMapping
+    @PutMapping("/update-profile")
     public ResponseEntity<ResponseDto> updateProfile(@RequestBody @Validated(UpdateInfo.class) UserDto dto) {
         return ResponseUtil.get(service.updateProfile(dto),HttpStatus.OK);
+    }
+
+    @Authorized(operation = ApiUtil.PROFILE, type = Operation.Type.SAVE_OR_UPDATE)
+    @PutMapping("/change-password")
+    public ResponseEntity<ResponseDto> changePassword(@RequestBody @Valid ChangePasswordForm form) {
+        service.changePassword(form);
+        return ResponseUtil.get(MessageUtil.getMessage(messageSource, "user.password.changed"),HttpStatus.OK);
     }
 }
