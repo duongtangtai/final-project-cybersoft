@@ -93,11 +93,9 @@
                             <ng-container matColumnDef="avatar">
                                 <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic">Avatar</th>
                                 <td mat-cell *matCellDef="let element">
-                                    <img *ngIf="element.avatar == null && element.gender == 'MALE'"
-                                         src="/assets/img/avatars/male-default.png" width="50" height="50">
-                                    <img *ngIf="element.avatar == null && element.gender == 'FEMALE'"
-                                         src="/assets/img/avatars/female-default.png" width="50" height="50">
-                                    <img *ngIf="element.avatar != null" [src]="element.symbol" width="50" height="50">
+                                    <img *ngIf="element.symbol == null"
+                                         src="/assets/img/project-symbols/default1.png" width="50" height="50">
+                                    <img *ngIf="element.symbol != null" [src]="element.symbol" width="50" height="50">
                                 </td>
                             </ng-container>
                             <ng-container matColumnDef="name">

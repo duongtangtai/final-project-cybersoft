@@ -12,11 +12,14 @@
                             <em class="bx bx-user me-1"></em> Account</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/profile/change-password" >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z"/>
+                        <a class="nav-link" href="/profile/change-password">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z"/>
                                 <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z"/>
-                            </svg> Change Password</a>
+                            </svg>
+                            Change Password</a>
                     </li>
                 </ul>
                 <div class="card mb-4">
@@ -70,7 +73,8 @@
                                             (change)="selectFile($event)"
                                     />
                                 </label>
-                                <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0" *ngIf="newAvatarUrl && isConfirm == true"
+                                <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0"
+                                       *ngIf="newAvatarUrl && isConfirm == true"
                                        (click)="uploadAvatar()">
                                     <span class="d-none d-sm-block">Confirm New Photo</span>
                                     <em class="bx bx-upload d-block d-sm-none"></em>
@@ -174,15 +178,18 @@
             <div class="col-md-12">
                 <ul class="nav nav-pills flex-column flex-md-row mb-3">
                     <li class="nav-item">
-                        <a class="nav-link" href="/profile" >
+                        <a class="nav-link" href="/profile">
                             <em class="bx bx-user me-1"></em> Account</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z"/>
                                 <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z"/>
-                            </svg> Change Password</a>
+                            </svg>
+                            Change Password</a>
                     </li>
                 </ul>
                 <div class="card mb-4">
@@ -190,21 +197,21 @@
                     <hr class="my-0"/>
                     <div class="card-body">
                         <form [formGroup]="form">
-                                <mat-form-field class="form-group">
-                                    <mat-label>Password</mat-label>
-                                    <input matInput placeholder="Your password" class="form-control"
-                                            formControlName="oldPassword">
-                                </mat-form-field>
-                                <mat-form-field class="form-group">
-                                    <mat-label>New Password</mat-label>
-                                    <input matInput placeholder="Your new password" class="form-control"
-                                            formControlName="newPassword">
-                                </mat-form-field>
-                                <mat-form-field class="form-group">
-                                    <mat-label>Confirm New Password</mat-label>
-                                    <input matInput placeholder="Repeat your new password" class="form-control"
-                                            formControlName="newPasswordConfirmed">
-                                </mat-form-field>
+                            <mat-form-field class="form-group">
+                                <mat-label>Password</mat-label>
+                                <input matInput placeholder="Your password" class="form-control"
+                                       formControlName="oldPassword">
+                            </mat-form-field>
+                            <mat-form-field class="form-group">
+                                <mat-label>New Password</mat-label>
+                                <input matInput placeholder="Your new password" class="form-control"
+                                       formControlName="newPassword">
+                            </mat-form-field>
+                            <mat-form-field class="form-group">
+                                <mat-label>Confirm New Password</mat-label>
+                                <input matInput placeholder="Repeat your new password" class="form-control"
+                                       formControlName="newPasswordConfirmed">
+                            </mat-form-field>
                         </form>
                         <button type="button" class="btn btn-primary me-2 mb-4" (click)="changePassword()">
                             <em class="bx bx-reset d-block d-sm-none"></em>

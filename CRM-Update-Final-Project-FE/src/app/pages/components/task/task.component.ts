@@ -7,6 +7,7 @@ import {ITaskModel} from 'src/app/model/task.model';
 import {AppSettings} from "../../../app.constants";
 import {DialogFormComponent} from "../../../share/components/dialog-form/dialog-form.component";
 import {DialogNotifyComponent} from "../../../share/components/dialog-notify/dialog-notify.component";
+import {ProfileService} from "../../services/profile.service";
 import {TaskService} from '../../services/task.service';
 
 @Component({

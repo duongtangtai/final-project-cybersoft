@@ -7,6 +7,7 @@ import {AppSettings} from 'src/app/app.constants';
 import {DialogFormComponent} from 'src/app/share/components/dialog-form/dialog-form.component';
 import {DialogNotifyComponent} from 'src/app/share/components/dialog-notify/dialog-notify.component';
 import {IStaffModel} from "../../../model/staff.model";
+import {ProfileService} from "../../services/profile.service";
 import {StaffService} from "../../services/staff.service";
 
 @Component({

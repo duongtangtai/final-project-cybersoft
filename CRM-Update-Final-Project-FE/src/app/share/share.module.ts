@@ -21,6 +21,9 @@ import {MaterialModule} from "./modules/material-module";
         ToastrModule.forRoot()
     ],
     declarations: [DialogFormComponent, DialogNotifyComponent, DialogNotifyComponent, ButtonComponent],
+    exports: [
+        ButtonComponent
+    ]
 })
 export class ShareModule {
 }
