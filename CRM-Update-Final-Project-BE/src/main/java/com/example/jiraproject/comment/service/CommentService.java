@@ -28,7 +28,7 @@ public interface CommentService extends GenericService<Comment, CommentDto, UUID
     List<CommentWithInfoDto> findAllWithInfo();
     List<CommentWithInfoDto> findAllWithInfoWithPaging(int size, int pageIndex);
     List<CommentWithInfoDto> findAllWithInfoByTaskId(UUID taskId);
-    CommentWithInfoDto saveComment(CommentDto commentDto, UUID taskId, UUID userId);
+    CommentWithInfoDto saveComment(CommentDto commentDto);
     CommentWithInfoDto addResponseToCmt(UUID id, UUID respondedCmtId);
 }
 @Service
@@ -77,17 +77,25 @@ class CommentServiceImpl implements CommentService {
     @Override
     public List<CommentWithInfoDto> findAllWithInfoByTaskId(UUID taskId) {
         Task task = taskService.findTaskById(taskId);
-        return repository.findAllWithInfoByTaskId(task.getId())
+        List<CommentWithInfoDto> comments = repository.findAllWithInfoByTaskId(task.getId())
                 .stream()
-                .map(model -> mapper.map(model, CommentWithInfoDto.class))
+                .map(model ->  mapper.map(model, CommentWithInfoDto.class))
                 .toList();
+        comments.forEach(model -> model.getWriter().setPassword(null)); //set password null
+        return comments;
     }
 
     @Override
-    public CommentWithInfoDto saveComment(CommentDto commentDto, UUID taskId, UUID userId) {
-        Task task = taskService.findTaskById(taskId);
-        User user = userService.findUserById(userId);
+    public CommentWithInfoDto saveComment(CommentDto commentDto) {
+        Task task = taskService.findTaskById(commentDto.getTaskId());
+        User user = userService.findUserById(commentDto.getWriterId());
         Comment comment = mapper.map(commentDto, Comment.class);
+        System.out.println(commentDto.getResponseToId());
+        if (commentDto.getResponseToId() != null) {
+            Comment respondedCmt = repository.findCommentById(commentDto.getResponseToId())
+                    .orElseThrow(() -> new ValidationException(MessageUtil.getMessage(messageSource, UUID_NOT_FOUND)));
+            comment.setResponseTo(respondedCmt);
+        }
         comment.setTask(task);
         comment.setWriter(user);
         repository.save(comment);

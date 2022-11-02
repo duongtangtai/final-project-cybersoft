@@ -41,9 +41,9 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = JoinTableUtil.COMMENT_REFERENCE_COMMENT)
     private Comment responseTo;
 
-    @OneToOne(mappedBy = JoinTableUtil.COMMENT_REFERENCE_COMMENT,
-    cascade = CascadeType.ALL) //delete this comment will delete all comments responding to this comment
-    private Comment cmt;
+//    @OneToOne(mappedBy = JoinTableUtil.COMMENT_REFERENCE_COMMENT, fetch = FetchType.LAZY,
+//    cascade = CascadeType.ALL, orphanRemoval = true) //delete this comment will delete all comments responding to this comment
+//    private Comment cmt;
 
     @Override
     public int hashCode() {

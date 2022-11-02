@@ -29,9 +29,15 @@ export const AppConfig: PTSAppConfig = {
     },
     profile: {
       root: `${apiUrl}/v1/profiles/`,
+      updateProfile: `${apiUrl}/v1/profiles/update-profile/`,
+      changePassword: `${apiUrl}/v1/profiles/change-password/`
     },
     file: {
       root: `${apiUrl}/v1/files/`,
+    },
+    comment: {
+      root: `${apiUrl}/v1/comments/`,
+      getByTaskId: `${apiUrl}/v1/comments/with-info/by-task/`,
     }
   }
 };

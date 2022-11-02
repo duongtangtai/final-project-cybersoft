@@ -24,7 +24,8 @@ public class CommentWithInfoDto {
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_FORMAT)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateTimeUtil.DATE_TIME_FORMAT)
     private LocalDateTime lastModifiedAt;
+
     private UserDto writer;
-    private TaskDto task;
-    private CommentDto responseTo;
+
+    private UUID responseToId;
 }

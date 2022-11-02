@@ -102,5 +102,18 @@ export class TaskComponent implements OnInit {
             },
         }).afterClosed().subscribe(() => this.getAllTasks())
     }
+
+    commentTask(task: any) {
+        this.dialog.open(DialogFormComponent, {
+            panelClass: 'widthDialogForm',
+            data: {
+                type: AppSettings.TYPE_COMMENT,
+                title: AppSettings.FORM_ADD_COMMENT,
+                element: task,
+            },
+            height: "80%",
+            width: "75%",
+        }).afterClosed().subscribe(() => this.getAllTasks())
+    }
 }
 

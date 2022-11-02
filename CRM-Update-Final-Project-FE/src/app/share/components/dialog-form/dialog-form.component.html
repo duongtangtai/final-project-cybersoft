@@ -5,7 +5,7 @@
 
     <!---------------------------------PROJECT FORM-------------------------------------->
 
-    <div mat-dialog-content *ngIf="type == 'project'">
+    <div mat-dialog-content *ngIf="type == appSettings.TYPE_PROJECT">
         <mat-form-field class="form-group">
             <mat-label>Name</mat-label>
             <input matInput placeholder="Name" class="form-control" formControlName="name">
@@ -47,12 +47,12 @@
 
     <!-------------------------------START STAFF FORM-------------------------------------->
 
-    <div mat-dialog-content *ngIf="type == 'staff'">
+    <div mat-dialog-content *ngIf="type == appSettings.TYPE_STAFF">
         <mat-form-field class="form-group">
             <mat-label>Username</mat-label>
             <input matInput placeholder="Username" class="form-control" formControlName="username">
         </mat-form-field>
-        <mat-form-field class="form-group">
+        <mat-form-field class="form-group" *ngIf="title == appSettings.FORM_ADD_STAFF">
             <mat-label>Password</mat-label>
             <input matInput placeholder="Password" type="password" class="form-control" formControlName="password">
         </mat-form-field>
@@ -99,7 +99,7 @@
     </div>
     <!-------------------------------END STAFF FORM-------------------------------------->
     <!-------------------------------START TASK FORM-------------------------------------->
-    <div mat-dialog-content *ngIf="type == 'task'">
+    <div mat-dialog-content *ngIf="type == appSettings.TYPE_TASK">
         <mat-form-field class="form-group">
             <mat-label>Name</mat-label>
             <input matInput placeholder="Name" class="form-control" formControlName="name">
@@ -156,6 +156,78 @@
         </mat-form-field>
     </div>
     <!-------------------------------END TASK FORM-------------------------------------->
+    <!-------------------------------START COMMENT FORM-------------------------------------->
+    <!-- START PREVIOUS COMMENTS -->
+    <div *ngIf="type == appSettings.TYPE_COMMENT">
+    <div class="card">
+        <div class="card card-body">
+            <div>TASK NAME: {{element.name}}</div>
+            <div>REPORTER: {{element.reporterUsername}} </div>
+        <div class="card card-body"> 
+            <div *ngFor="let element of commentDisplayed">
+                <div *ngIf="element.comment.responseToId == null">
+                    <img *ngIf="element.comment.writer.avatar == null && element.comment.writer.gender == 'MALE'"
+                            src="/assets/img/avatars/male-default.png" width="50" height="50" alt="">
+                    <img *ngIf="element.comment.writer.avatar == null && element.comment.writer.gender == 'FEMALE'"
+                            src="/assets/img/avatars/female-default.png" width="50" height="50" alt="">
+                    <img *ngIf="element.comment.writer.avatar != null" [src]="element.comment.writer.avatar" width="50" height="50" alt="">
+                    &nbsp;&nbsp;
+                    <strong>{{element.comment.writer.username}}</strong>
+                    <em> at {{element.comment.lastModifiedAt}}</em>
+                    <br><br>
+                    <div>
+                        {{element.comment.description}}
+                    </div>
+                    <br>
+                    <div>
+                        <button type="button" class="btn btn-info" (click)="responseToComment(element.comment)">
+                            Reply
+                        </button>
+                    </div>
+                    <br>
+                    <div class="card card-body" *ngFor="let response of element.responses">
+                        <img *ngIf="response.writer.avatar == null && response.writer.gender == 'MALE'"
+                            src="/assets/img/avatars/male-default.png" width="50" height="50" alt="">
+                        <img *ngIf="response.writer.avatar == null && response.writer.gender == 'FEMALE'"
+                            src="/assets/img/avatars/female-default.png" width="50" height="50" alt="">
+                        <img *ngIf="response.writer.avatar != null" [src]="response.writer.avatar" width="50" height="50" alt="">
+                        &nbsp;&nbsp;
+                        <strong> {{response.writer.username}}</strong>
+                        <em> at {{response.lastModifiedAt}}</em>
+                        <br>
+                        <div>
+                            {{response.description}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END PREVIOUS COMMENTS -->
+    <!-- START USER COMMENT -->
+    <div class="card">
+        <div mat-dialog-content *ngIf="type == appSettings.TYPE_COMMENT" class="card-body">
+            <img *ngIf="user.userData.avatar == null && user.userData.gender == 'MALE'"
+                src="/assets/img/avatars/male-default.png" width="50" height="50" alt="">
+            <img *ngIf="user.userData.avatar == null && user.userData.gender == 'FEMALE'"
+                src="/assets/img/avatars/female-default.png" width="50" height="50" alt="">
+            <img *ngIf="user.userData.avatar != null" [src]="user.userData.avatar" width="50" height="50" alt="">
+            &nbsp;&nbsp;
+            <strong>{{user.userData.username}}</strong>
+            <span *ngIf="respondingToUser">
+                <em> is responding to </em>
+                <strong>{{respondingToUser}}</strong>
+            </span>
+            <mat-form-field class="form-group">
+                <mat-label>Your comment</mat-label>
+                <input matInput placeholder="Your comment" class="form-control" formControlName="description">
+            </mat-form-field>
+        </div>
+    </div>
+    </div>
+    </div>
+    <!-- END USER COMMENT
+    <-------------------------------END COMMENT FORM-------------------------------------->
     <div mat-dialog-actions class="d-flex justify-content-between">
         <app-button (onClick)="cancelFunc($event)" [label]=appSettings.BUTTON_CANCEL></app-button>
         <app-button (onClick)="okFunc($event)" [label]=appSettings.BUTTON_OK></app-button>

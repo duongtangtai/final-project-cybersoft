@@ -134,8 +134,9 @@ class UserServiceImpl implements UserService {
         User user = repository.findById(dto.getId())
                 .orElseThrow(() ->
                     new ValidationException(MessageUtil.getMessage(messageSource, UUID_NOT_FOUND)));
+        String password = user.getPassword(); //update don't change user password
         mapper.map(dto, user);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(password);
         return mapper.map(user, UserDto.class);
     }
 }

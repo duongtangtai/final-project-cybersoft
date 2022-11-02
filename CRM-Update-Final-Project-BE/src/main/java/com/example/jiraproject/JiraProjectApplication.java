@@ -447,13 +447,14 @@ public class JiraProjectApplication implements CommandLineRunner {
         Comment comment4 = Comment.builder()
                 .description("Sao biết hay vậy?")
                 .writer(user1)
-                .task(task2)
                 .responseTo(comment3)
+                .task(task2)
                 .build();
         commentRepository.save(comment1);
         commentRepository.save(comment2);
         commentRepository.save(comment3);
         commentRepository.save(comment4);
+        //response one comment to another
 
         //ADD NOTIFICATIONS
         Notification notification1 = Notification.builder()

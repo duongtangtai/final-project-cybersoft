@@ -1,3 +1,4 @@
+import { map } from 'rxjs';
 import { MyToastrService } from './../../services/my-toastr.service';
 import { ITaskModel } from 'src/app/model/task.model';
 import { TaskService } from './../../../pages/services/task.service';
@@ -11,6 +12,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import { ProjectService } from 'src/app/pages/services/project.service';
 import {AppSettings} from "../../../app.constants";
 import { DatePipe} from '@angular/common';
+import { CommentService } from 'src/app/pages/services/comment.service';
 
 @Component({
     selector: 'app-dialog',
@@ -24,7 +26,7 @@ export class DialogFormComponent implements OnInit {
     appSettings = AppSettings
     form: any;
     element: any;
-    userData: any;
+    user: any;
     //PROJECT
     projectData: any;
     projectStatusData: any;
@@ -33,8 +35,12 @@ export class DialogFormComponent implements OnInit {
     staffData: any;
     staffStatusData: any;
     staffGenderData: any;
-    //Task
+    //TASK
     taskStatusData: any;
+    //COMMENT
+    commentData: any;
+    commentDisplayed: any[] = [];
+    respondingToUser: string = '';
 
     constructor(
         private formBuilder: FormBuilder,
@@ -44,12 +50,13 @@ export class DialogFormComponent implements OnInit {
         private projectService: ProjectService,
         private staffService: StaffService,
         private taskService: TaskService,
+        private commentService: CommentService,
         private myToastrService: MyToastrService,
     ) {
     }
 
     ngOnInit(): void {
-        this.userData = this.localStorageService.retrieve(AppSettings.AUTH_DATA)
+        this.user = this.localStorageService.retrieve(AppSettings.AUTH_DATA)
         this.title = this.data.title;
         this.type = this.data.type;
         this.element = this.data.element;
@@ -66,6 +73,9 @@ export class DialogFormComponent implements OnInit {
                 break;
             case AppSettings.TYPE_TASK:
                 this.getTaskForm(element)
+                break;
+            case AppSettings.TYPE_COMMENT:
+                this.getCommentForm(element)
                 break;
             default:
                 break;
@@ -100,7 +110,7 @@ export class DialogFormComponent implements OnInit {
             description: ['', Validators.required],
             status: ['', Validators.required],
             symbol: ['', Validators.required],
-            creatorUsername: [{value:this.userData.username,disabled:true}],
+            creatorUsername: [{value:this.user.userData.username,disabled:true}],
             leaderUsername: ['', Validators.required],
         })
     }
@@ -131,7 +141,8 @@ export class DialogFormComponent implements OnInit {
         this.form = this.formBuilder.group({
             id:['',{disabled:true}],
             username:['',Validators.required],
-            password:['', Validators.required],
+            //CREATE NEW STAFF NEED A PASSWORD
+            password:['', this.title == AppSettings.FORM_ADD_STAFF ? Validators.required : {disabled:true}], 
             firstName:['',Validators.required],
             lastName:['',Validators.required],
             gender: ['',Validators.required],
@@ -156,7 +167,7 @@ export class DialogFormComponent implements OnInit {
         this.form.setValue({
             id : staffForm.id,
             username : staffForm.username,
-            password : staffForm.password,
+            password : staffForm.password, //PASSWORD IS NULL RIGHT NOW
             firstName : staffForm.firstName,
             lastName : staffForm.lastName,
             gender : staffForm.gender,
@@ -214,6 +225,53 @@ export class DialogFormComponent implements OnInit {
     }
 
     //-------------------END TASK FORM--------------------
+    //-------------------START COMMENT FORM--------------------
+
+    initCommentForm() {
+        console.log("INIT COMMENT FORM")
+        this.commentService.getCommentByTaskId(this.element.id)
+            .subscribe(content => {
+                this.commentData = content
+                for (let i = 0 ; i < this.commentData.length ; i++) {
+                    const comment = this.commentData[i];
+                    let responses = [];
+                    for (let j = i ; j < this.commentData.length ; j++) {
+                        const response = this.commentData[j];
+                        if ( response.responseToId != null && response.responseToId == comment.id) {
+                            responses.push(response)
+                        }
+                    }
+                    this.commentDisplayed.push({
+                        comment : comment,
+                        responses : responses
+                    })
+                }
+            });
+        this.form = this.formBuilder.group({
+            description: ['', Validators.required],
+            writerId: ['',Validators.required],
+            taskId: ['',Validators.required],
+            responseToId: ['']
+        })
+    }
+
+    getCommentForm(element: ITaskModel) {
+        this.initCommentForm();
+        this.form.patchValue({
+            writerId : this.user.userData.id,
+            taskId : element.id,
+        })
+    }
+
+    responseToComment(comment: any) {
+        this.form.patchValue({
+            responseToId: comment.id,
+        })
+        this.respondingToUser = comment.writer.username;
+    }
+
+
+    //-------------------END COMMENT FORM--------------------
     //-------------------HANDLE FUNCTIONS--------------------
     convertDateToString(date: any) {
         //convert date to String with pattern ("dd/MM/yyyy") before sending a request to BE
@@ -241,7 +299,7 @@ export class DialogFormComponent implements OnInit {
         })
     }
 
-    showSuccessfulInfo(content: any) {
+    succeededAndClose(content: any) {
         this.myToastrService.success(content.toString())
         this.dialogRef.close()
     }
@@ -255,27 +313,36 @@ export class DialogFormComponent implements OnInit {
             switch (this.title) {
                 case AppSettings.FORM_ADD_PROJECT: //ADD PROJECT 
                     this.projectService.saveProject(submitForm)
-                        .subscribe(content => this.showSuccessfulInfo(content));
+                        .subscribe(content => this.succeededAndClose(content));
                     break;
                 case AppSettings.FORM_UPDATE_PROJECT: // UPDATE PROJECT
                     this.projectService.updateProject(submitForm)
-                        .subscribe(content => this.showSuccessfulInfo(content));
+                        .subscribe(content => this.succeededAndClose(content));
                     break;
                 case AppSettings.FORM_ADD_STAFF: // ADD STAFF
                     this.staffService.saveStaff(submitForm)
-                        .subscribe(content => this.showSuccessfulInfo(content));
+                        .subscribe(content => this.succeededAndClose(content));
                     break;
                 case AppSettings.FORM_UPDATE_STAFF: // UPDATE STAFF
                     this.staffService.updateStaff(submitForm)
-                        .subscribe(content => this.showSuccessfulInfo(content));
+                        .subscribe(content => this.succeededAndClose(content));
                     break;
                 case AppSettings.FORM_ADD_TASK: // ADD TASK
                     this.taskService.saveTask(submitForm)
-                        .subscribe(content => this.showSuccessfulInfo(content));
+                        .subscribe(content => this.succeededAndClose(content));
                     break;  
                 case AppSettings.FORM_UPDATE_TASK: // UPDATE TASK
                     this.taskService.updateTask(submitForm)
-                        .subscribe(content => this.showSuccessfulInfo(content));
+                        .subscribe(content => this.succeededAndClose(content));
+                    break;
+                case AppSettings.FORM_ADD_COMMENT: // ADD COMMENT
+                    this.commentService.addComment(submitForm)
+                        .subscribe(content => {
+                            this.myToastrService.success(content)
+                            this.commentDisplayed=[];
+                            this.respondingToUser = '';
+                            this.getCommentForm(this.element);
+                        })
                     break;
                 default:
                     break;
