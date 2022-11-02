@@ -31,8 +31,8 @@ public class UserDto {
     @NotBlank(message = "{user.username.not-blank}", groups = {SaveInfo.class, UpdateInfo.class})
     private String username;
 
-    @Size(min = 5, max = 25, message = "{user.password.size}", groups = {SaveInfo.class, UpdateInfo.class})
-    @NotBlank(message = "{user.password.not-blank}", groups = {SaveInfo.class, UpdateInfo.class})
+    @Size(min = 5, max = 25, message = "{user.password.size}", groups = {SaveInfo.class}) //UPDATE DON'T CHANGE PASSWORD
+    @NotBlank(message = "{user.password.not-blank}", groups = {SaveInfo.class})
     private String password;
 
     @Size(max = 25, message = "{user.firstName.size}", groups = {SaveInfo.class, UpdateInfo.class})

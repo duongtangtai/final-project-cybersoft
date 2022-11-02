@@ -1,3 +1,4 @@
+import { MyToastrService } from 'src/app/share/services/my-toastr.service';
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
 import {NavigationEnd, Router, RoutesRecognized} from "@angular/router";
@@ -22,7 +23,8 @@ export class LoginComponent implements OnInit {
         private router: Router,
         private fromBuilder: FormBuilder,
         private authService: AuthService,
-        private localStorageService: LocalStorageService
+        private localStorageService: LocalStorageService,
+        private myToastrService: MyToastrService,
     ) {
     }
 
@@ -35,7 +37,9 @@ export class LoginComponent implements OnInit {
         this.authService.login(username, password).subscribe(val => {
             if (val) {
                 this.router.navigateByUrl('/project').then(r => console.log)
+                this.myToastrService.info("Welcome " + username)            
             }
         });
     }
+
 }

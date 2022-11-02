@@ -10,8 +10,6 @@ import {IProjectModel} from "../../model/project.model";
     providedIn: 'root'
 })
 export class ProjectService {
-    private ADD_CREATOR = "/add-creator";
-    private ADD_LEADER = "/add-leader"
 
     constructor(
         private http: HttpClient,

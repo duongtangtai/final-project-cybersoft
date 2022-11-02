@@ -76,11 +76,9 @@ public class CommentRestResource {
 
     @Authorized(operation = ApiUtil.COMMENT, type = Operation.Type.SAVE_OR_UPDATE)
     @PostMapping
-    public ResponseEntity<ResponseDto> save(@RequestBody @Validated(SaveInfo.class) CommentDto commentDto,
-                                            @RequestParam("taskId") @UUIDConstraint String taskId,
-                                            @RequestParam("userId") @UUIDConstraint String userId) {
-        return ResponseUtil.get(service.saveComment(commentDto, UUID.fromString(taskId), UUID.fromString(userId)),
-                HttpStatus.CREATED);
+    public ResponseEntity<ResponseDto> save(@RequestBody @Validated(SaveInfo.class) CommentDto commentDto) {
+        service.saveComment(commentDto);
+        return ResponseUtil.get(MessageUtil.getMessage(messageSource, "comment.saved"), HttpStatus.CREATED);
     }
 
     @Authorized(operation = ApiUtil.COMMENT, type = Operation.Type.SAVE_OR_UPDATE)

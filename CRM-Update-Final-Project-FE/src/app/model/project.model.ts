@@ -1,5 +1,3 @@
-import { IStaffModel } from "./staff.model";
-
 export interface IProjectModel {
     id?: string,
     name?: string,

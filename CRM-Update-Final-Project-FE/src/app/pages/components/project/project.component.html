@@ -86,7 +86,7 @@
                         </mat-form-field>
                         <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8" aria-describedby="">
                             <ng-container matColumnDef="symbol">
-                                <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic">Symbol</th>
+                                <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"><strong>Symbol</strong></th>
                                 <td mat-cell *matCellDef="let element">
                                     <img *ngIf="element.symbol == null" src="/assets/img/project-symbols/default3.png"
                                          width="50" height="50" alt="">
@@ -94,29 +94,38 @@
                                 </td>
                             </ng-container>
                             <ng-container matColumnDef="name">
-                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> Name</th>
-                                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"><strong>Name</strong></th>
+                                <td mat-cell *matCellDef="let element">{{element.name}}</td>
                             </ng-container>
                             <ng-container matColumnDef="description">
                                 <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic">
-                                    Description
+                                    <strong>Description</strong>
                                 </th>
                                 <td mat-cell *matCellDef="let element"> {{element.description}} </td>
                             </ng-container>
                             <ng-container matColumnDef="status">
-                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> Status
+                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Status</strong>
                                 </th>
-                                <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+                                <td mat-cell *matCellDef="let element"> 
+                                    <span *ngIf="element.status == 'DOING'" class="badge bg-label-primary me-1">{{element.status}} </span>
+                                    <span *ngIf="element.status == 'DONE'" class="badge bg-label-success me-1">{{element.status}} </span>                                </td>
                             </ng-container>
                             <ng-container matColumnDef="action">
-                                <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> Action</th>
+                                <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Action</strong></th>
                                 <td mat-cell *matCellDef="let element">
-                                    <button mat-raised-button color="primary" (click)="updateProject(element)">
-                                        Update
-                                    </button>
-                                    |
-                                    <button mat-raised-button color="warn" (click)="deleteProject(element.id)">Delete
-                                    </button>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <button class="dropdown-item" 
+                                                (click)="updateProject(element)"><i class="bx bx-edit-alt me-1 bx-tada-hover"></i> Update</button
+                                            >
+                                            <button class="dropdown-item"
+                                            (click)="deleteProject(element.id)"><i class="bx bx-trash me-1 bx-tada-hover"></i> Delete</button
+                                            >
+                                        </div>
+                                    </div>
                                 </td>
                             </ng-container>
                             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

@@ -90,7 +90,7 @@
                         </mat-form-field>
                         <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
                             <ng-container matColumnDef="avatar">
-                                <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic">Avatar</th>
+                                <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"><strong>Avatar</strong></th>
                                 <td mat-cell *matCellDef="let element">
                                     <img *ngIf="element.avatar == null && element.gender == 'MALE'"
                                          src="/assets/img/avatars/male-default.png" width="50" height="50" alt="">
@@ -100,30 +100,40 @@
                                 </td>
                             </ng-container>
                             <ng-container matColumnDef="firstName">
-                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> First
-                                    Name
+                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>First Name</strong>
                                 </th>
                                 <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
                             </ng-container>
                             <ng-container matColumnDef="email">
-                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> Email
+                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Email</strong>
                                 </th>
                                 <td mat-cell *matCellDef="let element"> {{element.email}} </td>
                             </ng-container>
                             <ng-container matColumnDef="accountStatus">
-                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> Account
-                                    Status
+                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Account Status</strong>
                                 </th>
-                                <td mat-cell *matCellDef="let element"> {{element.accountStatus}} </td>
+                                <td mat-cell *matCellDef="let element">
+                                    <span *ngIf="element.accountStatus == 'ACTIVE'" class="badge bg-label-primary me-1">{{element.accountStatus}} </span>
+                                    <span *ngIf="element.accountStatus == 'TEMPORARILY_BLOCKED'" class="badge bg-label-warning me-1">{{element.accountStatus}} </span>
+                                    <span *ngIf="element.accountStatus == 'PERMANENTLY_BLOCKED'" class="badge bg-label-danger me-1">{{element.accountStatus}} </span>
+                                </td>
                             </ng-container>
                             <ng-container matColumnDef="action">
-                                <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> Action</th>
+                                <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Action</strong></th>
                                 <td mat-cell *matCellDef="let element">
-                                    <button mat-raised-button color="primary" (click)="updateStaff(element)">Update
-                                    </button>
-                                    |
-                                    <button mat-raised-button color="warn" (click)="deleteStaff(element.id)">Delete
-                                    </button>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <button class="dropdown-item" 
+                                                (click)="updateStaff(element)"><i class="bx bx-edit-alt me-1 bx-tada-hover"></i> Update</button
+                                            >
+                                            <button class="dropdown-item"
+                                            (click)="deleteStaff(element.id)"><i class="bx bx-trash me-1 bx-tada-hover"></i> Delete</button
+                                            >
+                                        </div>
+                                    </div>
                                 </td>
                             </ng-container>
                             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

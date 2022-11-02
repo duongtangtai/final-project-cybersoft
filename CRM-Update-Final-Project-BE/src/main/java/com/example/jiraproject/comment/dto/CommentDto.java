@@ -22,4 +22,12 @@ public class CommentDto {
     @Size(max = 300, message = "{comment.description.size}", groups = {SaveInfo.class, UpdateInfo.class})
     @NotBlank(message = "{comment.description.not-blank}", groups = {SaveInfo.class, UpdateInfo.class})
     private String description;
+
+    @UUIDConstraint(groups = {SaveInfo.class, UpdateInfo.class})
+    private UUID writerId;
+
+    @UUIDConstraint(groups = {SaveInfo.class, UpdateInfo.class})
+    private UUID taskId;
+
+    private UUID responseToId; //responseToId can be null
 }
