@@ -8,7 +8,7 @@ import {AppSettings} from "../../app.constants";
 export class TokenInterceptor implements HttpInterceptor {
 
     constructor(
-        private localStorageService: LocalStorageService
+        private localStorageService: LocalStorageService,
     ) {
     }
 
@@ -17,11 +17,12 @@ export class TokenInterceptor implements HttpInterceptor {
         next: HttpHandler
     ): Observable<HttpEvent<any>> {
         const authData = this.localStorageService.retrieve(AppSettings.AUTH_DATA);
+        let modifiedReq
         if (authData != null) {
-            const modifiedReq = request.clone({
+            modifiedReq = request.clone({
                 headers: request.headers.set('Authorization', `Bearer ${authData.accessToken}`),
             });
-            return next.handle(modifiedReq);
+            return next.handle(modifiedReq)
         }
         return next.handle(request);
     }
