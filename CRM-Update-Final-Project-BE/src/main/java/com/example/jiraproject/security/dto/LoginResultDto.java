@@ -12,8 +12,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginResultDto {
-    private UserDto userData;
-    private List<String> roleCodes;
     private String accessToken;
     private String refreshToken;
+    private UserDto userData;
+    private List<String> roleCodes;
 }

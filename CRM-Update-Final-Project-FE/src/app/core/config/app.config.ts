@@ -12,7 +12,8 @@ export const AppConfig: PTSAppConfig = {
   endpoints: {
     api: `${apiUrl}`,
     auth: {
-      login: `${apiUrl}/v1/auth/login`
+      login: `${apiUrl}/v1/auth/login/`,
+      refreshToken: `${apiUrl}/v1/auth/refresh-token/`,
     },
     project: {
       root: `${apiUrl}/v1/projects/`,

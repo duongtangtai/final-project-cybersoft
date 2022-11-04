@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +37,8 @@ public class ProjectRestResource {
         return ResponseUtil.get(service.findById(ProjectDto.class, UUID.fromString(id)), HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.PROJECT)
+//    @Authorized(operation = ApiUtil.PROJECT)
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<ResponseDto> findAll() {
         return ResponseUtil.get(service.findAll(ProjectDto.class), HttpStatus.OK);

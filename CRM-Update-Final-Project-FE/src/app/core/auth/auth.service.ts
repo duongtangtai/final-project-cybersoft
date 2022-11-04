@@ -1,4 +1,4 @@
-import {HttpClient} from "@angular/common/http";
+import {HttpBackend, HttpClient} from "@angular/common/http";
 import {Inject, Injectable} from "@angular/core";
 import {Router} from "@angular/router";
 import {LocalStorageService} from "ngx-webstorage";
@@ -14,13 +14,16 @@ import {IRequestModel} from "../request/request.model";
 export class AuthService {
 
     private _user = new BehaviorSubject<any>(this.localStorageService.retrieve(AppSettings.AUTH_DATA));
+    private httpBackend: HttpClient;
 
     constructor(
         private router: Router,
         private http: HttpClient,
         private localStorageService: LocalStorageService,
-        @Inject(APP_CONFIG) private config: PTSAppConfig
+        @Inject(APP_CONFIG) private config: PTSAppConfig,
+        private handler: HttpBackend,
     ) {
+        this.httpBackend = new HttpClient(handler)
     }
 
     get isAuthenticated() {
@@ -86,5 +89,13 @@ export class AuthService {
 
     private storeAuthData(userData: IUserModel) {
         this.localStorageService.store(AppSettings.AUTH_DATA, userData);
+    }
+
+    refreshToken(refreshToken: string): Observable<any> {
+        return this.httpBackend.post<IRequestModel>(`${this.config.endpoints.auth.refreshToken}`, '', {
+            params : {
+                refreshToken : refreshToken
+            }
+        }).pipe(map((val: IRequestModel) => val.content))
     }
 }
