@@ -19,7 +19,9 @@ export class LoginModule {
         private localStorageService: LocalStorageService,
         private router: Router,
     ) {
-        this.localStorageService.retrieve(AppSettings.AUTH_DATA).accessToken ? 
-        this.router.navigateByUrl("/project") : ''
+        const user = this.localStorageService.retrieve(AppSettings.AUTH_DATA);
+        if (user != null && user.accessToken != null) {
+            this.router.navigateByUrl("/project")
+        }
     }
 }
