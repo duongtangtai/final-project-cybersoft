@@ -142,9 +142,13 @@ export class ProfileComponent implements OnInit {
         }
 
         this.newAvatar = event.target.files[0];
+        if (this.newAvatar.size > 800000) {
+            this.myToastrService.error("Image Size is over 800K bytes. Please select another one.")
+            return;
+        }
+        
         let reader = new FileReader();
-        reader.readAsDataURL(event.target.files[0]);
-
+        reader.readAsDataURL(this.newAvatar);
         reader.onload = (_event) => {
             this.newAvatarUrl = reader.result;
             this.profileService.sendData(this.newAvatarUrl);

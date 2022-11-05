@@ -10,10 +10,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import lombok.experimental.UtilityClass;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Set;
@@ -42,7 +39,7 @@ public class Role extends BaseEntity {
     @NotBlank(message = "{role.description.not-blank}")
     private String description;
 
-    @ManyToMany(mappedBy = JoinTableUtil.ROLE_MAPPED_BY_USER)
+    @ManyToMany(mappedBy = JoinTableUtil.ROLE_MAPPED_BY_USER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<User> users;
 
     @Override

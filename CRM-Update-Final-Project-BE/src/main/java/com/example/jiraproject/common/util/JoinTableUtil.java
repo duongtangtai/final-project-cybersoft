@@ -6,12 +6,8 @@ import lombok.experimental.UtilityClass;
 public class JoinTableUtil {
     //COMMON
     public static final String ROLE_ID = "J_ROLE_ID";
-    public static final String OPERATION_ID = "J_OPERATION_ID";
     public static final String USER_ID = "J_USER_ID";
-
-    //ROLE & OPERATION
-    public static final String ROLE_JOIN_WITH_OPERATION = "J_ROLE_OPERATION";
-    public static final String OPERATION_MAPPED_BY_ROLE = "operations";
+    public static final String PROJECT_ID = "J_PROJECT_ID";
 
     //USER & ROLE
     public static final String USER_JOIN_WITH_ROLE = "J_USER_ROLE";
@@ -20,6 +16,8 @@ public class JoinTableUtil {
     //USER & PROJECT
     public static final String PROJECT_CREATOR_REFERENCE_USER = "creator";
     public static final String PROJECT_LEADER_REFERENCE_USER = "leader";
+    public static final String PROJECT_JOIN_WITH_USER = "J_PROJECT_USER";
+    public static final String USER_MAPPED_BY_PROJECT = "users";
 
     //TASK & PROJECT
     public static final String TASK_REFERENCE_PROJECT = "project";

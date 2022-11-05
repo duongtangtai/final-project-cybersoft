@@ -20,16 +20,18 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.ValidationException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public interface ProjectService extends GenericService<Project, ProjectDto, UUID> {
-    Project findProjectById(UUID projectId);
     Project findProjectByName(String name);
     ProjectWithInfoDto findByIdWithInfo(UUID projectId);
     List<ProjectWithInfoDto> findAllWithInfo();
     List<ProjectWithInfoDto> findAllWithInfoWithPaging(int size, int pageIndex);
     List<String> findAllProjectStatus();
     ProjectDto save(ProjectDto dto);
+    ProjectWithInfoDto addUsers(UUID projectId, Set<UUID> userIds);
+    ProjectWithInfoDto removeUsers(UUID projectId, Set<UUID> userIds);
 }
 @Service
 @Transactional
@@ -51,7 +53,6 @@ class ProjectServiceImpl implements ProjectService {
         return this.mapper;
     }
 
-    @Override
     public Project findProjectById(UUID projectId) {
         return repository.findById(projectId)
                 .orElseThrow(() ->
@@ -100,5 +101,21 @@ class ProjectServiceImpl implements ProjectService {
         project.setCreator(creator);
         project.setLeader(leader);
         return mapper.map(repository.save(project), ProjectDto.class);
+    }
+
+    @Override
+    public ProjectWithInfoDto addUsers(UUID projectId, Set<UUID> userIds) {
+        Project project = findProjectById(projectId);
+        List<User> users = userService.findAllByIds(userIds);
+        users.forEach(project::addUser);
+        return mapper.map(project, ProjectWithInfoDto.class);
+    }
+
+    @Override
+    public ProjectWithInfoDto removeUsers(UUID projectId, Set<UUID> userIds) {
+        Project project = findProjectById(projectId);
+        List<User> users = userService.findAllByIds(userIds);
+        users.forEach(project::removeUser);
+        return mapper.map(project, ProjectWithInfoDto.class);
     }
 }

@@ -26,6 +26,7 @@ import java.util.UUID;
 public interface UserService extends GenericService<User, UserDto, UUID> {
     User findUserById(UUID id);
     User findByUsername(String username);
+    List<User> findAllByIds(Set<UUID> ids);
     UserWithInfoDto findByIdWithInfo(UUID userId);
     List<UserWithInfoDto> findAllWithInfo();
     List<UserWithInfoDto> findAllWithInfoWithPaging(int size, int pageIndex);
@@ -69,6 +70,11 @@ class UserServiceImpl implements UserService {
     public User findByUsername(String username) {
         return repository.findByUsername(username).orElseThrow(() ->
                 new ValidationException(MessageUtil.getMessage(messageSource, USERNAME_NOT_FOUND)));
+    }
+
+    @Override
+    public List<User> findAllByIds(Set<UUID> ids) {
+        return repository.findAllById(ids);
     }
 
     @Override
