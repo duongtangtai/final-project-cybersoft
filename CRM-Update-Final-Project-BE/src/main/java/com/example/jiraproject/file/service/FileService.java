@@ -1,11 +1,14 @@
 package com.example.jiraproject.file.service;
 
 import com.example.jiraproject.common.exception.JiraFileUploadException;
+import com.example.jiraproject.common.util.MessageUtil;
 import com.example.jiraproject.file.util.FileUtil;
+import com.example.jiraproject.security.util.JwtUtil;
 import com.example.jiraproject.user.model.User;
 import com.example.jiraproject.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -18,12 +21,11 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 public interface FileService {
     void init();
-    String save(String id, MultipartFile file);
+    String save(MultipartFile file);
     Resource load(String fileId);
     void deleteAll();
     Stream<Path> loadAll();
@@ -34,6 +36,8 @@ public interface FileService {
 class FileServiceImpl implements FileService {
     public static final Path ROOT = Paths.get("./src/main/resources/uploads");
     private final UserService userService;
+    private final MessageSource messageSource;
+    private final JwtUtil jwtUtil;
 
     @Override
     public void init() {
@@ -41,14 +45,15 @@ class FileServiceImpl implements FileService {
             Files.createDirectories(ROOT);
             log.info("Created ROOT for file uploads");
         } catch (IOException e) {
-           throw new JiraFileUploadException("Could not initialize folder for upload!");
+           throw new JiraFileUploadException(MessageUtil.getMessage(messageSource, "file.uncreated"));
         }
     }
 
     @Transactional
     @Override
-    public String save(String id, MultipartFile file){
-        String fileName = id + FileUtil.SUFFIX;
+    public String save(MultipartFile file){
+        String username = jwtUtil.getAuthenticatedUsername();
+        String fileName = username + FileUtil.SUFFIX;
         if (!ROOT.toFile().exists()) { //create ROOT if ROOT doesn't exist
             init();
         }
@@ -58,12 +63,12 @@ class FileServiceImpl implements FileService {
                 Files.delete(ROOT.resolve(fileName));
                 log.info("DELETED OLD FILE");
             }
-            Files.copy(file.getInputStream(), ROOT.resolve(id + FileUtil.SUFFIX));
+            Files.copy(file.getInputStream(), ROOT.resolve(username + FileUtil.SUFFIX));
         } catch (IOException e) {
-            throw new JiraFileUploadException("Không thể lưu được file. Lỗi: " + e.getMessage());
+            throw new JiraFileUploadException(MessageUtil.getMessage(messageSource, "file.unsaved"));
         }
-        User user = userService.findUserById(UUID.fromString(id));
-        String avatarUrl = FileUtil.URL + id;
+        User user = userService.findByUsername(username);
+        String avatarUrl = FileUtil.URL + username;
         user.setAvatar(avatarUrl);
         return avatarUrl;
     }
@@ -76,7 +81,7 @@ class FileServiceImpl implements FileService {
             if (resource.exists() || resource.isReadable()) {
                 return resource;
             } else {
-                throw new JiraFileUploadException("Không đọc được mã file trùng khớp");
+                throw new JiraFileUploadException(MessageUtil.getMessage(messageSource, "file.load.error"));
             }
         } catch (MalformedURLException e) {
             throw new JiraFileUploadException("Lỗi: " + e.getMessage());
@@ -95,7 +100,7 @@ class FileServiceImpl implements FileService {
                     .filter(path -> !path.equals(ROOT))
                     .map(ROOT::relativize);
         } catch (IOException e) {
-            throw new JiraFileUploadException("Không thể load hết files");
+            throw new JiraFileUploadException(MessageUtil.getMessage(messageSource, "file.load-all.error"));
         }
     }
 }

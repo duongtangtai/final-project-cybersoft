@@ -154,11 +154,8 @@ export class ProfileComponent implements OnInit {
     uploadAvatar() {
         this.isConfirm = false;
         // request to upload userAvatar
-        let userData = this.localStorageService.retrieve(AppSettings.AUTH_DATA).userData;
-        const userId = userData.id;
         let submitForm = new FormData()
         submitForm.append("file", this.newAvatar)
-        submitForm.append("userId", userId)
         this.profileService.uploadAvatar(submitForm)
             .subscribe(newAvatarUrl => {
                 this.storeNewUserAvatar(newAvatarUrl)

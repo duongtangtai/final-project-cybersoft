@@ -1,13 +1,13 @@
 package com.example.jiraproject.user.resource;
 
 import com.example.jiraproject.common.dto.ResponseDto;
-import com.example.jiraproject.common.util.ApiUtil;
 import com.example.jiraproject.common.util.MessageUtil;
 import com.example.jiraproject.common.util.ResponseUtil;
 import com.example.jiraproject.common.validation.annotation.UUIDConstraint;
 import com.example.jiraproject.common.validation.group.SaveInfo;
 import com.example.jiraproject.common.validation.group.UpdateInfo;
-import com.example.jiraproject.operation.model.Operation;
+import com.example.jiraproject.role.model.Role;
+import com.example.jiraproject.role.util.RoleUtil;
 import com.example.jiraproject.security.aop.Authorized;
 import com.example.jiraproject.user.dto.UserDto;
 import com.example.jiraproject.user.service.UserService;
@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +34,7 @@ public class UserRestResource {
     private final UserService service;
     private final MessageSource messageSource;
 
-    @Authorized(operation = ApiUtil.USER)
+    @Authorized(roles = {RoleUtil.LEADER})
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDto> findById(@PathVariable("id") @UUIDConstraint String id) {
         UserDto userDto = service.findById(UserDto.class, UUID.fromString(id));
@@ -40,7 +42,7 @@ public class UserRestResource {
         return ResponseUtil.get(userDto, HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.USER)
+    @Authorized(roles = {RoleUtil.LEADER})
     @GetMapping
     public ResponseEntity<ResponseDto> findAll() {
         List<UserDto> userList = service.findAll(UserDto.class);
@@ -48,73 +50,73 @@ public class UserRestResource {
         return ResponseUtil.get(userList, HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.USER)
+    @Authorized(roles = {RoleUtil.LEADER})
     @GetMapping("/paging")
     public ResponseEntity<ResponseDto> findAllWithPaging(@RequestParam("size") int size,
                                                          @RequestParam("pageIndex") int pageIndex) {
         return ResponseUtil.get(service.findAllWithPaging(UserDto.class, size, pageIndex), HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.USER)
+    @Authorized(roles = {RoleUtil.LEADER})
     @GetMapping("/{id}/with-info")
     public ResponseEntity<ResponseDto> findByIdWithInfo(@PathVariable("id") @UUIDConstraint String id){
         return ResponseUtil.get(service.findByIdWithInfo(UUID.fromString(id)), HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.USER)
+    @Authorized(roles = {RoleUtil.LEADER})
     @GetMapping("/with-info")
     public ResponseEntity<ResponseDto> findAllWithInfo(){
         return ResponseUtil.get(service.findAllWithInfo(), HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.USER)
+    @Authorized(roles = {RoleUtil.LEADER})
     @GetMapping("/with-info/paging")
     public ResponseEntity<ResponseDto> findAllWithInfoWithPaging(@RequestParam("size") int size,
                                                                  @RequestParam("pageIndex") int pageIndex) {
         return ResponseUtil.get(service.findAllWithInfoWithPaging(size, pageIndex), HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.USER)
+    @Authorized(roles = {RoleUtil.LEADER})
     @GetMapping("/account-status")
     public ResponseEntity<ResponseDto> findAllAccountStatus() {
         return ResponseUtil.get(service.findAllAccountStatus(), HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.USER)
+    @Authorized(roles = {RoleUtil.LEADER})
     @GetMapping("/genders")
     public ResponseEntity<ResponseDto> findAllGenders() {
         return ResponseUtil.get(service.findAllGenders(), HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.USER, type = Operation.Type.SAVE_OR_UPDATE)
+    @Authorized(roles = {RoleUtil.ADMIN})
     @PostMapping
     public ResponseEntity<ResponseDto> save(@RequestBody @Validated(SaveInfo.class) UserDto dto) {
         service.save(dto);
         return ResponseUtil.get(MessageUtil.getMessage(messageSource, "user.saved"), HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.USER, type = Operation.Type.SAVE_OR_UPDATE)
+    @Authorized(roles = {RoleUtil.ADMIN})
     @PostMapping("/{id}/add-roles")
     public ResponseEntity<ResponseDto> addRoles(@PathVariable("id") @UUIDConstraint String userId,
                                                 @RequestBody Set<UUID> roleIds) {
         return ResponseUtil.get(service.addRoles(UUID.fromString(userId), roleIds), HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.USER, type = Operation.Type.SAVE_OR_UPDATE)
+    @Authorized(roles = {RoleUtil.ADMIN})
     @PostMapping("/{id}/remove-roles")
     public ResponseEntity<ResponseDto> removeRoles(@PathVariable("id") @UUIDConstraint String userId,
                                                 @RequestBody Set<UUID> roleIds) {
         return ResponseUtil.get(service.removeRoles(UUID.fromString(userId), roleIds), HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.USER, type = Operation.Type.SAVE_OR_UPDATE)
+    @Authorized(roles = {RoleUtil.ADMIN})
     @PutMapping
     public ResponseEntity<ResponseDto> update(@RequestBody @Validated(UpdateInfo.class) UserDto dto) {
         service.update(dto);
         return ResponseUtil.get(MessageUtil.getMessage(messageSource, "user.updated"), HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.USER, type = Operation.Type.REMOVE)
+    @Authorized(roles = {RoleUtil.ADMIN})
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDto> deleteById(@PathVariable("id") @UUIDConstraint String id) {
         service.deleteById(UUID.fromString(id));

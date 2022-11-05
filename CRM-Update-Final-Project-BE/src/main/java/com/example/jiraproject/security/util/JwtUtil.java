@@ -5,21 +5,17 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.jiraproject.common.exception.JiraAuthenticationException;
-import com.example.jiraproject.role.model.Role;
 import com.example.jiraproject.security.dto.RefreshTokenDto;
 import com.example.jiraproject.user.model.User;
 import com.example.jiraproject.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 
 @Component
@@ -30,20 +26,18 @@ public class JwtUtil {
     private final UserService userService;
 
     public String getAccessToken(User user) {
+        long accessTokenTime = 600000L; // 10 minutes
         return JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 120 * 60 * 1000))
-                .withClaim("roles", user.getRoles()
-                        .stream()
-                        .map(Role::getCode)
-                        .toList())
+                .withExpiresAt(new Date(System.currentTimeMillis() + accessTokenTime))
                 .sign(algorithm);
     }
 
     public String getRefreshToken(User user) {
+        long refreshTokenTime = 864000000L; // 10 days
         return JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 24 * 60 * 1000L))
+                .withExpiresAt(new Date(System.currentTimeMillis() + refreshTokenTime))
                 .sign(algorithm);
     }
 
@@ -63,10 +57,7 @@ public class JwtUtil {
         JWTVerifier verifier = JWT.require(algorithm).build();
         DecodedJWT decodedJWT = verifier.verify(token);
         String username = decodedJWT.getSubject();
-        String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        Arrays.stream(roles).forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
-        return new UsernamePasswordAuthenticationToken(username, null, authorities);
+        return new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
     }
 
     public RefreshTokenDto refreshToken(String refreshToken) {

@@ -4,20 +4,17 @@ import com.example.jiraproject.comment.model.Comment;
 import com.example.jiraproject.comment.repository.CommentRepository;
 import com.example.jiraproject.comment.service.CommentService;
 import com.example.jiraproject.common.model.BaseEntity;
-import com.example.jiraproject.common.util.ApiUtil;
 import com.example.jiraproject.file.service.FileService;
 import com.example.jiraproject.notification.model.Notification;
 import com.example.jiraproject.notification.repository.NotificationRepository;
 import com.example.jiraproject.notification.service.NotificationService;
-import com.example.jiraproject.operation.model.Operation;
-import com.example.jiraproject.operation.repository.OperationRepository;
-import com.example.jiraproject.operation.service.OperationService;
 import com.example.jiraproject.project.model.Project;
 import com.example.jiraproject.project.repository.ProjectRepository;
 import com.example.jiraproject.project.service.ProjectService;
 import com.example.jiraproject.role.model.Role;
 import com.example.jiraproject.role.repository.RoleRepository;
 import com.example.jiraproject.role.service.RoleService;
+import com.example.jiraproject.role.util.RoleUtil;
 import com.example.jiraproject.task.model.Task;
 import com.example.jiraproject.task.repository.TaskRepository;
 import com.example.jiraproject.task.service.TaskService;
@@ -25,16 +22,14 @@ import com.example.jiraproject.user.model.User;
 import com.example.jiraproject.user.repository.UserRepository;
 import com.example.jiraproject.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.OperationService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -43,7 +38,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class JiraProjectApplication implements CommandLineRunner {
     private final RoleRepository roleRepository;
-    private final OperationRepository operationRepository;
     private final RoleService roleService;
     private final OperationService operationService;
     private final UserRepository userRepository;
@@ -68,25 +62,25 @@ public class JiraProjectApplication implements CommandLineRunner {
         Role admin = Role
                 .builder()
                 .name("ADMIN")
-                .code("AD")
+                .code(RoleUtil.ADMIN)
                 .description("Quyền của admin")
                 .build();
         Role manager = Role
                 .builder()
                 .name("MANAGER")
-                .code("MGR")
+                .code(RoleUtil.MANAGER)
                 .description("Quyền của giám đốc")
                 .build();
         Role leader = Role
                 .builder()
                 .name("LEADER")
-                .code("LEAD")
+                .code(RoleUtil.LEADER)
                 .description("Quyền của trưởng nhóm")
                 .build();
         Role employee = Role
                 .builder()
                 .name("EMPLOYEE")
-                .code("EMP")
+                .code(RoleUtil.EMPLOYEE)
                 .description("Quyền của nhân viên")
                 .build();
         roleRepository.save(admin);
@@ -96,208 +90,20 @@ public class JiraProjectApplication implements CommandLineRunner {
 
         //-------------------------AUTHORIZATION-----------------------------------
         //----------ADMIN-------------
-        // + can fetch, update and remove in OPERATION API and ROLE API and USER API
+        // + can fetch, update and remove in ROLE API
+        // + can update, remove in USER API
         //----------MANAGER-------------
         // + can update and remove in PROJECT API
         //-----------LEADER--------------
         // + can fetch in PROJECT API
         // + can update and remove in TASK API
         // + can remove in COMMENT API
+        // + can fetch in USER API
         //-----------EMPLOYEE--------------
         // + can fetch in TASK API
         // + can fetch, update in COMMENT API
         // + can fetch, update, remove in NOTIFICATION API
 
-
-
-
-        //--------------------------ADD OPERATIONS-------------------------------
-        //----------OPERATION API-----------
-        Operation fetch = Operation
-                .builder()
-                .name(ApiUtil.OPERATION)
-                .description("Lấy thông tin chức năng")
-                .type(Operation.Type.FETCH)
-                .build();
-        Operation saveOrUpdate = Operation
-                .builder()
-                .name(ApiUtil.OPERATION)
-                .description("Lưu thông tin chức năng")
-                .type(Operation.Type.SAVE_OR_UPDATE)
-                .build();
-        Operation remove = Operation
-                .builder()
-                .name(ApiUtil.OPERATION)
-                .description("Xóa chức năng")
-                .type(Operation.Type.REMOVE)
-                .build();
-        saveOperation(fetch, saveOrUpdate, remove);
-        //add to ROLE ADMIN
-        addOperationsToRole(admin, fetch, saveOrUpdate, remove);
-        //----------ROLE API-----------
-        fetch = Operation
-                .builder()
-                .name(ApiUtil.ROLE)
-                .description("Lấy thông tin quyền")
-                .type(Operation.Type.FETCH)
-                .build();
-        saveOrUpdate = Operation
-                .builder()
-                .name(ApiUtil.ROLE)
-                .description("Lưu thông tin quyền")
-                .type(Operation.Type.SAVE_OR_UPDATE)
-                .build();
-        remove = Operation
-                .builder()
-                .name(ApiUtil.ROLE)
-                .description("Xóa quyền")
-                .type(Operation.Type.REMOVE)
-                .build();
-        saveOperation(fetch, saveOrUpdate, remove);
-        //add to ROLE ADMIN
-        addOperationsToRole(admin, fetch, saveOrUpdate, remove);
-        //----------USER API-----------
-        fetch = Operation
-                .builder()
-                .name(ApiUtil.USER)
-                .description("Lấy thông tin người dùng")
-                .type(Operation.Type.FETCH)
-                .build();
-        saveOrUpdate = Operation
-                .builder()
-                .name(ApiUtil.USER)
-                .description("Lưu thông tin người dùng")
-                .type(Operation.Type.SAVE_OR_UPDATE)
-                .build();
-        remove = Operation
-                .builder()
-                .name(ApiUtil.USER)
-                .description("Xóa người dùng")
-                .type(Operation.Type.REMOVE)
-                .build();
-        saveOperation(fetch, saveOrUpdate, remove);
-        //add to ROLE ADMIN
-        addOperationsToRole(admin, saveOrUpdate, remove);
-        addOperationsToRole(employee, fetch);
-        //----------PROJECT API-----------
-        fetch = Operation
-                .builder()
-                .name(ApiUtil.PROJECT)
-                .description("Lấy thông tin dự án")
-                .type(Operation.Type.FETCH)
-                .build();
-        saveOrUpdate = Operation
-                .builder()
-                .name(ApiUtil.PROJECT)
-                .description("Lưu thông tin dự án")
-                .type(Operation.Type.SAVE_OR_UPDATE)
-                .build();
-        remove = Operation
-                .builder()
-                .name(ApiUtil.PROJECT)
-                .description("Xóa dự án")
-                .type(Operation.Type.REMOVE)
-                .build();
-        saveOperation(fetch, saveOrUpdate, remove);
-        //add to ROLE MANAGER, LEADER
-        addOperationsToRole(manager, saveOrUpdate, remove);
-        addOperationsToRole(employee, fetch);
-        //----------TASK API-----------
-        fetch = Operation
-                .builder()
-                .name(ApiUtil.TASK)
-                .description("Lấy thông tin công việc")
-                .type(Operation.Type.FETCH)
-                .build();
-        saveOrUpdate = Operation
-                .builder()
-                .name(ApiUtil.TASK)
-                .description("Lưu thông tin công việc")
-                .type(Operation.Type.SAVE_OR_UPDATE)
-                .build();
-        remove = Operation
-                .builder()
-                .name(ApiUtil.TASK)
-                .description("Xóa công việc")
-                .type(Operation.Type.REMOVE)
-                .build();
-        saveOperation(fetch, saveOrUpdate, remove);
-        //add to ROLE LEADER and EMPLOYEE
-        addOperationsToRole(leader, saveOrUpdate, remove);
-        addOperationsToRole(employee, fetch);
-        //----------COMMENT API-----------
-        fetch = Operation
-                .builder()
-                .name(ApiUtil.COMMENT)
-                .description("Lấy thông tin bình luận")
-                .type(Operation.Type.FETCH)
-                .build();
-        saveOrUpdate = Operation
-                .builder()
-                .name(ApiUtil.COMMENT)
-                .description("Lưu thông tin bình luận")
-                .type(Operation.Type.SAVE_OR_UPDATE)
-                .build();
-        remove = Operation
-                .builder()
-                .name(ApiUtil.COMMENT)
-                .description("Xóa bình luận")
-                .type(Operation.Type.REMOVE)
-                .build();
-        saveOperation(fetch, saveOrUpdate, remove);
-        //add to ROLE LEADER, EMPLOYEE
-        addOperationsToRole(leader, remove);
-        addOperationsToRole(employee, fetch, saveOrUpdate);
-        //----------NOTIFICATION API-----------
-        fetch = Operation
-                .builder()
-                .name(ApiUtil.NOTIFICATION)
-                .description("Lấy thông tin thông báo")
-                .type(Operation.Type.FETCH)
-                .build();
-        saveOrUpdate = Operation
-                .builder()
-                .name(ApiUtil.NOTIFICATION)
-                .description("Lưu thông tin thông báo")
-                .type(Operation.Type.SAVE_OR_UPDATE)
-                .build();
-        remove = Operation
-                .builder()
-                .name(ApiUtil.NOTIFICATION)
-                .description("Xóa thông báo")
-                .type(Operation.Type.REMOVE)
-                .build();
-        saveOperation(fetch, saveOrUpdate, remove);
-        //add to ROLE EMPLOYEE
-        addOperationsToRole(employee, fetch, saveOrUpdate, remove);
-        //----------FILE API-----------
-        //FETCH FILE => PUBLIC
-        saveOrUpdate = Operation
-                .builder()
-                .name(ApiUtil.FILE)
-                .description("Lưu thông tin file")
-                .type(Operation.Type.SAVE_OR_UPDATE)
-                .build();
-        remove = Operation
-                .builder()
-                .name(ApiUtil.FILE)
-                .description("Xóa file")
-                .type(Operation.Type.REMOVE)
-                .build();
-        saveOperation(saveOrUpdate, remove);
-        //add to ROLE ADMIN, EMPLOYEE
-        addOperationsToRole(admin, remove);
-        addOperationsToRole(employee, saveOrUpdate);
-        //----------PROFILE API-----------
-        fetch = Operation
-                .builder()
-                .name(ApiUtil.PROFILE)
-                .description("Lưu thông tin cá nhân")
-                .type(Operation.Type.SAVE_OR_UPDATE)
-                .build();
-        saveOperation(fetch);
-        //add to ROLE EMPLOYEE
-        addOperationsToRole(employee, fetch);
         //-----------------------------ADD USERS------------------------------
         User user1 = User.builder()
                 .username("admin")
@@ -475,13 +281,6 @@ public class JiraProjectApplication implements CommandLineRunner {
         notificationRepository.save(notification1);
         notificationRepository.save(notification2);
         notificationRepository.save(notification3);
-    }
-    private void saveOperation(Operation...operation) {
-        Arrays.stream(operation).forEach(operationRepository::save);
-    }
-    private void addOperationsToRole(Role role, Operation...operation) {
-        Set<UUID> operationIds = Arrays.stream(operation).map(BaseEntity::getId).collect(Collectors.toSet());;
-        roleService.addOperations(role.getId(), operationIds);
     }
     private void addRolesToUser(User user, Role...role) {
         Set<UUID> roleIds = Arrays.stream(role).map(BaseEntity::getId).collect(Collectors.toSet());

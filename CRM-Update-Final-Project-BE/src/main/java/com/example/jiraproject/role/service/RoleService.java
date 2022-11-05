@@ -2,7 +2,6 @@ package com.example.jiraproject.role.service;
 
 import com.example.jiraproject.common.service.GenericService;
 import com.example.jiraproject.common.util.MessageUtil;
-import com.example.jiraproject.operation.service.OperationService;
 import com.example.jiraproject.role.dto.RoleDto;
 import com.example.jiraproject.role.dto.RoleWithInfo;
 import com.example.jiraproject.role.model.Role;
@@ -22,8 +21,6 @@ import java.util.Set;
 import java.util.UUID;
 
 public interface RoleService extends GenericService<Role, RoleDto, UUID> {
-    RoleWithInfo addOperations(UUID roleId, Set<UUID> operationIds);
-    RoleWithInfo removeOperations(UUID roleId, Set<UUID> operationIds);
     RoleWithInfo findByIdWithInfo(UUID id);
     List<RoleWithInfo> findAllWithInfo();
     List<RoleWithInfo> findAllWithInfoWithPaging(int size, int pageIndex);
@@ -35,7 +32,6 @@ public interface RoleService extends GenericService<Role, RoleDto, UUID> {
 class RoleServiceImpl implements RoleService {
     private final RoleRepository repository;
     private final ModelMapper mapper;
-    private final OperationService operationService;
     private final MessageSource messageSource;
     private static final String UUID_NOT_FOUND = "role.id.not-found";
 
@@ -76,23 +72,4 @@ class RoleServiceImpl implements RoleService {
     public List<Role> findAllByIds(Set<UUID> roleIds) {
         return repository.findAllById(roleIds);
     }
-
-    @Override
-    public RoleWithInfo addOperations(UUID roleId, Set<UUID> operationIds) {
-        Role role = repository.findById(roleId)
-                .orElseThrow(() ->
-                        new ValidationException(MessageUtil.getMessage(messageSource, UUID_NOT_FOUND)));
-        operationService.findAllByIds(operationIds).forEach(role::addOperation);
-        return mapper.map(role, RoleWithInfo.class);
-    }
-
-    @Override
-    public RoleWithInfo removeOperations(UUID roleId, Set<UUID> operationIds) {
-        Role role = repository.findById(roleId)
-                .orElseThrow(() ->
-                        new ValidationException(MessageUtil.getMessage(messageSource, UUID_NOT_FOUND)));
-        operationService.findAllByIds(operationIds).forEach(role::removeOperation);
-        return mapper.map(role, RoleWithInfo.class);
-    }
-
 }

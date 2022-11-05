@@ -1,12 +1,10 @@
 package com.example.jiraproject.common.util;
 
 import com.example.jiraproject.notification.model.Notification;
-import com.example.jiraproject.operation.model.Operation;
 import com.example.jiraproject.project.model.Project;
 import com.example.jiraproject.task.model.Task;
 import com.example.jiraproject.user.model.User;
 import lombok.experimental.UtilityClass;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 
 import java.util.Arrays;
@@ -18,8 +16,6 @@ public class MessageUtil {
     public static final String INVALID_UUID_FORMAT = "Mã ID(UUID) không hợp lệ";
     public static final String INVALID_DATE_FORMAT
             = "Date Format không hợp lệ. Date Format yêu cầu: " + DateTimeUtil.DATE_FORMAT;
-    public static final String INVALID_OPERATION_TYPE
-            = "Loại chức năng không hợp lệ. Loại chức năng gồm: " + Arrays.toString(Operation.Type.values());
     public static final String INVALID_USER_ACCOUNT_STATUS
             = "Trạng thái người dùng không hợp lệ. Trạng thái gồm: " + Arrays.toString(User.AccountStatus.values());
     public static final String INVALID_USER_GENDER
