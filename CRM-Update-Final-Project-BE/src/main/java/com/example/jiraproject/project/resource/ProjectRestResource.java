@@ -11,6 +11,7 @@ import com.example.jiraproject.project.service.ProjectService;
 import com.example.jiraproject.role.util.RoleUtil;
 import com.example.jiraproject.security.aop.Authorized;
 import com.example.jiraproject.security.util.JwtUtil;
+import com.example.jiraproject.user.model.User;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -80,6 +82,20 @@ public class ProjectRestResource {
     public ResponseEntity<ResponseDto> save(@RequestBody @Validated(SaveInfo.class) ProjectDto dto) {
         service.save(dto);
         return ResponseUtil.get(MessageUtil.getMessage(messageSource, "project.saved"), HttpStatus.CREATED);
+    }
+
+    @Authorized(roles = {RoleUtil.MANAGER})
+    @PostMapping("/{id}/add-users")
+    public ResponseEntity<ResponseDto> addUsers(@PathVariable("id") @UUIDConstraint String projectId,
+                                                @RequestBody Set<UUID> userIds) {
+        return ResponseUtil.get(service.addUsers(UUID.fromString(projectId), userIds), HttpStatus.OK);
+    }
+
+    @Authorized(roles = {RoleUtil.MANAGER})
+    @PostMapping("/{id}/remove-users")
+    public ResponseEntity<ResponseDto> removeUsers(@PathVariable("id") @UUIDConstraint String projectId,
+                                                @RequestBody Set<UUID> userIds) {
+        return ResponseUtil.get(service.removeUsers(UUID.fromString(projectId), userIds), HttpStatus.OK);
     }
 
     @Authorized(roles = {RoleUtil.MANAGER})

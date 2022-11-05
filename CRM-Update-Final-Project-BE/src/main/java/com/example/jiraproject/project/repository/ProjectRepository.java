@@ -16,14 +16,14 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
 
     Optional<Project> findByName(String name);
 
-    @Query(value = "select p from Project p left join fetch p.creator left join fetch p.leader where p.id = ?1")
+    @Query(value = "select p from Project p left join fetch p.creator left join fetch p.leader left join fetch p.users where p.id = ?1")
     Optional<Project> findByIdWithInfo(UUID projectId);
 
-    @Query(value = "select p from Project p left join fetch p.creator left join fetch p.leader order by p.createdAt")
+    @Query(value = "select p from Project p left join fetch p.creator left join fetch p.leader left join fetch p.users order by p.createdAt")
     Set<Project> findAllWithCreatorAndLeader();
 
-    @Query(value = "select p from Project p left join fetch p.creator left join fetch p.leader",
-    countQuery = "select count(p) from Project p left join p.creator left join p.leader")
+    @Query(value = "select p from Project p left join fetch p.creator left join fetch p.leader left join fetch p.users",
+    countQuery = "select count(p) from Project p left join p.creator left join p.leader left join p.users")
     Page<Project> findAllWithUserWithPaging(Pageable pageable);
 
 }

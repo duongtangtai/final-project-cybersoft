@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import lombok.experimental.UtilityClass;
+import org.hibernate.mapping.Join;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -43,6 +44,7 @@ public class Project extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    //------------------RELATIONSHIP-----------------
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = JoinTableUtil.PROJECT_CREATOR_REFERENCE_USER)
     private User creator;
@@ -51,9 +53,35 @@ public class Project extends BaseEntity{
     @JoinColumn(name = JoinTableUtil.PROJECT_LEADER_REFERENCE_USER)
     private User leader;
 
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) //delete this project won't affect users
+    @JoinTable(name = JoinTableUtil.PROJECT_JOIN_WITH_USER,
+            joinColumns = @JoinColumn(name = JoinTableUtil.PROJECT_ID),
+            inverseJoinColumns = @JoinColumn(name = JoinTableUtil.USER_ID))
+    private Set<User> users;
+
     @OneToMany(mappedBy = JoinTableUtil.TASK_REFERENCE_PROJECT,
     cascade = CascadeType.ALL) // delete this project will delete all tasks involved
     private Set<Task> tasks;
+
+    //-----------------------------------------------------
+
+    //------------------ENTITY LIFE CYCLES-----------------
+    @PrePersist
+    private void beforeSave() {
+        if (status == null) {
+            status = Status.DOING;
+        }
+    }
+    //------------------------------------------------------
+    public void addUser(User user) {
+        this.users.add(user);
+        user.getProjects().add(this);
+    }
+
+    public void removeUser(User user) {
+        this.users.remove(user);
+        user.getProjects().remove(this);
+    }
 
     @Override
     public int hashCode() {
@@ -84,14 +112,6 @@ public class Project extends BaseEntity{
     public enum Status {
         DOING,
         DONE
-    }
-
-    //------------------ENTITY LIFE CYCLES-----------------
-    @PrePersist
-    private void beforeSave() {
-        if (status == null) {
-            status = Status.DOING;
-        }
     }
 
     @UtilityClass

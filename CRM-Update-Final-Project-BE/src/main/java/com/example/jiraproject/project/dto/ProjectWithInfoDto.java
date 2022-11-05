@@ -4,6 +4,7 @@ import com.example.jiraproject.user.dto.UserDto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -15,4 +16,5 @@ public class ProjectWithInfoDto {
     private String symbol;
     private UserDto creator;
     private UserDto leader;
+    private Set<UserDto> users;
 }

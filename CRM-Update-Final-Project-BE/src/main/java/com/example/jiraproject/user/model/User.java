@@ -84,7 +84,6 @@ public class User extends BaseEntity {
     private AccountStatus accountStatus;
 
     //------------------------RELATIONSHIP-------------------------
-    //----------WITH ROLE--------------
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = JoinTableUtil.USER_JOIN_WITH_ROLE,
@@ -93,6 +92,10 @@ public class User extends BaseEntity {
     )
     private Set<Role> roles;
 
+    @ManyToMany(mappedBy = JoinTableUtil.USER_MAPPED_BY_PROJECT, //delete this user won't affect projects
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Project> projects;
+    //------------------------------------------------------------------
     public void addRole(Role role) {
         this.getRoles().add(role);
         role.getUsers().add(this);
