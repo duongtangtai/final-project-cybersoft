@@ -33,8 +33,7 @@ class ProfileServiceImpl implements ProfileService {
 
     @Override
     public LoginResultDto updateProfile(UserDto dto) { //USER CAN ONLY UPDATE THEIR OWN PROFILE
-        String authenticatedUsername = jwtUtil.getAuthenticatedUsername();
-        if (!authenticatedUsername.equals(dto.getUsername())) { // if this is not their profile
+        if (!jwtUtil.getAuthenticatedUsername().equals(dto.getUsername())) { // if this is not their profile
             throw new ValidationException(MessageUtil.getMessage(messageSource, "user.invalid"));
         }
         User user = userService.findUserById(dto.getId());
@@ -54,6 +53,9 @@ class ProfileServiceImpl implements ProfileService {
     @Override
     public void changePassword(ChangePasswordForm form) {
         User user = userService.findUserById(form.getUserId());
+        if (!jwtUtil.getAuthenticatedUsername().equals(user.getUsername())) {
+            throw new ValidationException(MessageUtil.getMessage(messageSource, "user.invalid"));
+        }
         if (passwordEncoder.matches(form.getOldPassword(), user.getPassword())) {
             user.setPassword(passwordEncoder.encode(form.getNewPassword()));
         } else {

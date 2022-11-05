@@ -1,14 +1,13 @@
 package com.example.jiraproject.file.resource;
 
 import com.example.jiraproject.common.dto.ResponseDto;
-import com.example.jiraproject.common.util.ApiUtil;
 import com.example.jiraproject.common.util.MessageUtil;
 import com.example.jiraproject.common.util.ResponseUtil;
 import com.example.jiraproject.common.validation.annotation.UUIDConstraint;
 import com.example.jiraproject.file.dto.FileInfoDto;
 import com.example.jiraproject.file.service.FileService;
 import com.example.jiraproject.file.util.FileUtil;
-import com.example.jiraproject.operation.model.Operation;
+import com.example.jiraproject.role.util.RoleUtil;
 import com.example.jiraproject.security.aop.Authorized;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -18,10 +17,12 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @RestController
@@ -43,7 +44,6 @@ public class FileRestResource {
                 .body(service.load(id));
     }
 
-    @Authorized(operation = ApiUtil.FILE)
     @GetMapping
     public ResponseEntity<List<FileInfoDto>> getAllFileInfo() {
         List<FileInfoDto> fileList = service.loadAll().map(path -> {
@@ -61,14 +61,13 @@ public class FileRestResource {
         return ResponseEntity.ok().body(fileList);
     }
 
-    @Authorized(operation = ApiUtil.FILE, type = Operation.Type.SAVE_OR_UPDATE)
+    @Authorized(roles = {RoleUtil.EMPLOYEE})
     @PostMapping
-    public ResponseEntity<ResponseDto> uploadFile(@RequestParam("file") MultipartFile file,
-                                                  @RequestParam("userId") @UUIDConstraint String userId) {
-        return ResponseUtil.get(service.save(userId, file), HttpStatus.OK);
+    public ResponseEntity<ResponseDto> uploadFile(@RequestParam("file") MultipartFile file) {
+        return ResponseUtil.get(service.save(file), HttpStatus.OK);
     }
 
-    @Authorized(operation = ApiUtil.FILE, type = Operation.Type.REMOVE)
+    @Authorized(roles = {RoleUtil.EMPLOYEE})
     @DeleteMapping
     public ResponseEntity<ResponseDto> deleteAllFiles() {
         service.deleteAll();

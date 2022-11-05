@@ -2,7 +2,6 @@ package com.example.jiraproject.role.model;
 
 import com.example.jiraproject.common.model.BaseEntity;
 import com.example.jiraproject.common.util.JoinTableUtil;
-import com.example.jiraproject.operation.model.Operation;
 import com.example.jiraproject.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +10,10 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import lombok.experimental.UtilityClass;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Set;
@@ -40,25 +42,8 @@ public class Role extends BaseEntity {
     @NotBlank(message = "{role.description.not-blank}")
     private String description;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = JoinTableUtil.ROLE_JOIN_WITH_OPERATION,
-            joinColumns = @JoinColumn(name = JoinTableUtil.ROLE_ID),
-            inverseJoinColumns = @JoinColumn(name = JoinTableUtil.OPERATION_ID)
-    )
-    private Set<Operation> operations;
-
     @ManyToMany(mappedBy = JoinTableUtil.ROLE_MAPPED_BY_USER)
     private Set<User> users;
-
-    public void addOperation(Operation operation) {
-        this.getOperations().add(operation);
-        operation.getRoles().add(this);
-    }
-
-    public void removeOperation(Operation operation) {
-        this.getOperations().remove(operation);
-        operation.getRoles().remove(this);
-    }
 
     @Override
     public int hashCode() {

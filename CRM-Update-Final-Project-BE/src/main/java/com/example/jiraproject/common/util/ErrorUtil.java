@@ -2,7 +2,6 @@ package com.example.jiraproject.common.util;
 
 import com.example.jiraproject.common.exception.JiraException;
 import com.example.jiraproject.notification.model.Notification;
-import com.example.jiraproject.operation.model.Operation;
 import com.example.jiraproject.project.model.Project;
 import com.example.jiraproject.task.model.Task;
 import com.example.jiraproject.user.model.User;
@@ -33,8 +32,6 @@ public class ErrorUtil {
             return List.of(MessageUtil.INVALID_UUID_FORMAT);
         } else if (LocalDate.class.equals(targetType)){
             return List.of(MessageUtil.INVALID_DATE_FORMAT);
-        } else if (Operation.Type.class.equals(targetType)) {
-            return List.of(MessageUtil.INVALID_OPERATION_TYPE);
         } else if (User.AccountStatus.class.equals(targetType)){
             return List.of(MessageUtil.INVALID_USER_ACCOUNT_STATUS);
         } else if (User.Gender.class.equals(targetType)){
