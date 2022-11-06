@@ -47,7 +47,17 @@ export class StaffService {
   }
 
   deleteStaff(staffId: String): Observable<IStaffModel>{
-    return this.http.delete<IRequestModel>(`${this.config.endpoints.staff.root}`+staffId)
+    return this.http.delete<IRequestModel>(`${this.config.endpoints.staff.root}` + staffId)
+      .pipe(map((val: IRequestModel) => val.content));
+  }
+
+  getStaffsInsideProject(projectId: string): Observable<IStaffModel> {
+    return this.http.get<IRequestModel>(`${this.config.endpoints.staff.insideProject}` + projectId)
+      .pipe(map((val: IRequestModel) => val.content));
+  }
+
+  getStaffsOutsideProject(projectId: string): Observable<IStaffModel>{
+    return this.http.get<IRequestModel>(`${this.config.endpoints.staff.outsideProject}` + projectId)
       .pipe(map((val: IRequestModel) => val.content));
   }
 }

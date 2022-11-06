@@ -6,13 +6,17 @@ import { IStaffModel } from './../../../model/staff.model';
 import { StaffService } from './../../../pages/services/staff.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { IProjectModel } from './../../../model/project.model';
-import {Component, Inject, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import { ProjectService } from 'src/app/pages/services/project.service';
 import {AppSettings} from "../../../app.constants";
 import { DatePipe} from '@angular/common';
 import { CommentService } from 'src/app/pages/services/comment.service';
+import { ThisReceiver } from '@angular/compiler';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
     selector: 'app-dialog',
@@ -76,6 +80,10 @@ export class DialogFormComponent implements OnInit {
                 break;
             case AppSettings.TYPE_COMMENT:
                 this.getCommentForm(element)
+                break;
+            case AppSettings.TYPE_MANAGE_STAFF_IN_PROJECT:
+                this.getStaffInProjectDialog(element)
+                this.form = this.formBuilder.group(""); // we don't need form control
                 break;
             default:
                 break;
@@ -272,6 +280,82 @@ export class DialogFormComponent implements OnInit {
 
 
     //-------------------END COMMENT FORM--------------------
+    //---------------START STAFFS IN PROJECT FORM------------
+    dataSource: any;
+    displayedColumns: string[] = ['hobbies', 'username', 'email', 'action'];
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
+    @ViewChild(MatSort) sort!: MatSort;    
+    manageStaffTable: string = '';
+
+    pagingAndSorting(data: any) {
+        this.dataSource = new MatTableDataSource<IStaffModel>(this.staffData)
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+    }
+
+    filterByKeyword(event: Event) {
+        this.dataSource.filter = (event.target as HTMLInputElement).value;
+    }
+
+    getStaffInProjectDialog(project: any) {
+        this.projectData = project;
+        switch (this.title) {
+            case AppSettings.TITLE_CURRENT_STAFF:
+                this.initRemoveStaffFromProjectTable()
+                break;
+            case AppSettings.TITLE_AVAILABLE_STAFF:
+                this.initAddStaffToProjectTable()
+                break;
+            default:
+                break;
+        }
+    }
+
+    initRemoveStaffFromProjectTable() {
+        //call API to get all the staffs inside this project (with status = ACTIVE)
+        this.staffService.getStaffsInsideProject(this.projectData.id)
+            .subscribe(content => {
+                this.staffData = content;
+                this.pagingAndSorting(this.staffData)
+            })
+    }
+
+    initAddStaffToProjectTable() { 
+        //call API to get all the staffs outside this project (with status = ACTIVE)
+        this.staffService.getStaffsOutsideProject(this.projectData.id)
+            .subscribe(content => {
+                this.staffData = content;
+                this.pagingAndSorting(this.staffData)
+            })
+    }
+
+    toRemoveStaffFromProjectTable() {
+        this.title = AppSettings.TITLE_CURRENT_STAFF
+        this.initRemoveStaffFromProjectTable()
+    }
+
+    toAddStaffToProjectTable() {
+        this.title = AppSettings.TITLE_AVAILABLE_STAFF
+        this.initAddStaffToProjectTable()
+    }
+
+    removeStaffFormProject(staffId: string) {
+        this.projectService.removeStaffFromProject(this.projectData.id, staffId)
+            .subscribe(content => {
+                this.myToastrService.success(content)
+                this.initRemoveStaffFromProjectTable()
+            });
+    }
+
+    addStaffToProject(staffId: string) {
+        this.projectService.addStaffToProject(this.projectData.id, staffId)
+            .subscribe(content => {
+                this.myToastrService.success(content)
+                this.initAddStaffToProjectTable()
+            });
+    }
+
+    //---------------END STAFFS IN PROJECT FORM------------
     //-------------------HANDLE FUNCTIONS--------------------
     convertDateToString(date: any) {
         //convert date to String with pattern ("dd/MM/yyyy") before sending a request to BE
@@ -305,7 +389,9 @@ export class DialogFormComponent implements OnInit {
     }
 
     okFunc($event: any) {
-        if (this.form.valid) {
+        if (this.type == AppSettings.TYPE_MANAGE_STAFF_IN_PROJECT) { //MANAGE STAFF IN PROJECT
+            this.dialogRef.close()
+        } else if  (this.form.valid) { //NOT MANAGE STAFF IN PROJECT
             if (this.type == AppSettings.TYPE_TASK) {
                 this.handleTaskDates()
             }

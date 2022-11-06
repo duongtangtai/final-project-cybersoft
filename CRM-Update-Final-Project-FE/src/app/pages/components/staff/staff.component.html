@@ -89,20 +89,22 @@
                             <input matInput placeholder="By keyword" (keyup)="filterByKeyword($event)">
                         </mat-form-field>
                         <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
-                            <ng-container matColumnDef="avatar">
-                                <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"><strong>Avatar</strong></th>
+                            <ng-container matColumnDef="firstName">
+                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>First Name</strong>
+                                </th>
                                 <td mat-cell *matCellDef="let element">
                                     <img *ngIf="element.avatar == null && element.gender == 'MALE'"
                                          src="/assets/img/avatars/male-default.png" width="50" height="50" alt="">
                                     <img *ngIf="element.avatar == null && element.gender == 'FEMALE'"
                                          src="/assets/img/avatars/female-default.png" width="50" height="50" alt="">
                                     <img *ngIf="element.avatar != null" [src]="element.avatar" width="50" height="50" alt="">
+                                    {{element.firstName}} 
                                 </td>
                             </ng-container>
-                            <ng-container matColumnDef="firstName">
-                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>First Name</strong>
+                            <ng-container matColumnDef="username">
+                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Username</strong>
                                 </th>
-                                <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
+                                <td mat-cell *matCellDef="let element"> {{element.username}} </td>
                             </ng-container>
                             <ng-container matColumnDef="email">
                                 <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Email</strong>
@@ -113,9 +115,9 @@
                                 <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Account Status</strong>
                                 </th>
                                 <td mat-cell *matCellDef="let element">
-                                    <span *ngIf="element.accountStatus == 'ACTIVE'" class="badge bg-label-primary me-1">{{element.accountStatus}} </span>
-                                    <span *ngIf="element.accountStatus == 'TEMPORARILY_BLOCKED'" class="badge bg-label-warning me-1">{{element.accountStatus}} </span>
-                                    <span *ngIf="element.accountStatus == 'PERMANENTLY_BLOCKED'" class="badge bg-label-danger me-1">{{element.accountStatus}} </span>
+                                    <span *ngIf="element.accountStatus == accountStatus[0]" class="badge bg-label-primary me-1">{{element.accountStatus}} </span>
+                                    <span *ngIf="element.accountStatus == accountStatus[1]" class="badge bg-label-warning me-1">{{element.accountStatus}} </span>
+                                    <span *ngIf="element.accountStatus == accountStatus[2]" class="badge bg-label-danger me-1">{{element.accountStatus}} </span>
                                 </td>
                             </ng-container>
                             <ng-container matColumnDef="action">

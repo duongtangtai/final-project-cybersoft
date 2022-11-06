@@ -41,4 +41,16 @@ export class ProjectService {
         return this.http.delete<IRequestModel>(`${this.config.endpoints.project.root}`+projectId)
             .pipe(map((val: IRequestModel) => val.content))
     }
+
+    addStaffToProject(projectId: string, staffId: string) {
+        return this.http.post<IRequestModel>(`${this.config.endpoints.project.addUsers}`+projectId,
+            [staffId])
+            .pipe(map((val: IRequestModel) => val.content))
+    }
+
+    removeStaffFromProject(projectId: string, staffId: string) {
+        return this.http.post<IRequestModel>(`${this.config.endpoints.project.removeUsers}`+projectId,
+            [staffId])
+        .pipe(map((val: IRequestModel) => val.content))
+    }
 }

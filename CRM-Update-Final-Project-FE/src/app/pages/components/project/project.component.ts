@@ -99,4 +99,17 @@ export class ProjectComponent implements OnInit {
             },
         }).afterClosed().subscribe(() => this.getAllProject())
     }
+
+    manageStaffs(project: any) {
+        this.dialog.open(DialogFormComponent, {
+            panelClass: 'widthDialogForm',
+            data: {
+                title: AppSettings.TITLE_CURRENT_STAFF,
+                type: AppSettings.TYPE_MANAGE_STAFF_IN_PROJECT,
+                element: project,
+            },
+            width: "75%",
+            height: "85%",
+        }).afterClosed().subscribe(() => this.getAllProject())
+    }
 }

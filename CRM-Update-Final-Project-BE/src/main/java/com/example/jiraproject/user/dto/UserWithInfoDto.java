@@ -1,5 +1,6 @@
 package com.example.jiraproject.user.dto;
 
+import com.example.jiraproject.project.dto.ProjectDto;
 import com.example.jiraproject.role.dto.RoleDto;
 import com.example.jiraproject.user.model.User;
 import lombok.Getter;
@@ -16,6 +17,7 @@ public class UserWithInfoDto {
     private String password;
     private String firstName;
     private String lastName;
+    private User.Gender gender;
     private String avatar;
     private String email;
     private String facebookUrl;
@@ -24,4 +26,5 @@ public class UserWithInfoDto {
     private String hobbies;
     private User.AccountStatus accountStatus;
     private Set<RoleDto> roles;
+    private Set<ProjectDto> projects;
 }

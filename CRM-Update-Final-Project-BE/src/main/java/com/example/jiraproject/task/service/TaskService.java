@@ -54,12 +54,14 @@ class TaskServiceImpl implements TaskService {
         return this.mapper;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Task findTaskById(UUID taskId) {
         return repository.findById(taskId)
                 .orElseThrow(() -> new ValidationException(MessageUtil.getMessage(messageSource, UUID_NOT_FOUND)));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public TaskWithInfoDto findByIdWithInfo(UUID taskId) {
         Task task = repository.findByIdWithInfo(taskId)
@@ -67,6 +69,7 @@ class TaskServiceImpl implements TaskService {
         return mapper.map(task, TaskWithInfoDto.class);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<TaskWithInfoDto> findAllWithInfo() {
         return repository.findAllWithInfo().stream()
@@ -74,6 +77,7 @@ class TaskServiceImpl implements TaskService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<TaskWithInfoDto> findAllWithInfoWithPaging(int size, int pageIndex) {
         return repository.findAllWithInfoWithPaging(PageRequest.of(pageIndex, size, Sort.by("createdAt")))
@@ -81,6 +85,7 @@ class TaskServiceImpl implements TaskService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<String> findAllStatus() {
         return Arrays.stream(Task.Status.values()).map(Enum::toString).toList();
