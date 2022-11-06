@@ -32,6 +32,8 @@ public interface UserService extends GenericService<User, UserDto, UUID> {
     List<UserWithInfoDto> findAllWithInfoWithPaging(int size, int pageIndex);
     List<String> findAllAccountStatus();
     List<String> findAllGenders();
+    List<UserWithInfoDto> findAllInsideProject(UUID projectId);
+    List<UserWithInfoDto> findAllOutsideProject(UUID projectId);
     UserWithInfoDto addRoles(UUID userId, Set<UUID> roleIds);
     UserWithInfoDto removeRoles(UUID userId, Set<UUID> roleIds);
     UserDto save(UserDto dto);
@@ -60,23 +62,27 @@ class UserServiceImpl implements UserService {
         return this.mapper;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public User findUserById(UUID id) {
         return repository.findById(id).orElseThrow(() ->
                 new ValidationException(MessageUtil.getMessage(messageSource, UUID_NOT_FOUND)));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public User findByUsername(String username) {
         return repository.findByUsername(username).orElseThrow(() ->
                 new ValidationException(MessageUtil.getMessage(messageSource, USERNAME_NOT_FOUND)));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<User> findAllByIds(Set<UUID> ids) {
         return repository.findAllById(ids);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserWithInfoDto findByIdWithInfo(UUID userId) {
         User user = repository.findByIdWithInfo(userId)
@@ -85,6 +91,7 @@ class UserServiceImpl implements UserService {
         return mapper.map(user, UserWithInfoDto.class);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<UserWithInfoDto> findAllWithInfo() {
         return repository.findAllWithInfo().stream()
@@ -92,6 +99,7 @@ class UserServiceImpl implements UserService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<UserWithInfoDto> findAllWithInfoWithPaging(int size, int pageIndex) {
         return repository.findAllWithInfoWithPaging(PageRequest.of(pageIndex, size, Sort.by("createdAt")))
@@ -100,14 +108,30 @@ class UserServiceImpl implements UserService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<String> findAllAccountStatus() {
         return Arrays.stream(User.AccountStatus.values()).map(Enum::toString).toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<String> findAllGenders() {
         return Arrays.stream(User.Gender.values()).map(Enum::toString).toList();
+    }
+
+    @Override
+    public List<UserWithInfoDto> findAllInsideProject(UUID projectId) {
+        return repository.findAllInsideProject(projectId)
+                .stream().map(user -> mapper.map(user, UserWithInfoDto.class))
+                .toList();
+    }
+
+    @Override
+    public List<UserWithInfoDto> findAllOutsideProject(UUID projectId) {
+        return repository.findAllOutsideProject(projectId)
+                .stream().map(user -> mapper.map(user, UserWithInfoDto.class))
+                .toList();
     }
 
     @Override

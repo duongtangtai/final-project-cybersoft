@@ -52,6 +52,7 @@ class CommentServiceImpl implements CommentService {
         return this.mapper;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public CommentWithInfoDto findByIdWithInfo(UUID id) {
         Comment comment = repository.findByIdWithInfo(id)
@@ -59,6 +60,7 @@ class CommentServiceImpl implements CommentService {
         return mapper.map(comment, CommentWithInfoDto.class);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<CommentWithInfoDto> findAllWithInfo() {
         return repository.findAllWithInfo().stream()
@@ -66,6 +68,7 @@ class CommentServiceImpl implements CommentService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<CommentWithInfoDto> findAllWithInfoWithPaging(int size, int pageIndex) {
         return repository.findAllWithInfoWithPaging(PageRequest.of(pageIndex, size, Sort.by("createdAt")))
@@ -74,6 +77,7 @@ class CommentServiceImpl implements CommentService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<CommentWithInfoDto> findAllWithInfoByTaskId(UUID taskId) {
         Task task = taskService.findTaskById(taskId);

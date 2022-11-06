@@ -1,3 +1,4 @@
+import { IProjectModel } from './project.model';
 export interface IStaffModel {
     id?: string,
     username?: string,
@@ -11,5 +12,7 @@ export interface IStaffModel {
     occupation?: string,
     department?: string,
     hobbies?: string,
-    accountStatus?: string
+    accountStatus?: string,
+    roles?: string[],
+    projects?: IProjectModel[],
 }

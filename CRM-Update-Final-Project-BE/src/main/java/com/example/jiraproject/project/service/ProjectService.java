@@ -59,6 +59,7 @@ class ProjectServiceImpl implements ProjectService {
                         new ValidationException(MessageUtil.getMessage(messageSource, UUID_NOT_FOUND)));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Project findProjectByName(String name) {
         return repository.findByName(name)
@@ -66,6 +67,7 @@ class ProjectServiceImpl implements ProjectService {
                         new ValidationException(MessageUtil.getMessage(messageSource, "project.name.not-found")));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public ProjectWithInfoDto findByIdWithInfo(UUID projectId) {
         Project project = repository.findByIdWithInfo(projectId)
@@ -74,12 +76,14 @@ class ProjectServiceImpl implements ProjectService {
         return mapper.map(project, ProjectWithInfoDto.class);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<ProjectWithInfoDto> findAllWithInfo() {
         return repository.findAllWithCreatorAndLeader().stream()
                 .map(model -> mapper.map(model, ProjectWithInfoDto.class)).toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<ProjectWithInfoDto> findAllWithInfoWithPaging(int size, int pageIndex) {
         return repository.findAllWithUserWithPaging(PageRequest.of(pageIndex, size, Sort.by("createdAt")))
@@ -88,6 +92,7 @@ class ProjectServiceImpl implements ProjectService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<String> findAllProjectStatus() {
         return Arrays.stream(Project.Status.values()).map(Enum::toString).toList();

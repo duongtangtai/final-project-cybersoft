@@ -196,6 +196,86 @@ public class JiraProjectApplication implements CommandLineRunner {
         projectRepository.save(project2);
         projectRepository.save(project3);
 
+        //CREATE USERS TO ADD TO PROJECT
+        User userLeader1 = User.builder()
+                .username("leader1")
+                .password(passwordEncoder.encode("12345"))
+                .firstName("Leader1")
+                .lastName("Leader1")
+                .gender(User.Gender.MALE)
+                .email("leader1@gmail.com")
+                .facebookUrl("facebook url")
+                .occupation("Technical Leader")
+                .department("IT DEPARTMENT")
+                .hobbies("Doing some stuff")
+                .accountStatus(User.AccountStatus.ACTIVE)
+                .build();
+        User userStaff1 = User.builder()
+                .username("staff1")
+                .password(passwordEncoder.encode("12345"))
+                .firstName("Staff1")
+                .lastName("Staff1")
+                .gender(User.Gender.MALE)
+                .email("staff1@gmail.com")
+                .facebookUrl("facebook url")
+                .occupation("Technical Staff")
+                .department("IT DEPARTMENT")
+                .hobbies("Doing some stuff")
+                .accountStatus(User.AccountStatus.ACTIVE)
+                .build();
+        User userStaff2 = User.builder()
+                .username("staff2")
+                .password(passwordEncoder.encode("12345"))
+                .firstName("Staff2")
+                .lastName("Staff2")
+                .gender(User.Gender.MALE)
+                .email("staff2@gmail.com")
+                .facebookUrl("facebook url")
+                .occupation("Technical Staff")
+                .department("IT DEPARTMENT")
+                .hobbies("Doing some stuff")
+                .accountStatus(User.AccountStatus.ACTIVE)
+                .build();
+        User userStaff3 = User.builder()
+                .username("staff3")
+                .password(passwordEncoder.encode("12345"))
+                .firstName("Staff3")
+                .lastName("Staff3")
+                .gender(User.Gender.FEMALE)
+                .email("staff3@gmail.com")
+                .facebookUrl("facebook url")
+                .occupation("Technical Staff")
+                .department("IT DEPARTMENT")
+                .hobbies("Doing some stuff")
+                .accountStatus(User.AccountStatus.ACTIVE)
+                .build();
+        User userStaff4 = User.builder()
+                .username("staff4")
+                .password(passwordEncoder.encode("12345"))
+                .firstName("Staff4")
+                .lastName("Staff4")
+                .gender(User.Gender.FEMALE)
+                .email("staff4@gmail.com")
+                .facebookUrl("facebook url")
+                .occupation("Technical Staff")
+                .department("IT DEPARTMENT")
+                .hobbies("Doing some stuff")
+                .accountStatus(User.AccountStatus.ACTIVE)
+                .build();
+        userRepository.save(userLeader1);
+        userRepository.save(userStaff1);
+        userRepository.save(userStaff2);
+        userRepository.save(userStaff3);
+        userRepository.save(userStaff4);
+        //Add staffs to projects
+        addUsersToProject(project1, userStaff1, userStaff2);
+        addUsersToProject(project2, userStaff3);
+        //add Roles to users
+        addRolesToUser(userStaff1, employee);
+        addRolesToUser(userStaff2, employee);
+        addRolesToUser(userStaff3, employee);
+        addRolesToUser(userStaff4, employee);
+
         // ADD TASKS
         Task task1 = Task.builder()
                 .name("DA1 - Chuẩn bị cho dự án")
@@ -285,5 +365,9 @@ public class JiraProjectApplication implements CommandLineRunner {
     private void addRolesToUser(User user, Role...role) {
         Set<UUID> roleIds = Arrays.stream(role).map(BaseEntity::getId).collect(Collectors.toSet());
         userService.addRoles(user.getId(), roleIds);
+    }
+    private void addUsersToProject(Project project, User...user) {
+        Set<UUID> userIds = Arrays.stream(user).map(BaseEntity::getId).collect(Collectors.toSet());
+        projectService.addUsers(project.getId(), userIds);
     }
 }

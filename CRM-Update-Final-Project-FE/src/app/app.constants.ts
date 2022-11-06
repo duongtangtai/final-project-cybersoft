@@ -7,12 +7,17 @@ export class AppSettings {
     public static TITLE_ERROR = "ERROR";
     public static TITLE_INFO = "INFO";
 
+    //FORM FOR PROJECT
     public static TITLE_ADD_PROJECT = 'Create Project';
     public static TYPE_PROJECT = 'project';
     public static FORM_ADD_PROJECT = 'Create Project';
     public static FORM_UPDATE_PROJECT = 'Update Project';
     public static FORM_DELETE_PROJECT = 'Delete Project';
     public static MESSAGE_DELETE_PROJECT = 'Do you really want to delete this project?'
+    //FORM FOR ADD STAFFS TO PROJECT
+    public static TITLE_CURRENT_STAFF = 'CURRENT STAFFS'
+    public static TITLE_AVAILABLE_STAFF = 'AVAILABLE STAFFS'
+    public static TYPE_MANAGE_STAFF_IN_PROJECT = 'Manage Staffs'
 
     // FORM FOR STAFF
     public static TYPE_STAFF = 'staff';

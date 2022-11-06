@@ -119,10 +119,13 @@
                                         </button>
                                         <div class="dropdown-menu">
                                             <button class="dropdown-item" 
+                                                (click)="manageStaffs(element)"><i class='bx bxs-user me-1 bx-tada-hover'></i>Manage Staffs</button
+                                            >
+                                            <button class="dropdown-item" 
                                                 (click)="updateProject(element)"><i class="bx bx-edit-alt me-1 bx-tada-hover"></i> Update</button
                                             >
                                             <button class="dropdown-item"
-                                            (click)="deleteProject(element.id)"><i class="bx bx-trash me-1 bx-tada-hover"></i> Delete</button
+                                                (click)="deleteProject(element.id)"><i class="bx bx-trash me-1 bx-tada-hover"></i> Delete</button
                                             >
                                         </div>
                                     </div>

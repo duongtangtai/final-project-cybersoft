@@ -10,8 +10,6 @@ import com.example.jiraproject.project.dto.ProjectDto;
 import com.example.jiraproject.project.service.ProjectService;
 import com.example.jiraproject.role.util.RoleUtil;
 import com.example.jiraproject.security.aop.Authorized;
-import com.example.jiraproject.security.util.JwtUtil;
-import com.example.jiraproject.user.model.User;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -31,7 +29,6 @@ import java.util.UUID;
 public class ProjectRestResource {
     private final ProjectService service;
     private final MessageSource messageSource;
-    private final JwtUtil jwtUtil;
 
     @Authorized(roles = {RoleUtil.LEADER})
     @GetMapping("/{id}")
@@ -85,17 +82,21 @@ public class ProjectRestResource {
     }
 
     @Authorized(roles = {RoleUtil.MANAGER})
-    @PostMapping("/{id}/add-users")
+    @PostMapping("/add-users/{id}")
     public ResponseEntity<ResponseDto> addUsers(@PathVariable("id") @UUIDConstraint String projectId,
                                                 @RequestBody Set<UUID> userIds) {
-        return ResponseUtil.get(service.addUsers(UUID.fromString(projectId), userIds), HttpStatus.OK);
+        service.addUsers(UUID.fromString(projectId), userIds);
+        return ResponseUtil.get(MessageUtil.getMessage(messageSource, "project.add-user.successfully"),
+                HttpStatus.OK);
     }
 
     @Authorized(roles = {RoleUtil.MANAGER})
-    @PostMapping("/{id}/remove-users")
+    @PostMapping("/remove-users/{id}")
     public ResponseEntity<ResponseDto> removeUsers(@PathVariable("id") @UUIDConstraint String projectId,
                                                 @RequestBody Set<UUID> userIds) {
-        return ResponseUtil.get(service.removeUsers(UUID.fromString(projectId), userIds), HttpStatus.OK);
+        service.removeUsers(UUID.fromString(projectId), userIds);
+        return ResponseUtil.get(MessageUtil.getMessage(messageSource, "project.remove-user.successfully"),
+                HttpStatus.OK);
     }
 
     @Authorized(roles = {RoleUtil.MANAGER})

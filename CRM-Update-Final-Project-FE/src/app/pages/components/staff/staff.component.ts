@@ -20,7 +20,7 @@ export class StaffComponent implements OnInit {
     staffs: any;
     accountStatus: string[] = ['ACTIVE', 'TEMPORARILY_BLOCKED', 'PERMANENTLY_BLOCKED'];
 
-    displayedColumns: string[] = ['avatar', 'firstName', 'email', 'accountStatus', 'action'];
+    displayedColumns: string[] = ['firstName', 'username', 'email', 'accountStatus', 'action'];
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     @ViewChild(MatSort) sort!: MatSort;
 

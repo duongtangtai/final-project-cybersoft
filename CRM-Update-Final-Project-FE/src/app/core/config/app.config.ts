@@ -18,11 +18,15 @@ export const AppConfig: PTSAppConfig = {
     project: {
       root: `${apiUrl}/v1/projects/`,
       getStatus: `${apiUrl}/v1/projects/status/`,
+      addUsers: `${apiUrl}/v1/projects/add-users/`,
+      removeUsers: `${apiUrl}/v1/projects/remove-users/`,
     },
     staff: {
       root: `${apiUrl}/v1/users/`,
       getStatus: `${apiUrl}/v1/users/account-status/`,
       getGenders: `${apiUrl}/v1/users/genders/`,
+      insideProject: `${apiUrl}/v1/users/inside-project/`,
+      outsideProject: `${apiUrl}/v1/users/outside-project/`,
     },
     task: {
       root: `${apiUrl}/v1/tasks/`,

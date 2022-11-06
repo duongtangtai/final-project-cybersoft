@@ -1,3 +1,4 @@
+import { ProfileService } from './../../pages/services/profile.service';
 import {HttpBackend, HttpClient} from "@angular/common/http";
 import {Inject, Injectable} from "@angular/core";
 import {Router} from "@angular/router";
@@ -22,6 +23,7 @@ export class AuthService {
         private localStorageService: LocalStorageService,
         @Inject(APP_CONFIG) private config: PTSAppConfig,
         private handler: HttpBackend,
+        private profileService: ProfileService,
     ) {
         this.httpBackend = new HttpClient(handler)
     }
@@ -85,6 +87,10 @@ export class AuthService {
             user.refreshToken
         ));
         this.storeAuthData(user);
+        const avatarUrl = user.userData.avatar;
+        if (avatarUrl != undefined) {
+            this.profileService.sendData(avatarUrl);
+        }
     }
 
     private storeAuthData(userData: IUserModel) {

@@ -49,6 +49,7 @@ class NotificationServiceImpl implements NotificationService {
         return this.mapper;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public NotificationWithInfoDto findByIdWithInfo(UUID id) {
         Notification notification = repository.findByIdWithInfo(id).orElseThrow(() ->
@@ -56,6 +57,7 @@ class NotificationServiceImpl implements NotificationService {
         return mapper.map(notification, NotificationWithInfoDto.class);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<NotificationWithInfoDto> findAllWithInfo() {
         return repository.findAllWithInfo().stream()
@@ -63,6 +65,7 @@ class NotificationServiceImpl implements NotificationService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<NotificationWithInfoDto> findAllWithInfoWithPaging(int size, int pageIndex) {
         return repository.findAllWithInfoWithPaging(PageRequest.of(pageIndex, size, Sort.by("createdAt")))
@@ -71,6 +74,7 @@ class NotificationServiceImpl implements NotificationService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<NotificationWithInfoDto> findAllWithInfoByReceiverId(UUID userId) {
         User user = userService.findUserById(userId);

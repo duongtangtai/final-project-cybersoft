@@ -45,6 +45,7 @@ class RoleServiceImpl implements RoleService {
         return this.mapper;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public RoleWithInfo findByIdWithInfo(UUID id) {
         Role role = repository.findByIdWithInfo(id)
@@ -53,6 +54,7 @@ class RoleServiceImpl implements RoleService {
         return mapper.map(role, RoleWithInfo.class);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<RoleWithInfo> findAllWithInfo() {
         return repository.findAllWithInfo().stream()
@@ -60,6 +62,7 @@ class RoleServiceImpl implements RoleService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<RoleWithInfo> findAllWithInfoWithPaging(int size, int pageIndex) {
         return repository.findAllWithInfoWithPaging(PageRequest.of(pageIndex, size, Sort.by("createdAt")))
@@ -68,6 +71,7 @@ class RoleServiceImpl implements RoleService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Role> findAllByIds(Set<UUID> roleIds) {
         return repository.findAllById(roleIds);

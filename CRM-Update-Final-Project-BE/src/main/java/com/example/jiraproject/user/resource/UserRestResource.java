@@ -6,7 +6,6 @@ import com.example.jiraproject.common.util.ResponseUtil;
 import com.example.jiraproject.common.validation.annotation.UUIDConstraint;
 import com.example.jiraproject.common.validation.group.SaveInfo;
 import com.example.jiraproject.common.validation.group.UpdateInfo;
-import com.example.jiraproject.role.model.Role;
 import com.example.jiraproject.role.util.RoleUtil;
 import com.example.jiraproject.security.aop.Authorized;
 import com.example.jiraproject.user.dto.UserDto;
@@ -16,8 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -86,6 +83,20 @@ public class UserRestResource {
     @GetMapping("/genders")
     public ResponseEntity<ResponseDto> findAllGenders() {
         return ResponseUtil.get(service.findAllGenders(), HttpStatus.OK);
+    }
+
+    @Authorized(roles = {RoleUtil.MANAGER})
+    @GetMapping("/inside-project/{projectId}")
+    public ResponseEntity<ResponseDto> findAllInsideProject(@PathVariable("projectId")
+                                                            @UUIDConstraint String projectId) {
+        return ResponseUtil.get(service.findAllInsideProject(UUID.fromString(projectId)), HttpStatus.OK);
+    }
+
+    @Authorized(roles = {RoleUtil.MANAGER})
+    @GetMapping("/outside-project/{projectId}")
+    public ResponseEntity<ResponseDto> findAllByProject(@PathVariable("projectId")
+                                                        @UUIDConstraint String projectId) {
+        return ResponseUtil.get(service.findAllOutsideProject(UUID.fromString(projectId)), HttpStatus.OK);
     }
 
     @Authorized(roles = {RoleUtil.ADMIN})
