@@ -1,3 +1,4 @@
+import { filter } from 'rxjs';
 import { map } from 'rxjs';
 import { MyToastrService } from './../../services/my-toastr.service';
 import { ITaskModel } from 'src/app/model/task.model';
@@ -7,7 +8,7 @@ import { StaffService } from './../../../pages/services/staff.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { IProjectModel } from './../../../model/project.model';
 import {Component, Inject, Input, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import { ProjectService } from 'src/app/pages/services/project.service';
 import {AppSettings} from "../../../app.constants";
@@ -17,6 +18,7 @@ import { ThisReceiver } from '@angular/compiler';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { RoleService } from 'src/app/pages/services/role.service';
 
 @Component({
     selector: 'app-dialog',
@@ -55,6 +57,7 @@ export class DialogFormComponent implements OnInit {
         private staffService: StaffService,
         private taskService: TaskService,
         private commentService: CommentService,
+        private roleService: RoleService,
         private myToastrService: MyToastrService,
     ) {
     }
@@ -82,8 +85,11 @@ export class DialogFormComponent implements OnInit {
                 this.getCommentForm(element)
                 break;
             case AppSettings.TYPE_MANAGE_STAFF_IN_PROJECT:
-                this.getStaffInProjectDialog(element)
+                this.getManageStaffInProjectDialog(element)
                 this.form = this.formBuilder.group(""); // we don't need form control
+                break;
+            case AppSettings.TYPE_MANAGE_ROLE:
+                this.getManageRoleInStaffDialog(element)
                 break;
             default:
                 break;
@@ -236,7 +242,6 @@ export class DialogFormComponent implements OnInit {
     //-------------------START COMMENT FORM--------------------
 
     initCommentForm() {
-        console.log("INIT COMMENT FORM")
         this.commentService.getCommentByTaskId(this.element.id)
             .subscribe(content => {
                 this.commentData = content
@@ -280,9 +285,9 @@ export class DialogFormComponent implements OnInit {
 
 
     //-------------------END COMMENT FORM--------------------
-    //---------------START STAFFS IN PROJECT FORM------------
+    //---------------START MANAGE STAFFS IN PROJECT------------
     dataSource: any;
-    displayedColumns: string[] = ['hobbies', 'username', 'email', 'action'];
+    displayedColumns: string[] = ['hobbies', 'username', 'email','projects', 'action'];
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     @ViewChild(MatSort) sort!: MatSort;    
     manageStaffTable: string = '';
@@ -297,7 +302,7 @@ export class DialogFormComponent implements OnInit {
         this.dataSource.filter = (event.target as HTMLInputElement).value;
     }
 
-    getStaffInProjectDialog(project: any) {
+    getManageStaffInProjectDialog(project: any) {
         this.projectData = project;
         switch (this.title) {
             case AppSettings.TITLE_CURRENT_STAFF:
@@ -355,7 +360,33 @@ export class DialogFormComponent implements OnInit {
             });
     }
 
-    //---------------END STAFFS IN PROJECT FORM------------
+    //---------------END MANAGE STAFFS IN PROJECT------------
+    //--------------START MANAGE ROLES IN STAFF------------
+    staff: any = '';
+    roleData: any;
+
+    getManageRoleInStaffDialog(staff: any) {
+        this.form = this.formBuilder.group({})
+        this.staffService.getStaffByIdWithInfo(staff.id).subscribe(content => {
+            this.staff = content;
+            let staffRoles: string[] = [];
+            for (let i = 0 ; i < this.staff.roles.length ; i++) {
+                staffRoles.push(this.staff.roles[i].code)
+            }
+            this.roleService.getRoles().subscribe(content => {
+                this.roleData = content
+                for (let i = 0 ; i < this.roleData.length ; i++) {
+                    if (staffRoles.includes(this.roleData[i].code)) {
+                        this.form.addControl(this.roleData[i].id, new FormControl(true)) 
+                    } else {
+                        this.form.addControl(this.roleData[i].id, new FormControl(false))
+                    }
+                }
+            })
+        })
+    }
+
+    //--------------END MANAGE ROLES IN STAFF------------
     //-------------------HANDLE FUNCTIONS--------------------
     convertDateToString(date: any) {
         //convert date to String with pattern ("dd/MM/yyyy") before sending a request to BE
@@ -391,6 +422,15 @@ export class DialogFormComponent implements OnInit {
     okFunc($event: any) {
         if (this.type == AppSettings.TYPE_MANAGE_STAFF_IN_PROJECT) { //MANAGE STAFF IN PROJECT
             this.dialogRef.close()
+        } else if (this.type == AppSettings.TYPE_MANAGE_ROLE) {
+            let submitForm: string[] = [];
+            Object.keys(this.form.controls).forEach(key => {
+                if (this.form.get(key).value == true) {
+                    submitForm.push(key)
+                }
+            });
+            this.staffService.updateRoles(this.staff.id, submitForm)
+                .subscribe(content => this.succeededAndClose(content))
         } else if  (this.form.valid) { //NOT MANAGE STAFF IN PROJECT
             if (this.type == AppSettings.TYPE_TASK) {
                 this.handleTaskDates()

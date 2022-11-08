@@ -163,9 +163,9 @@ public class JiraProjectApplication implements CommandLineRunner {
         //ADD ROLES TO ADMIN
         addRolesToUser(user1, admin, manager, leader, employee);
         //ADD ROLES TO MANAGER
-        addRolesToUser(user2, manager, leader, employee);
+        addRolesToUser(user2, manager);
         //ADD ROLES TO LEADER
-        addRolesToUser(user3, leader, employee);
+        addRolesToUser(user3, leader);
         //ADD ROLES TO EMPLOYEE
         addRolesToUser(user4, employee);
 
@@ -271,6 +271,7 @@ public class JiraProjectApplication implements CommandLineRunner {
         addUsersToProject(project1, userStaff1, userStaff2);
         addUsersToProject(project2, userStaff3);
         //add Roles to users
+        addRolesToUser(userLeader1, leader);
         addRolesToUser(userStaff1, employee);
         addRolesToUser(userStaff2, employee);
         addRolesToUser(userStaff3, employee);
@@ -364,7 +365,7 @@ public class JiraProjectApplication implements CommandLineRunner {
     }
     private void addRolesToUser(User user, Role...role) {
         Set<UUID> roleIds = Arrays.stream(role).map(BaseEntity::getId).collect(Collectors.toSet());
-        userService.addRoles(user.getId(), roleIds);
+        userService.updateRoles(user.getId(), roleIds);
     }
     private void addUsersToProject(Project project, User...user) {
         Set<UUID> userIds = Arrays.stream(user).map(BaseEntity::getId).collect(Collectors.toSet());

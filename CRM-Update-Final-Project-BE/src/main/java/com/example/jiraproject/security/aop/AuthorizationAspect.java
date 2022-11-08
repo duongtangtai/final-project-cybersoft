@@ -37,7 +37,7 @@ public class AuthorizationAspect {
         }
         //requiredRoles must exists in userRoles
         boolean isValid = Arrays.stream(requiredRoles)
-                .allMatch(requiredRole -> userRoles.stream()
+                .anyMatch(requiredRole -> userRoles.stream()
                         .anyMatch(requiredRole::equals));
         if (!isValid) {
             throw new JiraAuthorizationException(MessageUtil.getMessage(messageSource, "unauthorized"));

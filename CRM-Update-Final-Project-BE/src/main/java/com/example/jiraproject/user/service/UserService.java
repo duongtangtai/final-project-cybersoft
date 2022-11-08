@@ -2,6 +2,8 @@ package com.example.jiraproject.user.service;
 
 import com.example.jiraproject.common.service.GenericService;
 import com.example.jiraproject.common.util.MessageUtil;
+import com.example.jiraproject.role.model.Role;
+import com.example.jiraproject.role.repository.RoleRepository;
 import com.example.jiraproject.role.service.RoleService;
 import com.example.jiraproject.user.dto.UserDto;
 import com.example.jiraproject.user.dto.UserWithInfoDto;
@@ -18,10 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ValidationException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public interface UserService extends GenericService<User, UserDto, UUID> {
     User findUserById(UUID id);
@@ -34,8 +33,7 @@ public interface UserService extends GenericService<User, UserDto, UUID> {
     List<String> findAllGenders();
     List<UserWithInfoDto> findAllInsideProject(UUID projectId);
     List<UserWithInfoDto> findAllOutsideProject(UUID projectId);
-    UserWithInfoDto addRoles(UUID userId, Set<UUID> roleIds);
-    UserWithInfoDto removeRoles(UUID userId, Set<UUID> roleIds);
+    UserWithInfoDto updateRoles(UUID userId, Set<UUID> roleIds);
     UserDto save(UserDto dto);
     UserDto update(UserDto dto);
 }
@@ -47,6 +45,7 @@ class UserServiceImpl implements UserService {
     private final UserRepository repository;
     private final ModelMapper mapper;
     private final RoleService roleService;
+    private final RoleRepository roleRepository;
     private final MessageSource messageSource;
     private static final String UUID_NOT_FOUND = "user.id.not-found";
     private static final String USERNAME_NOT_FOUND = "user.username.not-found";
@@ -135,20 +134,15 @@ class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserWithInfoDto addRoles(UUID userId, Set<UUID> roleIds) {
+    public UserWithInfoDto updateRoles(UUID userId, Set<UUID> roleIds) {
         User user = repository.findById(userId)
                 .orElseThrow(() ->
                         new ValidationException(MessageUtil.getMessage(messageSource, UUID_NOT_FOUND)));
+        roleRepository.findAll().forEach(role -> {
+            user.getRoles().remove(role);
+            role.getUsers().remove(user);
+        });
         roleService.findAllByIds(roleIds).forEach(user::addRole);
-        return mapper.map(user, UserWithInfoDto.class);
-    }
-
-    @Override
-    public UserWithInfoDto removeRoles(UUID userId, Set<UUID> roleIds) {
-        User user = repository.findById(userId)
-                .orElseThrow(() ->
-                        new ValidationException(MessageUtil.getMessage(messageSource, UUID_NOT_FOUND)));
-        roleService.findAllByIds(roleIds).forEach(user::removeRole);
         return mapper.map(user, UserWithInfoDto.class);
     }
 

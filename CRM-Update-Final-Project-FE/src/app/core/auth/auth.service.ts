@@ -89,7 +89,22 @@ export class AuthService {
         this.storeAuthData(user);
         const avatarUrl = user.userData.avatar;
         if (avatarUrl != undefined) {
-            this.profileService.sendData(avatarUrl);
+            console.log(avatarUrl)
+            this.profileService.sendAvatarUrl(avatarUrl);
+        } else {
+            this.profileService.sendAvatarUrl(''); //set null to handle with genders
+        }
+        const userFirstName = user.userData.firstName;
+        if (userFirstName != undefined) {
+            this.profileService.sendFirstName(userFirstName)
+        }
+        const userLastName = user.userData.lastName;
+        if (userLastName != undefined) {
+            this.profileService.sendLastName(userLastName)
+        }
+        const userRoles = user.roleCodes
+        if (userRoles != undefined) {
+            this.profileService.sendRoles(userRoles)
         }
     }
 

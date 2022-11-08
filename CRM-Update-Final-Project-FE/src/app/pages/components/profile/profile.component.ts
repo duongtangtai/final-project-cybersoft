@@ -127,6 +127,9 @@ export class ProfileComponent implements OnInit {
             oldData.refreshToken
         )
         this.localStorageService.store(AppSettings.AUTH_DATA, newData)
+        this.profileService.sendFirstName(userData.userData.firstName)
+        this.profileService.sendLastName(userData.userData.lastName)
+        console.log
     }
 
     selectFile(event: any) {
@@ -151,7 +154,6 @@ export class ProfileComponent implements OnInit {
         reader.readAsDataURL(this.newAvatar);
         reader.onload = (_event) => {
             this.newAvatarUrl = reader.result;
-            this.profileService.sendData(this.newAvatarUrl);
         }
     }
 
@@ -164,6 +166,7 @@ export class ProfileComponent implements OnInit {
             .subscribe(newAvatarUrl => {
                 this.storeNewUserAvatar(newAvatarUrl)
                 this.myToastrService.success(AppSettings.UPLOAD_AVATAR_SUCCESSFULLY)
+                this.profileService.sendAvatarUrl(this.newAvatarUrl);
             })
     }
 

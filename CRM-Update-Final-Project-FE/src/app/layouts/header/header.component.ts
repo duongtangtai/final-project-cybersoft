@@ -12,8 +12,12 @@ import {ProfileService} from "../../pages/services/profile.service";
 })
 export class HeaderComponent implements OnInit {
 
+    user: any;
     avatar: string = '';
     gender: string = '';
+    firstName: string ='';
+    lastName: string ='';
+    roles: string = '';
 
     constructor(
         private router: Router,
@@ -24,20 +28,53 @@ export class HeaderComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.user = this.localStorageService.retrieve(AppSettings.AUTH_DATA);
         this.getAvatarLink();
+        this.getUserFirstName();
+        this.getUserLastName();
+        this.getUserRoles();
     }
 
     getAvatarLink() {
-        this.profileService.data.subscribe(avatarLink => {
-            if (avatarLink) {
-                this.avatar = avatarLink;
+        this.profileService.avatarData.subscribe(avatarUrl => {
+            if (avatarUrl) {
+                this.avatar = avatarUrl;
             } else {
                 //init avatar
-                const userData = this.localStorageService.retrieve(AppSettings.AUTH_DATA).userData;
-                this.avatar = userData.avatar;
-                this.gender = userData.gender;
+                this.avatar = this.user.userData.avatar;
+                this.gender = this.user.userData.gender;
             }
         });
+    }
+
+    getUserFirstName() {
+        this.profileService.firstNameData.subscribe(firstName => {
+            if (firstName) {
+                this.firstName = firstName;
+            } else {
+                this.firstName = this.user.userData.firstName;
+            }
+        })
+    }
+
+    getUserLastName() {
+        this.profileService.lastNameData.subscribe(lastName => {
+            if (lastName) {
+                this.lastName = lastName;
+            } else {
+                this.lastName = this.user.userData.lastName;
+            }
+        })
+    }
+
+    getUserRoles() {
+        this.profileService.rolesData.subscribe(roles => {
+            if (roles) {
+                this.roles = roles;
+            } else {
+                this.roles = this.user.roleCodes;
+            }
+        })
     }
 
     getProfile() {

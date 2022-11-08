@@ -25,6 +25,9 @@ export class AppSettings {
     public static FORM_UPDATE_STAFF = 'Update Staff';
     public static FORM_DELETE_STAFF= 'Delete Staff';
     public static MESSAGE_DELETE_STAFF = 'Do you really want to delete this staff?'
+    //FORM FOR ADD ROLES TO STAFF
+    public static TITLE_MANAGE_ROLE = 'MANAGE ROLES'
+    public static TYPE_MANAGE_ROLE = 'MANAGE ROLES'
 
     // FORM FOR TASK
     public static TYPE_TASK = 'task';

@@ -48,7 +48,7 @@ public class NotificationRestResource {
     }
 
     @Authorized(roles = {RoleUtil.EMPLOYEE})
-    @GetMapping("/{id}/with-info")
+    @GetMapping("/with-info/{id}")
     public ResponseEntity<ResponseDto> findByIdWithInfo(@PathVariable("id") @UUIDConstraint String id) {
         return ResponseUtil.get(service.findByIdWithInfo(UUID.fromString(id)), HttpStatus.OK);
     }
