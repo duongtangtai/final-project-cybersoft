@@ -10,11 +10,13 @@ import {APP_CONFIG, AppConfig} from "./core/config/app.config";
 import { HttpErrorInterceptor } from './core/interceptor/error-handle.interceptor';
 import {TokenInterceptor} from "./core/interceptor/token.interceptor";
 import {AsideComponent} from './layouts/aside/aside.component';
-import {ErrorComponent} from './layouts/error/error.component';
 import {FooterComponent} from './layouts/footer/footer.component';
 import {HeaderComponent} from './layouts/header/header.component';
 import {MainComponent} from './layouts/main/main.component';
 import {ShareModule} from "./share/share.module";
+import { NotFoundComponent } from './layouts/error/not-found/not-found.component';
+import { ForbiddenComponent } from './layouts/error/forbidden/forbidden.component';
+import { ServerErrorComponent } from './layouts/error/server-error/server-error.component';
 
 export const MY_DATE_FORMATS  = {
     parse: {
@@ -44,7 +46,7 @@ export const MY_DATE_FORMATS  = {
         {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
         {provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true},
     ],
-    declarations: [MainComponent, ErrorComponent, FooterComponent, HeaderComponent, AsideComponent],
+    declarations: [MainComponent, FooterComponent, HeaderComponent, AsideComponent, NotFoundComponent, ForbiddenComponent, ServerErrorComponent],
     bootstrap: [MainComponent],
 })
 export class AppModule {

@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest,HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, filter, map, switchMap, take } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 
 
@@ -14,10 +15,11 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
   private isRefreshing: boolean = false;
   private newAccessTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null)
-  
+
     constructor(
-      private myToastrService: MyToastrService,
+      private router: Router,
       private authService: AuthService,
+      private myToastrService: MyToastrService,
       private localStorageService: LocalStorageService,
     ) {}
 
@@ -28,6 +30,12 @@ export class HttpErrorInterceptor implements HttpInterceptor {
                 this.myToastrService.error(exception.error.errors)
             } else if (exception.status == 401) {
               return this.handle401Request(request, next)
+            } else if (exception.status == 403) {
+              this.router.navigate(['/403']).then(console.log);
+            } else if (exception.status == 404) {
+              this.router.navigate(['/404']).then(console.log);
+            } else if (exception.status == 500) {
+              this.router.navigate(['/500']).then(console.log);
             }
             return throwError("");
          }))
