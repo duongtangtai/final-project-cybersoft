@@ -23,10 +23,12 @@ export const AppConfig: PTSAppConfig = {
     },
     staff: {
       root: `${apiUrl}/v1/users/`,
+      withInfo: `${apiUrl}/v1/users/with-info/`,
       getStatus: `${apiUrl}/v1/users/account-status/`,
       getGenders: `${apiUrl}/v1/users/genders/`,
       insideProject: `${apiUrl}/v1/users/inside-project/`,
       outsideProject: `${apiUrl}/v1/users/outside-project/`,
+      updateRoles: `${apiUrl}/v1/users/update-roles/`,
     },
     task: {
       root: `${apiUrl}/v1/tasks/`,
@@ -43,6 +45,9 @@ export const AppConfig: PTSAppConfig = {
     comment: {
       root: `${apiUrl}/v1/comments/`,
       getByTaskId: `${apiUrl}/v1/comments/with-info/by-task/`,
+    },
+    role: {
+      root: `${apiUrl}/v1/roles/`,    
     }
   }
 };

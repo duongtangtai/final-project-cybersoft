@@ -61,13 +61,13 @@ public class FileRestResource {
         return ResponseEntity.ok().body(fileList);
     }
 
-    @Authorized(roles = {RoleUtil.EMPLOYEE})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER, RoleUtil.EMPLOYEE})
     @PostMapping
     public ResponseEntity<ResponseDto> uploadFile(@RequestParam("file") MultipartFile file) {
         return ResponseUtil.get(service.save(file), HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.EMPLOYEE})
+    @Authorized(roles = {RoleUtil.ADMIN})
     @DeleteMapping
     public ResponseEntity<ResponseDto> deleteAllFiles() {
         service.deleteAll();

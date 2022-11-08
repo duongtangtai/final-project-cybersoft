@@ -26,6 +26,11 @@ export class StaffService {
         .pipe(map((val: IRequestModel) => val.content));
   }
 
+  getStaffByIdWithInfo(staffId: string): Observable<IStaffModel> {  
+    return this.http.get<IRequestModel>(`${this.config.endpoints.staff.withInfo}` + staffId)
+        .pipe(map((val: IRequestModel) => val.content));
+  }
+
   getStatus(): Observable<string> {
     return this.http.get<IRequestModel>(`${this.config.endpoints.staff.getStatus}`)
       .pipe(map((val: IRequestModel) => val.content));
@@ -58,6 +63,11 @@ export class StaffService {
 
   getStaffsOutsideProject(projectId: string): Observable<IStaffModel>{
     return this.http.get<IRequestModel>(`${this.config.endpoints.staff.outsideProject}` + projectId)
+      .pipe(map((val: IRequestModel) => val.content));
+  }
+
+  updateRoles(staffId: string, roleIds: any) {
+    return this.http.post<IRequestModel>(`${this.config.endpoints.staff.updateRoles}` + staffId, roleIds)
       .pipe(map((val: IRequestModel) => val.content));
   }
 }

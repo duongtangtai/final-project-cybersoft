@@ -43,7 +43,7 @@ public class CommentRestResource {
         return ResponseUtil.get(service.findAllWithPaging(CommentDto.class, size, pageIndex), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}/with-info")
+    @GetMapping("/with-info/{id}")
     public ResponseEntity<ResponseDto> findByIdWithInfo(@PathVariable("id") @UUIDConstraint String id) {
         return ResponseUtil.get(service.findByIdWithInfo(UUID.fromString(id)), HttpStatus.OK);
     }
@@ -68,13 +68,6 @@ public class CommentRestResource {
     public ResponseEntity<ResponseDto> save(@RequestBody @Validated(SaveInfo.class) CommentDto commentDto) {
         service.saveComment(commentDto);
         return ResponseUtil.get(MessageUtil.getMessage(messageSource, "comment.saved"), HttpStatus.CREATED);
-    }
-
-    @PostMapping("/{id}/response-to")
-    public ResponseEntity<ResponseDto> addResponseToCmt(@PathVariable("id") @UUIDConstraint String id,
-                                                     @RequestParam("responseTo") @UUIDConstraint String respondedCmtId) {
-        return ResponseUtil.get(service.addResponseToCmt(UUID.fromString(id), UUID.fromString(respondedCmtId)),
-                HttpStatus.OK);
     }
 
     @PutMapping

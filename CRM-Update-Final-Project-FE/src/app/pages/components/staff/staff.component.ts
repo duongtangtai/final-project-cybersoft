@@ -101,4 +101,15 @@ export class StaffComponent implements OnInit {
             },
         }).afterClosed().subscribe(() => this.getAllStaffs())
     }
+
+    manageRole(staff: any) {
+        this.dialog.open(DialogFormComponent, {
+            panelClass: 'widthDialogForm',
+            data: {
+                title: AppSettings.TITLE_MANAGE_ROLE,
+                type: AppSettings.TYPE_MANAGE_ROLE,
+                element: staff,
+            },
+        }).afterClosed().subscribe(() => this.getAllStaffs())
+    }
 }

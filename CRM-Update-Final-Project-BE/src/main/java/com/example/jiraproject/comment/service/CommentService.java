@@ -29,7 +29,6 @@ public interface CommentService extends GenericService<Comment, CommentDto, UUID
     List<CommentWithInfoDto> findAllWithInfoWithPaging(int size, int pageIndex);
     List<CommentWithInfoDto> findAllWithInfoByTaskId(UUID taskId);
     CommentWithInfoDto saveComment(CommentDto commentDto);
-    CommentWithInfoDto addResponseToCmt(UUID id, UUID respondedCmtId);
 }
 @Service
 @Transactional
@@ -94,7 +93,6 @@ class CommentServiceImpl implements CommentService {
         Task task = taskService.findTaskById(commentDto.getTaskId());
         User user = userService.findUserById(commentDto.getWriterId());
         Comment comment = mapper.map(commentDto, Comment.class);
-        System.out.println(commentDto.getResponseToId());
         if (commentDto.getResponseToId() != null) {
             Comment respondedCmt = repository.findCommentById(commentDto.getResponseToId())
                     .orElseThrow(() -> new ValidationException(MessageUtil.getMessage(messageSource, UUID_NOT_FOUND)));
@@ -103,16 +101,6 @@ class CommentServiceImpl implements CommentService {
         comment.setTask(task);
         comment.setWriter(user);
         repository.save(comment);
-        return mapper.map(comment, CommentWithInfoDto.class);
-    }
-
-    @Override
-    public CommentWithInfoDto addResponseToCmt(UUID id, UUID respondedCmtId) {
-        Comment comment = repository.findById(id)
-                .orElseThrow(() -> new ValidationException(MessageUtil.getMessage(messageSource, UUID_NOT_FOUND)));
-        Comment respondedCmt = repository.findById(respondedCmtId)
-                .orElseThrow(() -> new ValidationException(MessageUtil.getMessage(messageSource, UUID_NOT_FOUND)));
-        comment.setResponseTo(respondedCmt);
         return mapper.map(comment, CommentWithInfoDto.class);
     }
 }

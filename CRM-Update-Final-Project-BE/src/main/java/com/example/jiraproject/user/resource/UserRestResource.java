@@ -31,7 +31,7 @@ public class UserRestResource {
     private final UserService service;
     private final MessageSource messageSource;
 
-    @Authorized(roles = {RoleUtil.LEADER})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER, RoleUtil.EMPLOYEE})
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDto> findById(@PathVariable("id") @UUIDConstraint String id) {
         UserDto userDto = service.findById(UserDto.class, UUID.fromString(id));
@@ -39,7 +39,7 @@ public class UserRestResource {
         return ResponseUtil.get(userDto, HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.LEADER})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER})
     @GetMapping
     public ResponseEntity<ResponseDto> findAll() {
         List<UserDto> userList = service.findAll(UserDto.class);
@@ -47,39 +47,39 @@ public class UserRestResource {
         return ResponseUtil.get(userList, HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.LEADER})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER})
     @GetMapping("/paging")
     public ResponseEntity<ResponseDto> findAllWithPaging(@RequestParam("size") int size,
                                                          @RequestParam("pageIndex") int pageIndex) {
         return ResponseUtil.get(service.findAllWithPaging(UserDto.class, size, pageIndex), HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.LEADER})
-    @GetMapping("/{id}/with-info")
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER, RoleUtil.EMPLOYEE})
+    @GetMapping("/with-info/{id}")
     public ResponseEntity<ResponseDto> findByIdWithInfo(@PathVariable("id") @UUIDConstraint String id){
         return ResponseUtil.get(service.findByIdWithInfo(UUID.fromString(id)), HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.LEADER})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER})
     @GetMapping("/with-info")
     public ResponseEntity<ResponseDto> findAllWithInfo(){
         return ResponseUtil.get(service.findAllWithInfo(), HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.LEADER})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER})
     @GetMapping("/with-info/paging")
     public ResponseEntity<ResponseDto> findAllWithInfoWithPaging(@RequestParam("size") int size,
                                                                  @RequestParam("pageIndex") int pageIndex) {
         return ResponseUtil.get(service.findAllWithInfoWithPaging(size, pageIndex), HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.LEADER})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER, RoleUtil.EMPLOYEE})
     @GetMapping("/account-status")
     public ResponseEntity<ResponseDto> findAllAccountStatus() {
         return ResponseUtil.get(service.findAllAccountStatus(), HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.LEADER})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER, RoleUtil.EMPLOYEE})
     @GetMapping("/genders")
     public ResponseEntity<ResponseDto> findAllGenders() {
         return ResponseUtil.get(service.findAllGenders(), HttpStatus.OK);
@@ -107,17 +107,11 @@ public class UserRestResource {
     }
 
     @Authorized(roles = {RoleUtil.ADMIN})
-    @PostMapping("/{id}/add-roles")
+    @PostMapping("/update-roles/{id}")
     public ResponseEntity<ResponseDto> addRoles(@PathVariable("id") @UUIDConstraint String userId,
                                                 @RequestBody Set<UUID> roleIds) {
-        return ResponseUtil.get(service.addRoles(UUID.fromString(userId), roleIds), HttpStatus.OK);
-    }
-
-    @Authorized(roles = {RoleUtil.ADMIN})
-    @PostMapping("/{id}/remove-roles")
-    public ResponseEntity<ResponseDto> removeRoles(@PathVariable("id") @UUIDConstraint String userId,
-                                                @RequestBody Set<UUID> roleIds) {
-        return ResponseUtil.get(service.removeRoles(UUID.fromString(userId), roleIds), HttpStatus.OK);
+        service.updateRoles(UUID.fromString(userId), roleIds);
+        return ResponseUtil.get(MessageUtil.getMessage(messageSource, "user.role.updated"), HttpStatus.OK);
     }
 
     @Authorized(roles = {RoleUtil.ADMIN})

@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Set;
 import java.util.UUID;
 
@@ -50,7 +51,7 @@ public class ProjectRestResource {
     }
 
     @Authorized(roles = {RoleUtil.LEADER})
-    @GetMapping("/{id}/with-info")
+    @GetMapping("/with-info/{id}")
     public ResponseEntity<ResponseDto> findByIdWithInfo(@PathVariable("id") @UUIDConstraint String id) {
         return ResponseUtil.get(service.findByIdWithInfo(UUID.fromString(id)), HttpStatus.OK);
     }

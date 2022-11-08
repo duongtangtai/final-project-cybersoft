@@ -3,7 +3,6 @@ package com.example.jiraproject.role.service;
 import com.example.jiraproject.common.service.GenericService;
 import com.example.jiraproject.common.util.MessageUtil;
 import com.example.jiraproject.role.dto.RoleDto;
-import com.example.jiraproject.role.dto.RoleWithInfo;
 import com.example.jiraproject.role.model.Role;
 import com.example.jiraproject.role.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +20,6 @@ import java.util.Set;
 import java.util.UUID;
 
 public interface RoleService extends GenericService<Role, RoleDto, UUID> {
-    RoleWithInfo findByIdWithInfo(UUID id);
-    List<RoleWithInfo> findAllWithInfo();
-    List<RoleWithInfo> findAllWithInfoWithPaging(int size, int pageIndex);
     List<Role> findAllByIds(Set<UUID> roleIds);
 }
 @Service
@@ -43,32 +39,6 @@ class RoleServiceImpl implements RoleService {
     @Override
     public ModelMapper getMapper() {
         return this.mapper;
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public RoleWithInfo findByIdWithInfo(UUID id) {
-        Role role = repository.findByIdWithInfo(id)
-                .orElseThrow(() ->
-                        new ValidationException(MessageUtil.getMessage(messageSource, UUID_NOT_FOUND)));
-        return mapper.map(role, RoleWithInfo.class);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public List<RoleWithInfo> findAllWithInfo() {
-        return repository.findAllWithInfo().stream()
-                .map(role -> mapper.map(role, RoleWithInfo.class))
-                .toList();
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public List<RoleWithInfo> findAllWithInfoWithPaging(int size, int pageIndex) {
-        return repository.findAllWithInfoWithPaging(PageRequest.of(pageIndex, size, Sort.by("createdAt")))
-                .stream()
-                .map(model -> mapper.map(model, RoleWithInfo.class))
-                .toList();
     }
 
     @Transactional(readOnly = true)

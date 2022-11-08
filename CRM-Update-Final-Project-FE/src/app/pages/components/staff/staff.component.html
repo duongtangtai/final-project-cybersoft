@@ -129,10 +129,13 @@
                                         </button>
                                         <div class="dropdown-menu">
                                             <button class="dropdown-item" 
+                                                (click)="manageRole(element)"><i class="bx bx-sitemap me-1 bx-tada-hover"></i> Manage Roles</button
+                                            >
+                                            <button class="dropdown-item" 
                                                 (click)="updateStaff(element)"><i class="bx bx-edit-alt me-1 bx-tada-hover"></i> Update</button
                                             >
                                             <button class="dropdown-item"
-                                            (click)="deleteStaff(element.id)"><i class="bx bx-trash me-1 bx-tada-hover"></i> Delete</button
+                                                (click)="deleteStaff(element.id)"><i class="bx bx-trash me-1 bx-tada-hover"></i> Delete</button
                                             >
                                         </div>
                                     </div>

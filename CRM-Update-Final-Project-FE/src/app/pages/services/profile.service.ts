@@ -13,8 +13,15 @@ import { MyToastrService } from 'src/app/share/services/my-toastr.service';
 })
 export class ProfileService {
 
-  private avatarLink: BehaviorSubject<string> = new BehaviorSubject<string>('');
-  data: Observable<string> = this.avatarLink.asObservable();
+  private avatarUrl: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  avatarData: Observable<string> = this.avatarUrl.asObservable();
+  private firstName: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  firstNameData: Observable<string> = this.firstName.asObservable();
+  private lastName: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  lastNameData: Observable<string> = this.lastName.asObservable();
+  private roles: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  rolesData: Observable<string> = this.roles.asObservable();
+
 
   constructor(
     private http: HttpClient,
@@ -33,15 +40,27 @@ export class ProfileService {
       .pipe(map((val: any) => val.content));
   }
 
-  sendData(data: string) {
-    this.avatarLink.next(data);
-  }
-
   changePassword(submitForm: any): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json'})
     }
     return this.http.put(`${this.config.endpoints.profile.changePassword}`, submitForm)
       .pipe(map((val: any) => val.content));
+  }
+
+  sendAvatarUrl(avatarUrl: string) {
+    this.avatarUrl.next(avatarUrl);
+  }
+
+  sendFirstName(firstName: string) {
+    this.firstName.next(firstName)
+  }
+
+  sendLastName(lastName: string) {
+    this.lastName.next(lastName)
+  }
+
+  sendRoles(roles: string[]) {
+    this.roles.next(roles.toString())
   }
 }
