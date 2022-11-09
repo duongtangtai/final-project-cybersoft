@@ -1,5 +1,3 @@
-import { filter } from 'rxjs';
-import { map } from 'rxjs';
 import { MyToastrService } from './../../services/my-toastr.service';
 import { ITaskModel } from 'src/app/model/task.model';
 import { TaskService } from './../../../pages/services/task.service';
@@ -97,20 +95,20 @@ export class DialogFormComponent implements OnInit {
     }
 
     //----------FOR SELECT-OPTIONS---------------------
-    compare1(o1: any, o2: any): boolean { 
+    compare1(o1: any, o2: any): boolean {
         return o1.name === o2.name && o1.id === o2.id;
     }
 
-    compare2(o1: any, o2: any): boolean { 
+    compare2(o1: any, o2: any): boolean {
         return o1.name === o2.name && o1.id === o2.id;
     }
 
-    compare3(o1: any, o2: any): boolean { 
+    compare3(o1: any, o2: any): boolean {
         return o1.name === o2.name && o1.id === o2.id;
     }
 
     //-----------------PROJECT FORM---------------------
-    
+
     initProjectForm() {
         //GET ALL PROJECT STATUS
         this.projectService.getProjectStatus().subscribe(val => this.projectStatusData = val)
@@ -156,7 +154,7 @@ export class DialogFormComponent implements OnInit {
             id:['',{disabled:true}],
             username:['',Validators.required],
             //CREATE NEW STAFF NEED A PASSWORD
-            password:['', this.title == AppSettings.FORM_ADD_STAFF ? Validators.required : {disabled:true}], 
+            password:['', this.title == AppSettings.FORM_ADD_STAFF ? Validators.required : {disabled:true}],
             firstName:['',Validators.required],
             lastName:['',Validators.required],
             gender: ['',Validators.required],
@@ -289,7 +287,7 @@ export class DialogFormComponent implements OnInit {
     dataSource: any;
     displayedColumns: string[] = ['hobbies', 'username', 'email','projects', 'action'];
     @ViewChild(MatPaginator) paginator!: MatPaginator;
-    @ViewChild(MatSort) sort!: MatSort;    
+    @ViewChild(MatSort) sort!: MatSort;
     manageStaffTable: string = '';
 
     pagingAndSorting(data: any) {
@@ -325,7 +323,7 @@ export class DialogFormComponent implements OnInit {
             })
     }
 
-    initAddStaffToProjectTable() { 
+    initAddStaffToProjectTable() {
         //call API to get all the staffs outside this project (with status = ACTIVE)
         this.staffService.getStaffsOutsideProject(this.projectData.id)
             .subscribe(content => {
@@ -374,16 +372,83 @@ export class DialogFormComponent implements OnInit {
                 staffRoles.push(this.staff.roles[i].code)
             }
             this.roleService.getRoles().subscribe(content => {
+                //WHAT IF ROLES CONTAINS ADMIN? MANAGER? LEADER? EMPLOYEE?
                 this.roleData = content
                 for (let i = 0 ; i < this.roleData.length ; i++) {
                     if (staffRoles.includes(this.roleData[i].code)) {
-                        this.form.addControl(this.roleData[i].id, new FormControl(true)) 
+                        this.form.addControl(this.roleData[i].id, new FormControl(true))
                     } else {
                         this.form.addControl(this.roleData[i].id, new FormControl(false))
                     }
                 }
+                if (staffRoles.includes('AD')) { //If staff's roles have ADMIN => disable others
+                    this.checkAllAndDisableOthers('AD')
+                } else if (staffRoles.includes('MGR')) { //If staff's roles have ADMIN => disable others
+                    this.checkOneAndDisableOthers('MGR')
+                } else if (staffRoles.includes('LEAD')) { //If staff's roles have LEADER or EMPLOYEE => disable ADMIN and MANAGER
+                    this.checkAndDisableAdminAndManager('LEAD')
+                } else if (staffRoles.includes('EMP')) {
+                    this.checkAndDisableAdminAndManager('EMP')
+                }
             })
         })
+    }
+
+    change(completed: boolean, roleCode: string) {
+        switch (roleCode) {
+            case 'AD': //ADMIN => check all roles and disable other roles
+                completed ? this.checkAllAndDisableOthers(roleCode) : this.resetAll()
+                break;
+            case 'MGR': //MANAGER, EMPLOYEE => check this role and disable other roles
+                completed ? this.checkOneAndDisableOthers(roleCode) : this.resetAll()
+                break;
+            case 'LEAD': //LEADER => check this role and disable ADMIN & MANAGER
+                completed ? this.checkAndDisableAdminAndManager(roleCode) : this.resetAll()
+                break;
+            case 'EMP':
+                completed ? this.checkAndDisableAdminAndManager(roleCode)  : this.resetAll()
+                break;
+            default:
+                break;
+        }
+    }
+
+    checkAllAndDisableOthers(roleCode: string) {
+        //use the role data that we already initialized, then we loop through it and set all
+        for (let i = 0 ; i < this.roleData.length ; i++) {
+            this.form.setControl(this.roleData[i].id, new FormControl(true)) //CHECK ALL
+            if (this.roleData[i].code != roleCode) { //DISABLE OTHERS
+                this.form.get(this.roleData[i].id).disable()
+            }
+        }
+    }
+
+    checkOneAndDisableOthers(roleCode: string) {
+        for (let i = 0 ; i < this.roleData.length ; i++) {
+            this.form.setControl(this.roleData[i].id, new FormControl(false)) //uncheck first
+            if (this.roleData[i].code == roleCode) { //check one
+                this.form.setControl(this.roleData[i].id, new FormControl(true))
+            } else { //disable others
+                this.form.get(this.roleData[i].id).disable()
+            }
+        }
+    }
+
+    checkAndDisableAdminAndManager(roleCode: string) {
+        for (let i = 0 ; i < this.roleData.length ; i++) {
+            if (this.roleData[i].code == roleCode) { //if it's LEADER
+                this.form.setControl(this.roleData[i].id, new FormControl(true)) // checked
+            } else if (this.roleData[i].code == 'AD' || this.roleData[i].code == 'MGR'){ //if it's ADMIN OR MANAGER
+                this.form.get(this.roleData[i].id).disable()
+            } //if it's EMPLOYEE, do nothing
+        }
+    }
+
+    resetAll() {
+        for (let i = 0 ; i < this.roleData.length ; i++) {
+            this.form.setControl(this.roleData[i].id, new FormControl(false))
+            this.form.get(this.roleData[i].id).enable()
+        }
     }
 
     //--------------END MANAGE ROLES IN STAFF------------
@@ -437,7 +502,7 @@ export class DialogFormComponent implements OnInit {
             }
             const submitForm = this.form.getRawValue()
             switch (this.title) {
-                case AppSettings.FORM_ADD_PROJECT: //ADD PROJECT 
+                case AppSettings.FORM_ADD_PROJECT: //ADD PROJECT
                     this.projectService.saveProject(submitForm)
                         .subscribe(content => this.succeededAndClose(content));
                     break;
@@ -456,7 +521,7 @@ export class DialogFormComponent implements OnInit {
                 case AppSettings.FORM_ADD_TASK: // ADD TASK
                     this.taskService.saveTask(submitForm)
                         .subscribe(content => this.succeededAndClose(content));
-                    break;  
+                    break;
                 case AppSettings.FORM_UPDATE_TASK: // UPDATE TASK
                     this.taskService.updateTask(submitForm)
                         .subscribe(content => this.succeededAndClose(content));

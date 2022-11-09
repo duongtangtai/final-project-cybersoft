@@ -5,6 +5,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ShareModule} from "../../../share/share.module";
 import {ProjectRoutingModule} from './project-routing.module';
 import {ProjectComponent} from "./project.component";
+import { ActivatedRoute, Router } from '@angular/router';
 
 @NgModule({
     imports: [
