@@ -35,7 +35,7 @@ export class AppSettings {
     public static FORM_UPDATE_TASK = 'Update Task';
     public static FORM_DELETE_TASK= 'Delete Task';
     public static MESSAGE_DELETE_TASK = 'Do you really want to delete this task?'
-    
+
     //FORM FOR COMMENT
     public static TYPE_COMMENT = "comment";
     public static FORM_ADD_COMMENT = "Write Comment";
@@ -50,4 +50,10 @@ export class AppSettings {
     //PROFILE MESSAGE
     public static UPDATE_PROFILE_SUCCESSFULLY = "Your profile has been updated!"
     public static UPLOAD_AVATAR_SUCCESSFULLY = "Your avatar has been changed!"
+
+    //ROLES
+    // public static ROLE_ADMIN = "AD"
+    // public static ROLE_MANAGER = "MGR"
+    // public static ROLE_LEADER = "LEAD"
+    // public static ROLE_EMPLOYEE = "EMP"
 }

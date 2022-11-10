@@ -29,15 +29,15 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query(value = "select u from User u left join fetch u.roles left join fetch u.projects " +
             "where u.id in (select u.id from User u inner join u.projects p where p.id = ?1)")
-    Set<User> findAllInsideProject(UUID projectId); //sai
+    Set<User> findAllInsideProject(UUID projectId);
 
     //SELECT STAFF FROM A PROJECT, STATUS = ACTIVE AND ROLE = EMPLOYEE
     @Query(value = "select u from User u left join fetch u.roles r left join fetch u.projects p " +
             "where u.accountStatus = 'ACTIVE' " +
             "and " +
-            "r.id is not null " +
+            "r.code = 'EMP' " +
             "and " +
-            "u.id not in (select u.id from User u inner join u.roles r where r.code <> 'EMP') " +
+            "u.id not in (select u.id from User u inner join u.roles r where r.code = 'AD') " +
             "and " +
             "u.id not in (select u.id from User u inner join u.projects p where p.id = ?1)")
     Set<User> findAllOutsideProject(UUID projectId);
