@@ -41,4 +41,13 @@ public interface UserRepository extends JpaRepository<User, UUID> {
             "and " +
             "u.id not in (select u.id from User u inner join u.projects p where p.id = ?1)")
     Set<User> findAllOutsideProject(UUID projectId);
+
+    //SELECT LEADER WITH STATUS = ACTIVE AND ROLE = LEADER
+    @Query(value = "select u from User u left join fetch u.roles r " +
+            "where u.accountStatus = 'ACTIVE' " +
+            "and " +
+            "r.code = 'LEAD'" +
+            "and " +
+            "u.id not in (select u.id from User u inner join u.roles r where r.code = 'AD')")
+    Set<User> findAllLeaderRole();
 }

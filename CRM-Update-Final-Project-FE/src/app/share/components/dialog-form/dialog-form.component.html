@@ -144,7 +144,7 @@
         </mat-form-field>
         <mat-form-field class="form-group" >
             <mat-label>Project Name</mat-label>
-            <mat-select class="form-control" [disabled]="data.title == appSettings.FORM_UPDATE_TASK" formControlName="projectName" disableOptionCentering panelClass="myPanelClass" [(value)]="compare2">
+            <mat-select class="form-control" (valueChange)="taskProjectNameChange($event)" [disabled]="data.title == appSettings.FORM_UPDATE_TASK" formControlName="projectName" disableOptionCentering panelClass="myPanelClass" [(value)]="compare2">
                 <mat-option *ngFor="let project of projectData" [value]="project.name">{{project.name}}</mat-option>
             </mat-select>
         </mat-form-field>
@@ -307,24 +307,9 @@
     <!-----------------------------END MANAGE STAFF IN PROJECT DIALOG--------------------------->
     <!-----------------------------START MANAGE ROLE IN STAFF DIALOG------------------------->
     <div mat-dialog-content *ngIf="type == appSettings.TYPE_MANAGE_ROLE">
-        <div>Username:</div>
-        <div>
-            <img *ngIf="staff.avatar == null && staff.gender == 'MALE'"
-                src="/assets/img/avatars/male-default.png" width="50" height="50" alt="">
-            <img *ngIf="staff.avatar == null && staff.gender == 'FEMALE'"
-                src="/assets/img/avatars/female-default.png" width="50" height="50" alt="">
-            <img *ngIf="staff.avatar != null" [src]="staff.avatar" width="50" height="50" alt="">
-            {{staff.username}}
-        </div>
-        <div>First Name:</div>
-        <div>{{staff.firstName}}</div>
-        <div>Last Name:</div>
-        <div>{{staff.lastName}}</div>
-        <div>Roles:</div>
-        <div *ngFor="let role of roleData">
-            <section>
-                <mat-checkbox (change)="change($event.checked, role.code)" formControlName="{{role.id}}">{{role.name}}</mat-checkbox>
-            </section>
+        <div>User: {{staff.username}}</div>
+        <div *ngFor="let role of roleData" class="manage-role">
+            <mat-checkbox (change)="change($event.checked, role.code)" formControlName="{{role.id}}">{{role.name}}</mat-checkbox>
         </div>
     </div>
     <!-----------------------------END MANAGE ROLE IN PROJECT DIALOG------------------------->

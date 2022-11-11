@@ -1,5 +1,6 @@
 package com.example.jiraproject.project.dto;
 
+import com.example.jiraproject.project.model.Project;
 import com.example.jiraproject.user.dto.UserDto;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +15,7 @@ public class ProjectWithInfoDto {
     private String name;
     private String description;
     private String symbol;
+    private Project.Status status;
     private UserDto creator;
     private UserDto leader;
     private Set<UserDto> users;

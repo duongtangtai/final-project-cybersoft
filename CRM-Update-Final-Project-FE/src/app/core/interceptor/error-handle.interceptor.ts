@@ -51,6 +51,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         const newRefreshToken = content.refreshToken;
         this.storeNewTokens(newAccessToken, newRefreshToken);
         this.newAccessTokenSubject.next(newAccessToken) // send delayed requests
+        this.isRefreshing = false;
       })
     } //else wait for new access token
     return this.newAccessTokenSubject.pipe(

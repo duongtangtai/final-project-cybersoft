@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -97,6 +98,12 @@ public class UserRestResource {
     public ResponseEntity<ResponseDto> findAllByProject(@PathVariable("projectId")
                                                         @UUIDConstraint String projectId) {
         return ResponseUtil.get(service.findAllOutsideProject(UUID.fromString(projectId)), HttpStatus.OK);
+    }
+
+    @Authorized(roles = {RoleUtil.MANAGER})
+    @GetMapping("/leader-role")
+    public ResponseEntity<ResponseDto> findAllLeaderRole() {
+        return ResponseUtil.get(service.findAllLeaderRole(), HttpStatus.OK);
     }
 
     @Authorized(roles = {RoleUtil.ADMIN})

@@ -1,3 +1,4 @@
+import { filter } from 'rxjs';
 import { MyToastrService } from './../../services/my-toastr.service';
 import { ITaskModel } from 'src/app/model/task.model';
 import { TaskService } from './../../../pages/services/task.service';
@@ -112,9 +113,9 @@ export class DialogFormComponent implements OnInit {
     initProjectForm() {
         //GET ALL PROJECT STATUS
         this.projectService.getProjectStatus().subscribe(val => this.projectStatusData = val)
-        //GET ALL STAFFS
-        this.staffService.getStaffs().subscribe(val => {
-            this.staffData = val
+        //GET ALL LEADERS
+        this.staffService.getStaffsWithLeaderRole().subscribe(val => {
+            this.staffData = val;
         })
         this.form = this.formBuilder.group({
             id: ['',{disabled:true}],
@@ -127,22 +128,23 @@ export class DialogFormComponent implements OnInit {
         })
     }
 
-    getProjectForm(projectForm: IProjectModel) {
+    getProjectForm(projectForm: any) {
+        console.log(projectForm)
         this.initProjectForm() //ADD PROJECT
         if (this.title == AppSettings.FORM_UPDATE_PROJECT) { //UPDATE PROJECT with OLD INFO
             this.setProjectFormValues(projectForm)
         }
     }
 
-    setProjectFormValues(projectForm: IProjectModel) {
+    setProjectFormValues(projectForm: any) {
         this.form.setValue({
             id : projectForm.id,
             name : projectForm.name,
             description : projectForm.description,
             status : projectForm.status,
             symbol: this.projectSymbol = projectForm.symbol,
-            creatorUsername : projectForm.creatorUsername,
-            leaderUsername : projectForm.leaderUsername,
+            creatorUsername : projectForm.creator.username,
+            leaderUsername : projectForm.leader.username,
         })
     }
     //-------------------END PROJECT FORM--------------------
@@ -195,9 +197,12 @@ export class DialogFormComponent implements OnInit {
 
     //-------------------END STAFF FORM--------------------
     //-------------------START TASK FORM--------------------
+    taskProjectNameChange($event: any) { //call API to get StaffData with projectId
+        const projectId = this.projectData.filter((project: any) => project.name == $event).map((project:any) => project.id)
+        this.staffService.getStaffsInsideProject(projectId).subscribe(val => this.staffData = val) 
+    }
 
     initTaskForm() { //initialize all staffs and task status
-        this.staffService.getStaffs().subscribe(val => this.staffData = val)
         this.taskService.getStatus().subscribe(val => this.taskStatusData = val)
         this.projectService.getProjects().subscribe(val => this.projectData = val)
         this.form = this.formBuilder.group({
@@ -214,14 +219,16 @@ export class DialogFormComponent implements OnInit {
         })
     }
 
-    getTaskForm(taskForm: ITaskModel) {
+    getTaskForm(taskForm: any) {
         this.initTaskForm() //ADD TASK
         if (this.title == AppSettings.FORM_UPDATE_TASK) { //UPDATE TASK with OLD INFO
             this.setTaskFormValues(taskForm)
         }
     }
 
-    setTaskFormValues(taskForm: ITaskModel) {
+    setTaskFormValues(taskForm: any) {
+        this.staffService.getStaffsInsideProject(taskForm.project.id)
+            .subscribe(val => this.staffData = val) 
         this.form = this.formBuilder.group({
             id: taskForm.id,
             name: taskForm.name,
@@ -231,8 +238,8 @@ export class DialogFormComponent implements OnInit {
             startDateInFact: this.convertStringToDate(taskForm.startDateInFact),
             endDateInFact: this.convertStringToDate(taskForm.endDateInFact),
             status: taskForm.status,
-            projectName: taskForm.projectName,
-            reporterUsername: taskForm.reporterUsername,
+            projectName: taskForm.project.name,
+            reporterUsername: taskForm.reporter.username,
         })
     }
 

@@ -21,6 +21,16 @@ export class StaffService {
         .pipe(map((val: IRequestModel) => val.content));
   }
 
+  getStaffsWithInfo(): Observable<IStaffModel> {  
+    return this.http.get<IRequestModel>(`${this.config.endpoints.staff.withInfo}`)
+        .pipe(map((val: IRequestModel) => val.content));
+  }
+
+  getStaffsWithLeaderRole() {
+    return this.http.get<IRequestModel>(`${this.config.endpoints.staff.leaderRole}`)
+    .pipe(map((val: IRequestModel) => val.content));
+  }
+
   getStaffById(staffId: string): Observable<IStaffModel> {  
     return this.http.get<IRequestModel>(`${this.config.endpoints.staff.root}` + staffId)
         .pipe(map((val: IRequestModel) => val.content));

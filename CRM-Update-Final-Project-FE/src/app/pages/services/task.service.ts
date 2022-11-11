@@ -21,6 +21,11 @@ export class TaskService {
         .pipe(map((val: IRequestModel) => val.content));
   }
 
+  getTasksWithInfo() {  
+    return this.http.get<IRequestModel>(`${this.config.endpoints.task.withInfo}`)
+        .pipe(map((val: IRequestModel) => val.content));
+  }
+
   getStatus(): Observable<ITaskModel> {  
     return this.http.get<IRequestModel>(`${this.config.endpoints.task.getStatus}`)
         .pipe(map((val: IRequestModel) => val.content));

@@ -30,6 +30,7 @@ public interface ProjectService extends GenericService<Project, ProjectDto, UUID
     List<ProjectWithInfoDto> findAllWithInfoWithPaging(int size, int pageIndex);
     List<String> findAllProjectStatus();
     ProjectDto save(ProjectDto dto);
+    ProjectDto update(ProjectDto dto);
     ProjectWithInfoDto addUsers(UUID projectId, Set<UUID> userIds);
     ProjectWithInfoDto removeUsers(UUID projectId, Set<UUID> userIds);
 }
@@ -106,6 +107,17 @@ class ProjectServiceImpl implements ProjectService {
         project.setCreator(creator);
         project.setLeader(leader);
         return mapper.map(repository.save(project), ProjectDto.class);
+    }
+
+    @Override
+    public ProjectDto update(ProjectDto dto) {
+        Project project = findProjectById(dto.getId());
+        User creator = userService.findByUsername(dto.getCreatorUsername());
+        User leader = userService.findByUsername(dto.getLeaderUsername());
+        project.setCreator(creator);
+        project.setLeader(leader);
+        mapper.map(dto, project);
+        return mapper.map(project, ProjectDto.class);
     }
 
     @Override

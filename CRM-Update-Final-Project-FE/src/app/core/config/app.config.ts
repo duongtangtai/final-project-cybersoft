@@ -17,6 +17,7 @@ export const AppConfig: PTSAppConfig = {
     },
     project: {
       root: `${apiUrl}/v1/projects/`,
+      withInfo: `${apiUrl}/v1/projects/with-info/`,
       getStatus: `${apiUrl}/v1/projects/status/`,
       addUsers: `${apiUrl}/v1/projects/add-users/`,
       removeUsers: `${apiUrl}/v1/projects/remove-users/`,
@@ -24,6 +25,7 @@ export const AppConfig: PTSAppConfig = {
     staff: {
       root: `${apiUrl}/v1/users/`,
       withInfo: `${apiUrl}/v1/users/with-info/`,
+      leaderRole: `${apiUrl}/v1/users/leader-role/`,
       getStatus: `${apiUrl}/v1/users/account-status/`,
       getGenders: `${apiUrl}/v1/users/genders/`,
       insideProject: `${apiUrl}/v1/users/inside-project/`,
@@ -32,6 +34,7 @@ export const AppConfig: PTSAppConfig = {
     },
     task: {
       root: `${apiUrl}/v1/tasks/`,
+      withInfo: `${apiUrl}/v1/tasks/with-info/`,
       getStatus: `${apiUrl}/v1/tasks/status/`,
     },
     profile: {

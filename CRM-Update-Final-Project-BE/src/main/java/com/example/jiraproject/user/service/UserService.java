@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ValidationException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public interface UserService extends GenericService<User, UserDto, UUID> {
     User findUserById(UUID id);
@@ -33,6 +34,7 @@ public interface UserService extends GenericService<User, UserDto, UUID> {
     List<String> findAllGenders();
     List<UserWithInfoDto> findAllInsideProject(UUID projectId);
     List<UserWithInfoDto> findAllOutsideProject(UUID projectId);
+    List<UserDto> findAllLeaderRole();
     UserWithInfoDto updateRoles(UUID userId, Set<UUID> roleIds);
     UserDto save(UserDto dto);
     UserDto update(UserDto dto);
@@ -130,6 +132,13 @@ class UserServiceImpl implements UserService {
     public List<UserWithInfoDto> findAllOutsideProject(UUID projectId) {
         return repository.findAllOutsideProject(projectId)
                 .stream().map(user -> mapper.map(user, UserWithInfoDto.class))
+                .toList();
+    }
+
+    @Override
+    public List<UserDto> findAllLeaderRole() {
+        return repository.findAllLeaderRole()
+                .stream().map(user -> mapper.map(user, UserDto.class))
                 .toList();
     }
 
