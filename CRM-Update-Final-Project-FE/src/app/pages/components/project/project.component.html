@@ -108,7 +108,8 @@
                                 </th>
                                 <td mat-cell *matCellDef="let element"> 
                                     <span *ngIf="element.status == 'DOING'" class="badge bg-label-primary me-1">{{element.status}} </span>
-                                    <span *ngIf="element.status == 'DONE'" class="badge bg-label-success me-1">{{element.status}} </span>                                </td>
+                                    <span *ngIf="element.status == 'DONE'" class="badge bg-label-success me-1">{{element.status}} </span>
+                                </td>
                             </ng-container>
                             <ng-container matColumnDef="action">
                                 <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Action</strong></th>

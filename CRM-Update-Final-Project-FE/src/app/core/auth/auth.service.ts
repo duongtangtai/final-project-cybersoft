@@ -75,6 +75,7 @@ export class AuthService {
     logout() {
         this._user.next(null);
         this.localStorageService.clear();
+        this.router.navigateByUrl("/login")
     }
 
     autoLogin() {}

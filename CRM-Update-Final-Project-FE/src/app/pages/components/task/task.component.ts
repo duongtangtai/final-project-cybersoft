@@ -42,14 +42,14 @@ export class TaskComponent implements OnInit {
     }
 
     getAllTasks() {
-        this.taskService.getTasks().subscribe(result => {
+        this.taskService.getTasksWithInfo().subscribe(result => {
             this.tasks = result;
             this.pagingAndSorting()
         });
     }
 
     getAllTasksWithStatus(status: string) {
-        this.taskService.getTasks().subscribe(result => {
+        this.taskService.getTasksWithInfo().subscribe(result => {
             this.tasks = result;
             switch (status) {
                 case this.taskStatus[0]:

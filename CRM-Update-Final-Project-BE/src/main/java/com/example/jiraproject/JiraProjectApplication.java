@@ -140,7 +140,7 @@ public class JiraProjectApplication implements CommandLineRunner {
                 .occupation("Business")
                 .department("WORKING DEPARTMENT")
                 .hobbies("Pet lover")
-                .accountStatus(User.AccountStatus.PERMANENTLY_BLOCKED)
+                .accountStatus(User.AccountStatus.ACTIVE)
                 .build();
         User user4 = User.builder()
                 .username("lexuanhieu")

@@ -29,7 +29,7 @@ public class TaskRestResource {
     private final TaskService service;
     private final MessageSource messageSource;
 
-    @Authorized(roles = {RoleUtil.EMPLOYEE})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER, RoleUtil.EMPLOYEE})
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDto> findById(@PathVariable("id") @UUIDConstraint String id) {
         return ResponseUtil.get(service.findById(TaskDto.class, UUID.fromString(id)), HttpStatus.OK);
@@ -41,33 +41,33 @@ public class TaskRestResource {
         return ResponseUtil.get(service.findAll(TaskDto.class), HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.EMPLOYEE})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER, RoleUtil.EMPLOYEE})
     @GetMapping("/paging")
     public ResponseEntity<ResponseDto> findAllWithPaging(@RequestParam("size") int size,
                                                          @RequestParam("pageIndex") int pageIndex) {
         return ResponseUtil.get(service.findAllWithPaging(TaskDto.class, size, pageIndex), HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.EMPLOYEE})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER, RoleUtil.EMPLOYEE})
     @GetMapping("/with-info/{id}")
     public ResponseEntity<ResponseDto> findByIdWithInfo(@PathVariable("id") @UUIDConstraint String id) {
         return ResponseUtil.get(service.findByIdWithInfo(UUID.fromString(id)), HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.EMPLOYEE})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER, RoleUtil.EMPLOYEE})
     @GetMapping("/with-info")
     public ResponseEntity<ResponseDto> findAllWithInfo(){
         return ResponseUtil.get(service.findAllWithInfo(), HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.EMPLOYEE})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER, RoleUtil.EMPLOYEE})
     @GetMapping("/with-info/paging")
     public ResponseEntity<ResponseDto> findAllWithInfoWithPaging(@RequestParam("size") int size,
                                                                            @RequestParam("pageIndex") int pageIndex) {
         return ResponseUtil.get(service.findAllWithInfoWithPaging(size, pageIndex), HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.EMPLOYEE})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER, RoleUtil.EMPLOYEE})
     @GetMapping("/status")
     public ResponseEntity<ResponseDto> findAllStatus() {
         return ResponseUtil.get(service.findAllStatus(), HttpStatus.OK);

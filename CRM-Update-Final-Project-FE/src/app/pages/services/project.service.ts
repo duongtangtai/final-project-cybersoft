@@ -22,6 +22,11 @@ export class ProjectService {
             .pipe(map((val: IRequestModel) => val.content));
     }
 
+    getProjectsWithInfo() {
+        return this.http.get<IRequestModel>(`${this.config.endpoints.project.withInfo}`)
+            .pipe(map((val: IRequestModel) => val.content));
+    }
+
     getProjectStatus(): Observable<string> {
         return this.http.get<IRequestModel>(`${this.config.endpoints.project.getStatus}`)
             .pipe(map((val: IRequestModel) => val.content));

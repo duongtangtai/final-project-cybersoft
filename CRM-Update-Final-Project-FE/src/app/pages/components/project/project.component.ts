@@ -44,14 +44,14 @@ export class ProjectComponent implements OnInit {
     }
 
     getAllProject() {
-        this.projectService.getProjects().subscribe(result => {
+        this.projectService.getProjectsWithInfo().subscribe(result => {
             this.projects = result;
             this.pagingAndSorting()
         });
     }
 
     getAllProjectWithStatus(status: string) {
-        this.projectService.getProjects().subscribe(result => {
+        this.projectService.getProjectsWithInfo().subscribe(result => {
             this.projects = result;
             switch (status) {
                 case this.projectStatus[0]:

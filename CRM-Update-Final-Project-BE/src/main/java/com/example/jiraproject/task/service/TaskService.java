@@ -106,9 +106,9 @@ class TaskServiceImpl implements TaskService {
         Task task = findTaskById(taskDto.getId());
         Project project = projectService.findProjectByName(taskDto.getProjectName());
         User user = userService.findByUsername(taskDto.getReporterUsername());
-        mapper.map(taskDto, task);
         task.setReporter(user);
         task.setProject(project);
+        mapper.map(taskDto, task);
         return mapper.map(task, TaskDto.class);
     }
 }

@@ -31,45 +31,45 @@ public class ProjectRestResource {
     private final ProjectService service;
     private final MessageSource messageSource;
 
-    @Authorized(roles = {RoleUtil.LEADER})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER})
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDto> findById(@PathVariable("id") @UUIDConstraint String id) {
         return ResponseUtil.get(service.findById(ProjectDto.class, UUID.fromString(id)), HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.LEADER})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER})
     @GetMapping
     public ResponseEntity<ResponseDto> findAll() {
         return ResponseUtil.get(service.findAll(ProjectDto.class), HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.LEADER})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER})
     @GetMapping("/paging")
     public ResponseEntity<ResponseDto> findAllWithPaging(@RequestParam("size") int size,
                                                          @RequestParam("pageIndex") int pageIndex) {
         return ResponseUtil.get(service.findAllWithPaging(ProjectDto.class, size, pageIndex), HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.LEADER})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER})
     @GetMapping("/with-info/{id}")
     public ResponseEntity<ResponseDto> findByIdWithInfo(@PathVariable("id") @UUIDConstraint String id) {
         return ResponseUtil.get(service.findByIdWithInfo(UUID.fromString(id)), HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.LEADER})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER})
     @GetMapping("/with-info")
     public ResponseEntity<ResponseDto> findAllWithInfo() {
         return ResponseUtil.get(service.findAllWithInfo(), HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.LEADER})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER})
     @GetMapping("/with-info/paging")
     public ResponseEntity<ResponseDto> findAllWithInfoWithPaging(@RequestParam("size") int size,
                                                                  @RequestParam("pageIndex") int pageIndex) {
         return ResponseUtil.get(service.findAllWithInfoWithPaging(size, pageIndex), HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.LEADER})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER})
     @GetMapping("/status")
     public ResponseEntity<ResponseDto> findAllProjectStatus() {
         return ResponseUtil.get(service.findAllProjectStatus(), HttpStatus.OK);
@@ -103,7 +103,7 @@ public class ProjectRestResource {
     @Authorized(roles = {RoleUtil.MANAGER})
     @PutMapping
     public ResponseEntity<ResponseDto> update(@RequestBody @Validated(UpdateInfo.class) ProjectDto dto) {
-        service.update(dto.getId(), dto);
+        service.update(dto);
         return ResponseUtil.get(MessageUtil.getMessage(messageSource, "project.updated"), HttpStatus.OK);
     }
 
