@@ -74,7 +74,7 @@ export class StaffComponent implements OnInit {
         this.dialog.open(DialogFormComponent, {
             panelClass: 'widthDialogForm',
             data: {
-                title: AppSettings.FORM_ADD_STAFF,
+                title: AppSettings.TITLE_ADD_STAFF,
                 type: AppSettings.TYPE_STAFF,
             },
         }).afterClosed().subscribe(() => this.getAllStaffs())
@@ -84,7 +84,7 @@ export class StaffComponent implements OnInit {
         this.dialog.open(DialogFormComponent, {
             panelClass: 'widthDialogForm',
             data: {
-                title: AppSettings.FORM_UPDATE_STAFF,
+                title: AppSettings.TITLE_UPDATE_STAFF,
                 type: AppSettings.TYPE_STAFF,
                 element: staff,
             },
@@ -95,7 +95,7 @@ export class StaffComponent implements OnInit {
         this.dialog.open(DialogNotifyComponent, {
             panelClass: 'widthDialogForm',
             data: {
-                title: AppSettings.FORM_DELETE_STAFF,
+                title: AppSettings.TITLE_DELETE_STAFF,
                 message: AppSettings.MESSAGE_DELETE_STAFF,
                 id: staffId,
             },
@@ -108,6 +108,17 @@ export class StaffComponent implements OnInit {
             data: {
                 title: AppSettings.TITLE_MANAGE_ROLE,
                 type: AppSettings.TYPE_MANAGE_ROLE,
+                element: staff,
+            },
+        }).afterClosed().subscribe(() => this.getAllStaffs())
+    }
+
+    showStaffDetail(staff: any) {
+        this.dialog.open(DialogFormComponent, {
+            panelClass: 'widthDialogForm',
+            data: {
+                title: AppSettings.TITLE_STAFF_DETAIL,
+                type: AppSettings.TYPE_STAFF,
                 element: staff,
             },
         }).afterClosed().subscribe(() => this.getAllStaffs())

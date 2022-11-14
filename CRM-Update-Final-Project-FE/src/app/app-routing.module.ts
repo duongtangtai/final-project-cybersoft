@@ -25,7 +25,7 @@ import { ServerErrorComponent } from './layouts/error/server-error/server-error.
             ),
           canActivate: [AuthGuard, PermissionGuard],
           data: {
-            requiredRoles : ['ADMIN', 'MANAGER', 'LEADER', 'EMPLOYEE']
+            requiredRoles : ['ADMIN', 'MANAGER', 'LEADER']
           }
         },
         {
@@ -47,7 +47,7 @@ import { ServerErrorComponent } from './layouts/error/server-error/server-error.
             ),
             canActivate: [AuthGuard, PermissionGuard],
             data: {
-              requiredRoles : ['ADMIN', 'MANAGER', 'LEADER', 'EMPLOYEE']
+              requiredRoles : ['ADMIN', 'MANAGER']
             }
           },
         {

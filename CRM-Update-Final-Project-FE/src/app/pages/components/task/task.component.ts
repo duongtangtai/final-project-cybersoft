@@ -75,7 +75,7 @@ export class TaskComponent implements OnInit {
         this.dialog.open(DialogFormComponent, {
             panelClass: 'widthDialogForm',
             data: {
-                title: AppSettings.FORM_ADD_TASK,
+                title: AppSettings.TITLE_ADD_TASK,
                 type: AppSettings.TYPE_TASK,
             },
         }).afterClosed().subscribe(() => this.getAllTasks())
@@ -85,7 +85,7 @@ export class TaskComponent implements OnInit {
         this.dialog.open(DialogFormComponent, {
             panelClass: 'widthDialogForm',
             data: {
-                title: AppSettings.FORM_UPDATE_TASK,
+                title: AppSettings.TITLE_UPDATE_TASK,
                 type: AppSettings.TYPE_TASK,
                 element: task,
             },
@@ -96,7 +96,7 @@ export class TaskComponent implements OnInit {
         this.dialog.open(DialogNotifyComponent, {
             panelClass: 'widthDialogForm',
             data: {
-                title: AppSettings.FORM_DELETE_TASK,
+                title: AppSettings.TITLE_DELETE_TASK,
                 message: AppSettings.MESSAGE_DELETE_TASK,
                 id: taskId,
             },
@@ -108,11 +108,22 @@ export class TaskComponent implements OnInit {
             panelClass: 'widthDialogForm',
             data: {
                 type: AppSettings.TYPE_COMMENT,
-                title: AppSettings.FORM_ADD_COMMENT,
+                title: AppSettings.TITLE_ADD_COMMENT,
                 element: task,
             },
             height: "80%",
             width: "75%",
+        }).afterClosed().subscribe(() => this.getAllTasks())
+    }
+
+    taskDetail(task: any) {
+        this.dialog.open(DialogFormComponent, {
+            panelClass: 'widthDialogForm',
+            data: {
+                title: AppSettings.TITLE_TASK_DETAIL,
+                type: AppSettings.TYPE_TASK,
+                element: task,
+            },
         }).afterClosed().subscribe(() => this.getAllTasks())
     }
 }

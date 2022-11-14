@@ -113,7 +113,7 @@ export class ProjectComponent implements OnInit {
         this.dialog.open(DialogFormComponent, {
             panelClass: 'widthDialogForm',
             data: {
-                title: AppSettings.FORM_ADD_PROJECT,
+                title: AppSettings.TITLE_ADD_PROJECT,
                 type: AppSettings.TYPE_PROJECT,
             },
         }).afterClosed().subscribe(() => this.getAllProject())
@@ -123,7 +123,7 @@ export class ProjectComponent implements OnInit {
         this.dialog.open(DialogFormComponent, {
             panelClass: 'widthDialogForm',
             data: {
-                title: AppSettings.FORM_UPDATE_PROJECT,
+                title: AppSettings.TITLE_UPDATE_PROJECT,
                 type: AppSettings.TYPE_PROJECT,
                 element: project,
             },
@@ -134,7 +134,7 @@ export class ProjectComponent implements OnInit {
         this.dialog.open(DialogNotifyComponent, {
             panelClass: 'widthDialogForm',
             data: {
-                title: AppSettings.FORM_DELETE_PROJECT,
+                title: AppSettings.TITLE_DELETE_PROJECT,
                 message: AppSettings.MESSAGE_DELETE_PROJECT,
                 id: projectId,
             },
@@ -147,6 +147,20 @@ export class ProjectComponent implements OnInit {
             data: {
                 title: AppSettings.TITLE_CURRENT_STAFF,
                 type: AppSettings.TYPE_MANAGE_STAFF_IN_PROJECT,
+                element: project,
+            },
+            width: "75%",
+            height: "85%",
+        }).afterClosed().subscribe(() => this.getAllProject())
+    }
+
+    showProjectDetail(project: any) {
+        //SHOW PROJECT DETAIL
+        this.dialog.open(DialogFormComponent, {
+            panelClass: 'widthDialogForm',
+            data: {
+                title: AppSettings.TITLE_PROJECT_DETAIL,
+                type: AppSettings.TYPE_PROJECT,
                 element: project,
             },
             width: "75%",

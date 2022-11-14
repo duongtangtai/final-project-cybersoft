@@ -25,13 +25,17 @@ import { RoleService } from 'src/app/pages/services/role.service';
     styleUrls: ['./dialog-form.component.scss'],
 })
 export class DialogFormComponent implements OnInit {
-
+    //COMMON
     @Input() title: string = '';
     @Input() type: string = 'project | staff | task';
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
+    @ViewChild(MatSort) sort!: MatSort;
     appSettings = AppSettings
     form: any;
     element: any;
     user: any;
+    dataSource: any;
+    displayedColumns: string[] = [];
     //PROJECT
     projectData: any;
     projectStatusData: any;
@@ -108,6 +112,17 @@ export class DialogFormComponent implements OnInit {
         return o1.name === o2.name && o1.id === o2.id;
     }
 
+    //-----------------FOR MAT TABLE-------------------
+    pagingAndSorting(data: any) {
+        this.dataSource = new MatTableDataSource<any>(data)
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+    }
+
+    filterByKeyword(event: Event) {
+        this.dataSource.filter = (event.target as HTMLInputElement).value;
+    }
+    
     //-----------------PROJECT FORM---------------------
 
     initProjectForm() {
@@ -128,10 +143,20 @@ export class DialogFormComponent implements OnInit {
         })
     }
 
-    getProjectForm(projectForm: any) {
-        this.initProjectForm() //ADD PROJECT
-        if (this.title == AppSettings.FORM_UPDATE_PROJECT) { //UPDATE PROJECT with OLD INFO
-            this.setProjectFormValues(projectForm)
+    getProjectForm(project: any) {
+        switch (this.title) {
+            case AppSettings.TITLE_ADD_PROJECT: //ADD PROJECT
+                this.initProjectForm()
+                break;
+            case AppSettings.TITLE_UPDATE_PROJECT: //UPDATE PROJECT
+                this.initProjectForm()
+                this.setProjectFormValues(project)
+                break;
+            case AppSettings.TITLE_PROJECT_DETAIL: //PROJECT DETAIL
+                this.showProjectDetail(project)
+                break;
+            default:
+                break;
         }
     }
 
@@ -146,6 +171,23 @@ export class DialogFormComponent implements OnInit {
             leaderUsername : projectForm.leader.username,
         })
     }
+
+    showProjectDetail(project: any) {
+        this.projectData = project;
+        this.form = this.formBuilder.group({
+            name: [{value:project.name,disabled:true}],
+            description: [{value:project.description,disabled:true}],
+            status: [{value:project.status,disabled:true}],
+            creatorUsername: [{value:project.creator.username,disabled:true}],
+            leaderUsername: [{value:project.leader.username,disabled:true}],
+        })
+        this.displayedColumns = ['hobbies', 'username', 'email','projects'];
+        this.staffService.getStaffsInsideProject(this.projectData.id)
+            .subscribe(content => {
+                this.staffData = content;
+                this.pagingAndSorting(this.staffData)
+            })
+    }
     //-------------------END PROJECT FORM--------------------
     //-------------------START STAFF FORM--------------------
     initStaffForm() { //initialize account status and genders
@@ -155,7 +197,7 @@ export class DialogFormComponent implements OnInit {
             id:['',{disabled:true}],
             username:['',Validators.required],
             //CREATE NEW STAFF NEED A PASSWORD
-            password:['', this.title == AppSettings.FORM_ADD_STAFF ? Validators.required : {disabled:true}],
+            password:['', this.title == AppSettings.TITLE_ADD_STAFF ? Validators.required : {disabled:true}],
             firstName:['',Validators.required],
             lastName:['',Validators.required],
             gender: ['',Validators.required],
@@ -169,10 +211,20 @@ export class DialogFormComponent implements OnInit {
         })
     }
 
-    getStaffForm(staffForm: IStaffModel) {
-        this.initStaffForm() //ADD STAFF
-        if (this.title == AppSettings.FORM_UPDATE_STAFF) { //UPDATE STAFF with OLD INFO
-            this.setStaffFormValues(staffForm)
+    getStaffForm(staff: IStaffModel) {
+        switch (this.title) {
+            case AppSettings.TITLE_ADD_STAFF: //ADD STAFF
+                this.initStaffForm()
+                break;
+            case AppSettings.TITLE_UPDATE_STAFF: //UPDATE STAFF
+                this.initStaffForm()
+                this.setStaffFormValues(staff)
+                break;
+            case AppSettings.TITLE_STAFF_DETAIL: //STAFF DETAIL
+                this.showStaffDetail(staff)
+                break;
+            default:
+                break;
         }
     }
 
@@ -191,6 +243,23 @@ export class DialogFormComponent implements OnInit {
             department : staffForm.department,
             hobbies : staffForm.hobbies,
             accountStatus : staffForm.accountStatus
+        })
+    }
+
+    showStaffDetail(staff: any) {
+        this.form = this.formBuilder.group({
+            id:[{value:staff.id,disabled:true}],
+            username:[{value:staff.username,disabled:true}],
+            firstName:[{value:staff.firstName,disabled:true}],
+            lastName:[{value:staff.lastName,disabled:true}],
+            gender: [{value:staff.gender,disabled:true}],
+            avatar:[{value:staff.avatar,disabled:true}],
+            email:[{value:staff.email,disabled:true}],
+            facebookUrl:[{value:staff.facebookUrl,disabled:true}],
+            occupation:[{value:staff.occupation,disabled:true}],
+            department:[{value:staff.department,disabled:true}],
+            hobbies:[{value:staff.hobbies,disabled:true}],
+            accountStatus:[{value:staff.accountStatus,disabled:true}]
         })
     }
 
@@ -218,10 +287,20 @@ export class DialogFormComponent implements OnInit {
         })
     }
 
-    getTaskForm(taskForm: any) {
-        this.initTaskForm() //ADD TASK
-        if (this.title == AppSettings.FORM_UPDATE_TASK) { //UPDATE TASK with OLD INFO
-            this.setTaskFormValues(taskForm)
+    getTaskForm(task: any) {
+        switch (this.title) {
+            case AppSettings.TITLE_ADD_TASK: //ADD TASK
+                this.initTaskForm()
+                break;
+            case AppSettings.TITLE_UPDATE_TASK: //UPDATE TASK
+                this.initTaskForm()
+                this.setTaskFormValues(task)
+                break;
+            case AppSettings.TITLE_TASK_DETAIL: //TASK DETAIL
+                this.showTaskDetail(task)
+                break;
+            default:
+                break;
         }
     }
 
@@ -239,6 +318,20 @@ export class DialogFormComponent implements OnInit {
             status: taskForm.status,
             projectName: taskForm.project.name,
             reporterUsername: taskForm.reporter.username,
+        })
+    }
+
+    showTaskDetail(task: any) {
+        this.form = this.formBuilder.group({
+            name: [{value:task.name,disabled:true}],
+            description: [{value:task.description,disabled:true}],
+            startDateExpected: [{value:task.startDateExpected,disabled:true}],
+            endDateExpected: [{value:task.endDateExpected,disabled:true}],
+            startDateInFact: [{value:task.startDateInFact,disabled:true}],
+            endDateInFact: [{value:task.endDateInFact,disabled:true}],
+            status: [{value:task.status,disabled:true}],
+            projectName: [{value:task.project.name,disabled:true}],
+            reporterUsername: [{value:task.reporter.username,disabled:true}],
         })
     }
 
@@ -290,24 +383,9 @@ export class DialogFormComponent implements OnInit {
 
     //-------------------END COMMENT FORM--------------------
     //---------------START MANAGE STAFFS IN PROJECT------------
-    dataSource: any;
-    displayedColumns: string[] = ['hobbies', 'username', 'email','projects', 'action'];
-    @ViewChild(MatPaginator) paginator!: MatPaginator;
-    @ViewChild(MatSort) sort!: MatSort;
-    manageStaffTable: string = '';
-
-    pagingAndSorting(data: any) {
-        this.dataSource = new MatTableDataSource<IStaffModel>(this.staffData)
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-    }
-
-    filterByKeyword(event: Event) {
-        this.dataSource.filter = (event.target as HTMLInputElement).value;
-    }
-
     getManageStaffInProjectDialog(project: any) {
         this.projectData = project;
+        this.displayedColumns = ['hobbies', 'username', 'email','projects', 'action'];
         switch (this.title) {
             case AppSettings.TITLE_CURRENT_STAFF:
                 this.initRemoveStaffFromProjectTable()
@@ -491,7 +569,10 @@ export class DialogFormComponent implements OnInit {
     }
 
     okFunc($event: any) {
-        if (this.type == AppSettings.TYPE_MANAGE_STAFF_IN_PROJECT) { //MANAGE STAFF IN PROJECT
+        if (this.type == AppSettings.TYPE_MANAGE_STAFF_IN_PROJECT ||
+            this.title == AppSettings.TITLE_PROJECT_DETAIL || 
+            this.title == AppSettings.TITLE_STAFF_DETAIL ||
+            this.title == AppSettings.TITLE_TASK_DETAIL) { //JUST CLOSE
             this.dialogRef.close()
         } else if (this.type == AppSettings.TYPE_MANAGE_ROLE) {
             let submitForm: string[] = [];
@@ -506,33 +587,34 @@ export class DialogFormComponent implements OnInit {
             if (this.type == AppSettings.TYPE_TASK) {
                 this.handleTaskDates()
             }
+            console.log("form valid")
             const submitForm = this.form.getRawValue()
             switch (this.title) {
-                case AppSettings.FORM_ADD_PROJECT: //ADD PROJECT
+                case AppSettings.TITLE_ADD_PROJECT: //ADD PROJECT
                     this.projectService.saveProject(submitForm)
                         .subscribe(content => this.succeededAndClose(content));
                     break;
-                case AppSettings.FORM_UPDATE_PROJECT: // UPDATE PROJECT
+                case AppSettings.TITLE_UPDATE_PROJECT: // UPDATE PROJECT
                     this.projectService.updateProject(submitForm)
                         .subscribe(content => this.succeededAndClose(content));
                     break;
-                case AppSettings.FORM_ADD_STAFF: // ADD STAFF
+                case AppSettings.TITLE_ADD_STAFF: // ADD STAFF
                     this.staffService.saveStaff(submitForm)
                         .subscribe(content => this.succeededAndClose(content));
                     break;
-                case AppSettings.FORM_UPDATE_STAFF: // UPDATE STAFF
+                case AppSettings.TITLE_UPDATE_STAFF: // UPDATE STAFF
                     this.staffService.updateStaff(submitForm)
                         .subscribe(content => this.succeededAndClose(content));
                     break;
-                case AppSettings.FORM_ADD_TASK: // ADD TASK
+                case AppSettings.TITLE_ADD_TASK: // ADD TASK
                     this.taskService.saveTask(submitForm)
                         .subscribe(content => this.succeededAndClose(content));
                     break;
-                case AppSettings.FORM_UPDATE_TASK: // UPDATE TASK
+                case AppSettings.TITLE_UPDATE_TASK: // UPDATE TASK
                     this.taskService.updateTask(submitForm)
                         .subscribe(content => this.succeededAndClose(content));
                     break;
-                case AppSettings.FORM_ADD_COMMENT: // ADD COMMENT
+                case AppSettings.TITLE_ADD_COMMENT: // ADD COMMENT
                     this.commentService.addComment(submitForm)
                         .subscribe(content => {
                             this.myToastrService.success(content)
