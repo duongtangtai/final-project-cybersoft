@@ -41,15 +41,15 @@ export class DialogNotifyComponent implements OnInit {
 
     okFunc($event: any) { //DELETE BASED ON THE TITLE
         switch (this.title) {
-            case AppSettings.FORM_DELETE_PROJECT:
+            case AppSettings.TITLE_DELETE_PROJECT:
                 this.projectService.deleteProject(this.id)
                     .subscribe(content => this.myToastrService.success(content.toString()));
                 break;
-            case AppSettings.FORM_DELETE_STAFF:
+            case AppSettings.TITLE_DELETE_STAFF:
                 this.staffService.deleteStaff(this.id)
                     .subscribe(content => this.myToastrService.success(content.toString()));
                 break;
-            case AppSettings.FORM_DELETE_TASK:
+            case AppSettings.TITLE_DELETE_TASK:
                 this.taskService.deleteTask(this.id)
                     .subscribe(content => this.myToastrService.success(content.toString()));
                 break;

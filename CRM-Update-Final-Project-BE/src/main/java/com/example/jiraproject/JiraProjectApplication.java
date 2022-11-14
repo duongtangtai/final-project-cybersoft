@@ -153,7 +153,7 @@ public class JiraProjectApplication implements CommandLineRunner {
                 .occupation("Java developer")
                 .department("IT DEPARTMENT")
                 .hobbies("Doing some stuff")
-                .accountStatus(User.AccountStatus.TEMPORARILY_BLOCKED)
+                .accountStatus(User.AccountStatus.ACTIVE)
                 .build();
         user1 = userRepository.save(user1);
         user2 = userRepository.save(user2);
@@ -176,7 +176,7 @@ public class JiraProjectApplication implements CommandLineRunner {
                 .status(Project.Status.DONE)
                 .symbol("default1")
                 .creator(user1)
-                .leader(user2)
+                .leader(user3)
                 .build();
         Project project2 = Project.builder()
                 .name("Dự án thi công")

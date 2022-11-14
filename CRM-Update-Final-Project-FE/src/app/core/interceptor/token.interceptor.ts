@@ -1,7 +1,7 @@
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest,} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {LocalStorageService} from "ngx-webstorage";
-import {Observable} from 'rxjs';
+import {Observable, EMPTY} from 'rxjs';
 import {AppSettings} from "../../app.constants";
 
 @Injectable()
@@ -18,6 +18,9 @@ export class TokenInterceptor implements HttpInterceptor {
     ): Observable<HttpEvent<any>> {
         const authData = this.localStorageService.retrieve(AppSettings.AUTH_DATA);
         let modifiedReq
+        if (AppSettings.LOG_OUT) {
+            return EMPTY;
+        }
         if (authData != null) {
             modifiedReq = request.clone({
                 headers: request.headers.set('Authorization', `Bearer ${authData.accessToken}`),

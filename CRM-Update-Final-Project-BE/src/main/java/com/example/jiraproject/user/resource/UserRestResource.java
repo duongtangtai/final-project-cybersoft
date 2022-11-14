@@ -86,7 +86,7 @@ public class UserRestResource {
         return ResponseUtil.get(service.findAllGenders(), HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.MANAGER})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER})
     @GetMapping("/inside-project/{projectId}")
     public ResponseEntity<ResponseDto> findAllInsideProject(@PathVariable("projectId")
                                                             @UUIDConstraint String projectId) {
@@ -100,7 +100,7 @@ public class UserRestResource {
         return ResponseUtil.get(service.findAllOutsideProject(UUID.fromString(projectId)), HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.MANAGER})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER})
     @GetMapping("/leader-role")
     public ResponseEntity<ResponseDto> findAllLeaderRole() {
         return ResponseUtil.get(service.findAllLeaderRole(), HttpStatus.OK);
