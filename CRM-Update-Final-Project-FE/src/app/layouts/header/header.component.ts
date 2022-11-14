@@ -17,7 +17,7 @@ export class HeaderComponent implements OnInit {
     gender: string = '';
     firstName: string ='';
     lastName: string ='';
-    roles: string = '';
+    roles: string[] = [];
 
     constructor(
         private router: Router,
@@ -68,12 +68,13 @@ export class HeaderComponent implements OnInit {
     }
 
     getUserRoles() {
-        this.profileService.rolesData.subscribe(roles => {
+        this.profileService.rolesData.subscribe((roles: any)=> {
             if (roles) {
-                this.roles = roles;
+                this.roles = this.specifyUserRoles(roles);
             } else {
-                this.roles = this.user.roleCodes;
+                this.roles = this.specifyUserRoles(this.user.roleCodes);
             }
+            AppSettings.USER_ROLES = this.roles; //set roles for user
         })
     }
 
@@ -82,7 +83,19 @@ export class HeaderComponent implements OnInit {
     }
 
     logout() {
+        AppSettings.LOG_OUT = true;
         this.authService.logout();
         this.router.navigateByUrl('/login').then(r => console.log);
+    }
+
+    specifyUserRoles(userRoles: string[]) {
+        if (userRoles.includes("AD")) {
+            return ["ADMIN"]
+        } else if (userRoles.includes("MGR")) {
+            return ["MANAGER"]
+        } else if (userRoles.includes("LEAD")) {
+            return userRoles.includes("EMP") ? ["LEADER", "EMPLOYEE"] : ["LEADER"]
+        }
+        return ["EMPLOYEE"]
     }
 }

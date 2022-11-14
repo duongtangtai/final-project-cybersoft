@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
 
         this.authService.login(username, password).subscribe(val => {
             if (val) {
-                this.router.navigateByUrl('/project').then(r => console.log)
+                this.router.navigateByUrl('/profile').then(r => console.log)
                 this.myToastrService.info("Welcome " + username)            
             }
         });

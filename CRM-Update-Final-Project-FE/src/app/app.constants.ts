@@ -1,5 +1,7 @@
 export class AppSettings {
     public static API_ENDPOINT="http://localhost:8088/jira/api";
+    public static LOG_OUT = false; 
+    public static USER_ROLES: any; //ADMIN, MANAGER, LEADER, EMPLOYEE
 
     public static AUTH_DATA="auth_data";
     // notification's titles

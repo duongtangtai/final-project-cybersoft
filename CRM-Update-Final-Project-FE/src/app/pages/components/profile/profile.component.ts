@@ -129,7 +129,6 @@ export class ProfileComponent implements OnInit {
         this.localStorageService.store(AppSettings.AUTH_DATA, newData)
         this.profileService.sendFirstName(userData.userData.firstName)
         this.profileService.sendLastName(userData.userData.lastName)
-        console.log
     }
 
     selectFile(event: any) {

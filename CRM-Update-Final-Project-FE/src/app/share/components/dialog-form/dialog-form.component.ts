@@ -129,7 +129,6 @@ export class DialogFormComponent implements OnInit {
     }
 
     getProjectForm(projectForm: any) {
-        console.log(projectForm)
         this.initProjectForm() //ADD PROJECT
         if (this.title == AppSettings.FORM_UPDATE_PROJECT) { //UPDATE PROJECT with OLD INFO
             this.setProjectFormValues(projectForm)

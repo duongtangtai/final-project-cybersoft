@@ -18,7 +18,7 @@ export class LoginModule {
   ) {
     const user = this.localStorageService.retrieve(AppSettings.AUTH_DATA);
     if (user != null && user.accessToken != null) {
-      this.router.navigateByUrl('/project');
+      this.router.navigateByUrl('/profile');
     }
   }
 }

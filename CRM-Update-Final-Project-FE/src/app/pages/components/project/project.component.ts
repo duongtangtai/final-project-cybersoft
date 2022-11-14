@@ -4,7 +4,6 @@ import {MatDialog} from "@angular/material/dialog";
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
 import {DialogNotifyComponent} from 'src/app/share/components/dialog-notify/dialog-notify.component';
 import {AppSettings} from "../../../app.constants";
 import {DialogFormComponent} from "../../../share/components/dialog-form/dialog-form.component";
@@ -21,8 +20,9 @@ export class ProjectComponent implements OnInit {
     dataSource: any;
     projects: any;
     projectStatus: string[] = ['DOING', 'DONE']
+    appSettings = AppSettings;
 
-    displayedColumns: string[] = ['symbol', 'name', 'description', 'status', 'action'];
+    displayedColumns: string[] = [];
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     @ViewChild(MatSort) sort!: MatSort;
 
@@ -30,11 +30,21 @@ export class ProjectComponent implements OnInit {
     constructor(
         private projectService: ProjectService,
         private dialog: MatDialog,
+        private localStorageService: LocalStorageService,
     ) {
     }
 
     ngOnInit(): void {
         this.getAllProject();
+        this.initDisplayedColumns();
+    }
+
+    initDisplayedColumns() { //init display columns based on USER ROLES
+        if (AppSettings.USER_ROLES.includes("ADMIN") || AppSettings.USER_ROLES.includes("MANAGER")) {
+            this.displayedColumns = ['symbol', 'name', 'description', 'status', 'action'];
+        } else if (AppSettings.USER_ROLES.includes("LEADER")) {
+            this.displayedColumns = ['symbol', 'name', 'description', 'status'];
+        }
     }
 
     pagingAndSorting() {
@@ -44,25 +54,54 @@ export class ProjectComponent implements OnInit {
     }
 
     getAllProject() {
-        this.projectService.getProjectsWithInfo().subscribe(result => {
-            this.projects = result;
-            this.pagingAndSorting()
-        });
+        //CASE ADMIN & MANAGER
+        if (AppSettings.USER_ROLES.includes("ADMIN") || AppSettings.USER_ROLES.includes("MANAGER")) {
+            this.projectService.getProjectsWithInfo().subscribe(result => {
+                this.projects = result;
+                this.pagingAndSorting()
+            });
+        } else if (AppSettings.USER_ROLES.includes("LEADER")) { 
+            //CASE LEADER => all projects that this leader is assigned
+            this.projectService.getProjectsWithInfo().subscribe(result => {
+                const leaderUsername = this.localStorageService.retrieve(AppSettings.AUTH_DATA)
+                                            .userData.username;
+                this.projects = result.filter((project: any) => project.leader.username == leaderUsername);
+                this.pagingAndSorting()
+            });
+        }
     }
 
     getAllProjectWithStatus(status: string) {
-        this.projectService.getProjectsWithInfo().subscribe(result => {
-            this.projects = result;
-            switch (status) {
-                case this.projectStatus[0]:
-                    this.projects = this.projects.filter((element: any) => element.status == this.projectStatus[0])
-                    break;
-                case this.projectStatus[1]:
-                    this.projects = this.projects.filter((element: any) => element.status == this.projectStatus[1])
-                    break;
-            }
-            this.pagingAndSorting()
-        });
+        //CASE ADMIN & MANAGER
+        if (AppSettings.USER_ROLES.includes("ADMIN") || AppSettings.USER_ROLES.includes("MANAGER")) {
+            this.projectService.getProjectsWithInfo().subscribe(result => {
+                this.projects = result;
+                switch (status) {
+                    case this.projectStatus[0]:
+                        this.projects = this.projects.filter((element: any) => element.status == this.projectStatus[0])
+                        break;
+                    case this.projectStatus[1]:
+                        this.projects = this.projects.filter((element: any) => element.status == this.projectStatus[1])
+                        break;
+                }
+                this.pagingAndSorting()
+            });
+        } else if (AppSettings.USER_ROLES.includes("LEADER")) { //CASE LEADER
+            this.projectService.getProjectsWithInfo().subscribe(result => {
+                const leaderUsername = this.localStorageService.retrieve(AppSettings.AUTH_DATA)
+                                            .userData.username;
+                this.projects = result.filter((project: any) => project.leader.username == leaderUsername);
+                switch (status) {
+                    case this.projectStatus[0]:
+                        this.projects = this.projects.filter((element: any) => element.status == this.projectStatus[0])
+                        break;
+                    case this.projectStatus[1]:
+                        this.projects = this.projects.filter((element: any) => element.status == this.projectStatus[1])
+                        break;
+                }
+                this.pagingAndSorting()
+            });
+        }
     }
 
     filterByKeyword(event: Event) {

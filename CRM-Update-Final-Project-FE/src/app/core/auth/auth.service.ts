@@ -62,6 +62,7 @@ export class AuthService {
     }
 
     login(username: string, password: string): Observable<UserModel> {
+        AppSettings.LOG_OUT = false;
         const body = {
             username, password
         };
@@ -75,7 +76,6 @@ export class AuthService {
     logout() {
         this._user.next(null);
         this.localStorageService.clear();
-        this.router.navigateByUrl("/login")
     }
 
     autoLogin() {}
@@ -90,7 +90,6 @@ export class AuthService {
         this.storeAuthData(user);
         const avatarUrl = user.userData.avatar;
         if (avatarUrl != undefined) {
-            console.log(avatarUrl)
             this.profileService.sendAvatarUrl(avatarUrl);
         } else {
             this.profileService.sendAvatarUrl(''); //set null to handle with genders
@@ -103,9 +102,8 @@ export class AuthService {
         if (userLastName != undefined) {
             this.profileService.sendLastName(userLastName)
         }
-        const userRoles = user.roleCodes
-        if (userRoles != undefined) {
-            this.profileService.sendRoles(userRoles)
+        if (user.roleCodes != undefined) {
+            this.profileService.sendRoles(user.roleCodes)
         }
     }
 
