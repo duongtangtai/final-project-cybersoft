@@ -1,50 +1,115 @@
 <h1 mat-dialog-title>
-    {{title}}
+  {{ title }}
 </h1>
 <form [formGroup]="form">
-
-    <!---------------------------------START PROJECT-------------------------------------->
-    <!-- START ADD PROJECT && UPDATE PROJECT -->
-    <div mat-dialog-content *ngIf="type == appSettings.TYPE_PROJECT && 
-        title == appSettings.TITLE_ADD_PROJECT || title == appSettings.TITLE_UPDATE_PROJECT">
-        <mat-form-field class="form-group">
-            <mat-label>Name</mat-label>
-            <input matInput placeholder="Name" class="form-control" formControlName="name">
-        </mat-form-field>
-        <mat-form-field class="form-group">
-            <mat-label>Description</mat-label>
-            <input matInput placeholder="Project's Name" class="form-control" formControlName="description">
-        </mat-form-field>
-        <mat-form-field class="form-group">
-            <mat-label>Status</mat-label>
-            <mat-select class="form-control" formControlName="status" disableOptionCentering panelClass="myPanelClass" [(value)]="compare1">
-                <mat-option *ngFor="let status of projectStatusData" [value]="status">{{status}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field class="form-group">
-            <mat-label>Creator</mat-label>
-            <input matInput placeholder="Creator's name" class="form-control" formControlName="creatorUsername" [disabled]="data.title == appSettings.TITLE_UPDATE_PROJECT">
-        </mat-form-field>
-        <mat-form-field class="form-group">
-            <mat-label>Leader</mat-label>
-            <mat-select class="form-control" formControlName="leaderUsername" disableOptionCentering panelClass="myPanelClass" [(value)]="compare2">
-                <mat-option *ngFor="let staff of staffData" [value]="staff.username">{{staff.username}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-label class="form-group">Symbol</mat-label><br>
-        <mat-radio-group class="form-group" formControlName="symbol" [(ngModel)]="projectSymbol">
-            <mat-radio-button value="default1" [checked]="projectSymbol == 'default1'">
-                <img src="/assets/img/project-symbols/default1.png" width="50px" height="50px" alt="">
-            </mat-radio-button>
-            <mat-radio-button value="default2" [checked]="projectSymbol == 'default2'">
-                <img src="/assets/img/project-symbols/default2.png" width="50px" height="50px" alt="">
-            </mat-radio-button>
-            <mat-radio-button value="default3" [checked]="projectSymbol == 'default3'">
-                <img src="/assets/img/project-symbols/default3.png" width="50px" height="50px" alt="">
-            </mat-radio-button>
-        </mat-radio-group>
-    </div>
-    <!-- <mat-expansion-panel hideToggle>
+  <!---------------------------------START PROJECT-------------------------------------->
+  <!-- START ADD PROJECT && UPDATE PROJECT -->
+  <div
+    mat-dialog-content
+    *ngIf="
+      (type == appSettings.TYPE_PROJECT &&
+        title == appSettings.TITLE_ADD_PROJECT) ||
+      title == appSettings.TITLE_UPDATE_PROJECT
+    "
+  >
+    <mat-form-field class="form-group">
+      <mat-label>Name</mat-label>
+      <input
+        matInput
+        placeholder="Name"
+        class="form-control"
+        formControlName="name"
+      />
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Description</mat-label>
+      <input
+        matInput
+        placeholder="Project's Name"
+        class="form-control"
+        formControlName="description"
+      />
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Status</mat-label>
+      <mat-select
+        class="form-control"
+        formControlName="status"
+        disableOptionCentering
+        panelClass="myPanelClass"
+        [(value)]="compare1"
+      >
+        <mat-option *ngFor="let status of projectStatusData" [value]="status">{{
+          status
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Creator</mat-label>
+      <input
+        matInput
+        placeholder="Creator's name"
+        class="form-control"
+        formControlName="creatorUsername"
+        [disabled]="data.title == appSettings.TITLE_UPDATE_PROJECT"
+      />
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Leader</mat-label>
+      <mat-select
+        class="form-control"
+        formControlName="leaderUsername"
+        disableOptionCentering
+        panelClass="myPanelClass"
+        [(value)]="compare2"
+      >
+        <mat-option *ngFor="let staff of staffData" [value]="staff.username">{{
+          staff.username
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-label class="form-group">Symbol</mat-label><br />
+    <mat-radio-group
+      class="form-group"
+      formControlName="symbol"
+      [(ngModel)]="projectSymbol"
+    >
+      <mat-radio-button
+        value="default1"
+        [checked]="projectSymbol == 'default1'"
+      >
+        <img
+          src="/assets/img/project-symbols/default1.png"
+          width="50px"
+          height="50px"
+          alt=""
+        />
+      </mat-radio-button>
+      <mat-radio-button
+        value="default2"
+        [checked]="projectSymbol == 'default2'"
+      >
+        <img
+          src="/assets/img/project-symbols/default2.png"
+          width="50px"
+          height="50px"
+          alt=""
+        />
+      </mat-radio-button>
+      <mat-radio-button
+        value="default3"
+        [checked]="projectSymbol == 'default3'"
+      >
+        <img
+          src="/assets/img/project-symbols/default3.png"
+          width="50px"
+          height="50px"
+          alt=""
+        />
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <!-- <mat-expansion-panel hideToggle>
         <mat-expansion-panel-header>
           <mat-panel-title>
             This is the expansion title
@@ -55,479 +120,942 @@
         </mat-expansion-panel-header>
         <p>This is the primary content of the panel.</p>
     </mat-expansion-panel> -->
-    <!-- END ADD PROJECT && UPDATE PROJECT -->
-    <!-- START PROJECT DETAIL -->
-    <div mat-dialog-content *ngIf="type == appSettings.TYPE_PROJECT && 
-        title == appSettings.TITLE_PROJECT_DETAIL">
-        <mat-form-field class="form-group">
-            <mat-label>Name</mat-label>
-            <input matInput placeholder="Name" class="form-control" formControlName="name">
-        </mat-form-field>
-        <mat-form-field class="form-group">
-            <mat-label>Description</mat-label>
-            <input matInput placeholder="Project's Name" class="form-control" formControlName="description">
-        </mat-form-field>
-        <mat-form-field class="form-group">
-            <mat-label>Status</mat-label>
-            <input matInput placeholder="Creator's name" class="form-control" formControlName="status">
-        </mat-form-field>
-        <mat-form-field class="form-group">
-            <mat-label>Creator</mat-label>
-            <input matInput placeholder="Creator's name" class="form-control" formControlName="creatorUsername">
-        </mat-form-field>
-        <mat-form-field class="form-group">
-            <mat-label>Leader</mat-label>
-            <input matInput placeholder="Creator's name" class="form-control" formControlName="leaderUsername">
-        </mat-form-field>
-        <h3>All Staffs inside this project:</h3>
-        <!-- START STAFFS IN PROJECT TABLE -->
-        <div class="card">
-            <div class="card-body">
-            <mat-form-field>
-                <mat-label>Search..?</mat-label>
-                <input matInput placeholder="By keyword" (keyup)="filterByKeyword($event)">
-            </mat-form-field>
-            <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
-                <ng-container matColumnDef="hobbies">
-                    <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>First Name</strong>
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                        <img *ngIf="element.avatar == null && element.gender == 'MALE'"
-                                src="/assets/img/avatars/male-default.png" width="50" height="50" alt="">
-                        <img *ngIf="element.avatar == null && element.gender == 'FEMALE'"
-                                src="/assets/img/avatars/female-default.png" width="50" height="50" alt="">
-                        <img *ngIf="element.avatar != null" [src]="element.avatar" width="50" height="50" alt="">
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="username">
-                    <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Username</strong>
-                    </th>
-                    <td mat-cell *matCellDef="let element"> {{element.username}} </td>
-                </ng-container>
-                <ng-container matColumnDef="email">
-                    <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Email</strong>
-                    </th>
-                    <td mat-cell *matCellDef="let element"> {{element.email}} </td>
-                </ng-container>
-                <ng-container matColumnDef="projects">
-                    <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Projects</strong>
-                    </th>
-                    <td mat-cell *matCellDef="let element"> {{element.projects.length}} </td>
-                </ng-container>
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
-            <mat-paginator [pageSizeOptions]="[5,10,20]" showFirstLastButtons>
-            </mat-paginator>
-            </div>
-        </div>
-        <!-- END STAFFS IN PROJECT TABLE -->
-    </div>
-    <!-- END PROJECT DETAIL -->
-    <!---------------------------------END PROJECT-------------------------------------->
-
-    <!----------------------------------START STAFF -------------------------------------->
-    <!-- START ADD && UPDATE STAFF -->
-    <div mat-dialog-content *ngIf="type == appSettings.TYPE_STAFF && 
-        title == appSettings.TITLE_ADD_STAFF || title == appSettings.TITLE_UPDATE_STAFF">
-        <mat-form-field class="form-group">
-            <mat-label>Username</mat-label>
-            <input matInput placeholder="Username" class="form-control" formControlName="username">
-        </mat-form-field>
-        <mat-form-field class="form-group" *ngIf="title == appSettings.TITLE_ADD_STAFF">
-            <mat-label>Password</mat-label>
-            <input matInput placeholder="Password" type="password" class="form-control" formControlName="password">
-        </mat-form-field>
-        <mat-form-field class="form-group">
-            <mat-label>First Name</mat-label>
-            <input matInput placeholder="First Name" class="form-control" formControlName="firstName">
-        </mat-form-field>
-        <mat-form-field class="form-group">
-            <mat-label>Last Name</mat-label>
-            <input matInput placeholder="Last Name" class="form-control" formControlName="lastName">
-        </mat-form-field>
-        <mat-form-field class="form-group">
-            <mat-label>Gender</mat-label>
-            <mat-select class="form-control" formControlName="gender" disableOptionCentering panelClass="myPanelClass" [(value)]="compare1">
-                <mat-option *ngFor="let gender of staffGenderData" [value]="gender">{{gender}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field class="form-group">
-            <mat-label>Email</mat-label>
-            <input matInput placeholder="Email" class="form-control" formControlName="email" type="email">
-        </mat-form-field>
-        <mat-form-field class="form-group">
-            <mat-label>Facebook</mat-label>
-            <input matInput placeholder="Facebook URL" class="form-control" formControlName="facebookUrl">
-        </mat-form-field>
-        <mat-form-field class="form-group">
-            <mat-label>Occupation</mat-label>
-            <input matInput placeholder="Occupation" class="form-control" formControlName="occupation">
-        </mat-form-field>
-        <mat-form-field class="form-group">
-            <mat-label>Department</mat-label>
-            <input matInput placeholder="Department" class="form-control" formControlName="department">
-        </mat-form-field>
-        <mat-form-field class="form-group">
-            <mat-label>Hobbies</mat-label>
-            <input matInput placeholder="Hobbies" class="form-control" formControlName="hobbies">
-        </mat-form-field>
-        <mat-form-field class="form-group">
-            <mat-label>Account Status</mat-label>
-            <mat-select class="form-control" formControlName="accountStatus" disableOptionCentering panelClass="myPanelClass" [(value)]="compare2">
-                <mat-option *ngFor="let status of staffStatusData" [value]="status">{{status}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-    </div>
-    <!-- END ADD && UPDATE STAFF -->
-
-    <!-- START STAFF DETAIL -->
-    <div mat-dialog-content *ngIf="type == appSettings.TYPE_STAFF && 
-        title == appSettings.TITLE_STAFF_DETAIL">
-        <div class="card-body">
-            <form [formGroup]="form">
-                <div class="row">
-                    <div class="mb-3 col-md-6">
-                        <mat-form-field class="form-group">
-                            <mat-label>Username</mat-label>
-                            <input matInput [disabled]="true" placeholder="Username" class="form-control"
-                                   formControlName="username">
-                        </mat-form-field>
-                    </div>
-                    <div class="mb-3 col-md-6">
-                        <mat-form-field class="form-group">
-                            <mat-label>First Name</mat-label>
-                            <input matInput placeholder="First Name" class="form-control"
-                                   formControlName="firstName">
-                        </mat-form-field>
-                    </div>
-                    <div class="mb-3 col-md-6">
-                        <mat-form-field class="form-group">
-                            <mat-label>Last Name</mat-label>
-                            <input matInput placeholder="Last Name" class="form-control"
-                                   formControlName="lastName">
-                        </mat-form-field>
-                    </div>
-                    <div class="mb-3 col-md-6">
-                        <mat-form-field class="form-group">
-                            <mat-label>Last Name</mat-label>
-                            <input matInput placeholder="Last Name" class="form-control"
-                                   formControlName="gender">
-                        </mat-form-field>
-                    </div>
-                    <div class="mb-3 col-md-6">
-                        <mat-form-field class="form-group">
-                            <mat-label>Email</mat-label>
-                            <input matInput placeholder="Email" class="form-control" formControlName="email"
-                                   type="email">
-                        </mat-form-field>
-                    </div>
-                    <div class="mb-3 col-md-6">
-                        <mat-form-field class="form-group">
-                            <mat-label>Facebook</mat-label>
-                            <input matInput placeholder="Facebook URL" class="form-control"
-                                   formControlName="facebookUrl">
-                        </mat-form-field>
-                    </div>
-                    <div class="mb-3 col-md-6">
-                        <mat-form-field class="form-group">
-                            <mat-label>Occupation</mat-label>
-                            <input matInput placeholder="Occupation" class="form-control"
-                                   formControlName="occupation">
-                        </mat-form-field>
-                    </div>
-                    <div class="mb-3 col-md-6">
-                        <mat-form-field class="form-group">
-                            <mat-label>Department</mat-label>
-                            <input matInput placeholder="Department" class="form-control"
-                                   formControlName="department">
-                        </mat-form-field>
-                    </div>
-                    <div class="mb-3 col-md-6">
-                        <mat-form-field class="form-group">
-                            <mat-label>Hobbies</mat-label>
-                            <input matInput placeholder="Hobbies" class="form-control"
-                                   formControlName="hobbies">
-                        </mat-form-field>
-                    </div>
-                    <div class="mb-3 col-md-6">
-                        <mat-form-field class="form-group">
-                            <mat-label>Account Status</mat-label>
-                            <input matInput placeholder="Account Status" class="form-control"
-                                   formControlName="accountStatus">
-                        </mat-form-field>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <!-- END STAFF DETAIL -->
-    <!----------------------------------END STAFF -------------------------------------->
-
-
-    <!----------------------------------START TASK-------------------------------------->
-    <!-- START ADD & UPDATE TASK -->
-    <div mat-dialog-content *ngIf="type == appSettings.TYPE_TASK && title == appSettings.TITLE_ADD_TASK ||
-        title == appSettings.TITLE_UPDATE_TASK">
-        <mat-form-field class="form-group">
-            <mat-label>Name</mat-label>
-            <input matInput placeholder="Name" class="form-control" formControlName="name">
-        </mat-form-field>
-        <mat-form-field class="form-group">
-            <mat-label>Description</mat-label>
-            <input matInput placeholder="Description" class="form-control" formControlName="description">
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-            <mat-label>Start Date Expected</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="startDateExpected">
-            <mat-hint>MM/DD/YYYY</mat-hint>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-            <mat-label>End Date Expected</mat-label>
-            <input matInput [matDatepicker]="picker1" formControlName="endDateExpected">
-            <mat-hint>MM/DD/YYYY</mat-hint>
-            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-            <mat-datepicker #picker1></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-            <mat-label>Start Date In Fact</mat-label>
-            <input matInput [matDatepicker]="picker2" formControlName="startDateInFact">
-            <mat-hint>MM/DD/YYYY</mat-hint>
-            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-            <mat-datepicker #picker2></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-            <mat-label>End Date In Fact</mat-label>
-            <input matInput [matDatepicker]="picker3" formControlName="endDateInFact">
-            <mat-hint>MM/DD/YYYY</mat-hint>
-            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-            <mat-datepicker #picker3></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field class="form-group">
-            <mat-label>Status</mat-label>
-            <mat-select class="form-control" formControlName="status" disableOptionCentering panelClass="myPanelClass" [(value)]="compare1">
-                <mat-option *ngFor="let status of taskStatusData" [value]="status">{{status}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field class="form-group" >
-            <mat-label>Project Name</mat-label>
-            <mat-select class="form-control" (valueChange)="taskProjectNameChange($event)" [disabled]="data.title == appSettings.TITLE_UPDATE_TASK" 
-            formControlName="projectName" disableOptionCentering panelClass="myPanelClass" [(value)]="compare2">
-                <mat-option *ngFor="let project of projectData" [value]="project.name">{{project.name}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field class="form-group">
-            <mat-label>Reporter Username</mat-label>
-            <mat-select class="form-control" formControlName="reporterUsername" disableOptionCentering panelClass="myPanelClass" [(value)]="compare3">
-                <mat-option>NONE</mat-option>
-                <mat-option *ngFor="let staff of staffData" [value]="staff.username">{{staff.username}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-    </div>
-    <!-- END ADD & UPDATE TASK -->
-    <div mat-dialog-content *ngIf="type == appSettings.TYPE_TASK && title == appSettings.TITLE_TASK_DETAIL">
-        <mat-form-field class="form-group">
-            <mat-label>Name</mat-label>
-            <input matInput placeholder="Name" class="form-control" formControlName="name">
-        </mat-form-field>
-        <mat-form-field class="form-group">
-            <mat-label>Description</mat-label>
-            <input matInput placeholder="Description" class="form-control" formControlName="description">
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Start Date Expected</mat-label>
-            <input matInput placeholder="Start Date Expected" class="form-control" formControlName="startDateExpected">
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>End Date Expected</mat-label>
-            <input matInput placeholder="End Date Expected" class="form-control" formControlName="endDateExpected">
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Start Date In Fact</mat-label>
-            <input matInput placeholder="Start Date In Fact" class="form-control" formControlName="startDateInFact">
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>End Date In Fact</mat-label>
-            <input matInput placeholder="End Date In Fact" class="form-control" formControlName="endDateInFact">
-        </mat-form-field>
-        <mat-form-field class="form-group">
-            <mat-label>Status</mat-label>
-            <input matInput placeholder="Status" class="form-control" formControlName="status">
-        </mat-form-field>
-        <mat-form-field class="form-group" >
-            <mat-label>Project Name</mat-label>
-            <input matInput placeholder="Project Name" class="form-control" formControlName="projectName">
-        </mat-form-field>
-        <mat-form-field class="form-group">
-            <mat-label>Reporter Username</mat-label>
-            <input matInput placeholder="Reporter Username" class="form-control" formControlName="reporterUsername">
-        </mat-form-field>
-    </div>
-    <!-- START TASK DETAIL -->
-
-    <!-- END TASK DETAIL -->
-    <!-------------------------------END TASK FORM-------------------------------------->
-    <!-------------------------------START COMMENT FORM-------------------------------------->
-    <!-- START PREVIOUS COMMENTS -->
-    <div *ngIf="type == appSettings.TYPE_COMMENT">
+  <!-- END ADD PROJECT && UPDATE PROJECT -->
+  <!-- START PROJECT DETAIL -->
+  <div
+    mat-dialog-content
+    *ngIf="
+      type == appSettings.TYPE_PROJECT &&
+      title == appSettings.TITLE_PROJECT_DETAIL
+    "
+  >
+    <mat-form-field class="form-group">
+      <mat-label>Name</mat-label>
+      <input
+        matInput
+        placeholder="Name"
+        class="form-control"
+        formControlName="name"
+      />
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Description</mat-label>
+      <input
+        matInput
+        placeholder="Project's Name"
+        class="form-control"
+        formControlName="description"
+      />
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Status</mat-label>
+      <input
+        matInput
+        placeholder="Creator's name"
+        class="form-control"
+        formControlName="status"
+      />
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Creator</mat-label>
+      <input
+        matInput
+        placeholder="Creator's name"
+        class="form-control"
+        formControlName="creatorUsername"
+      />
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Leader</mat-label>
+      <input
+        matInput
+        placeholder="Creator's name"
+        class="form-control"
+        formControlName="leaderUsername"
+      />
+    </mat-form-field>
+    <h3>All Staffs inside this project:</h3>
+    <!-- START STAFFS IN PROJECT TABLE -->
     <div class="card">
-        <div class="card card-body">
-            <div>TASK NAME: {{element.name}}</div>
-            <div>REPORTER: {{element.reporterUsername}} </div>
-        <div class="card card-body">
-            <div *ngFor="let element of commentDisplayed">
-                <div *ngIf="element.comment.responseToId == null">
-                    <img *ngIf="element.comment.writer.avatar == null && element.comment.writer.gender == 'MALE'"
-                            src="/assets/img/avatars/male-default.png" width="50" height="50" alt="">
-                    <img *ngIf="element.comment.writer.avatar == null && element.comment.writer.gender == 'FEMALE'"
-                            src="/assets/img/avatars/female-default.png" width="50" height="50" alt="">
-                    <img *ngIf="element.comment.writer.avatar != null" [src]="element.comment.writer.avatar" width="50" height="50" alt="">
-                    &nbsp;&nbsp;
-                    <strong>{{element.comment.writer.username}}</strong>
-                    <em> at {{element.comment.lastModifiedAt}}</em>
-                    <br><br>
-                    <div>
-                        {{element.comment.description}}
-                    </div>
-                    <br>
-                    <div>
-                        <button type="button" class="btn btn-info" (click)="responseToComment(element.comment)">
-                            Reply
-                        </button>
-                    </div>
-                    <br>
-                    <div class="card card-body" *ngFor="let response of element.responses">
-                        <img *ngIf="response.writer.avatar == null && response.writer.gender == 'MALE'"
-                            src="/assets/img/avatars/male-default.png" width="50" height="50" alt="">
-                        <img *ngIf="response.writer.avatar == null && response.writer.gender == 'FEMALE'"
-                            src="/assets/img/avatars/female-default.png" width="50" height="50" alt="">
-                        <img *ngIf="response.writer.avatar != null" [src]="response.writer.avatar" width="50" height="50" alt="">
-                        &nbsp;&nbsp;
-                        <strong> {{response.writer.username}}</strong>
-                        <em> at {{response.lastModifiedAt}}</em>
-                        <br>
-                        <div>
-                            {{response.description}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <div class="card-body">
+        <mat-form-field>
+          <mat-label>Search..?</mat-label>
+          <input
+            matInput
+            placeholder="By keyword"
+            (keyup)="filterByKeyword($event)"
+          />
+        </mat-form-field>
+        <table
+          mat-table
+          matSort
+          [dataSource]="dataSource"
+          class="mat-elevation-z8"
+        >
+          <ng-container matColumnDef="hobbies">
+            <th
+              mat-sort-header
+              mat-header-cell
+              *matHeaderCellDef
+              class="fs-6 fst-italic"
+            >
+              <strong>First Name</strong>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <img
+                *ngIf="element.avatar == null && element.gender == 'MALE'"
+                src="/assets/img/avatars/male-default.png"
+                width="50"
+                height="50"
+                alt=""
+              />
+              <img
+                *ngIf="element.avatar == null && element.gender == 'FEMALE'"
+                src="/assets/img/avatars/female-default.png"
+                width="50"
+                height="50"
+                alt=""
+              />
+              <img
+                *ngIf="element.avatar != null"
+                [src]="element.avatar"
+                width="50"
+                height="50"
+                alt=""
+              />
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="username">
+            <th
+              mat-sort-header
+              mat-header-cell
+              *matHeaderCellDef
+              class="fs-6 fst-italic"
+            >
+              <strong>Username</strong>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.username }}</td>
+          </ng-container>
+          <ng-container matColumnDef="email">
+            <th
+              mat-sort-header
+              mat-header-cell
+              *matHeaderCellDef
+              class="fs-6 fst-italic"
+            >
+              <strong>Email</strong>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+          </ng-container>
+          <ng-container matColumnDef="projects">
+            <th
+              mat-sort-header
+              mat-header-cell
+              *matHeaderCellDef
+              class="fs-6 fst-italic"
+            >
+              <strong>Projects</strong>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.projects.length }}
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+        </mat-paginator>
+      </div>
     </div>
-    <!-- END PREVIOUS COMMENTS -->
-    <!-- START USER COMMENT -->
-    <div class="card">
-        <div mat-dialog-content *ngIf="type == appSettings.TYPE_COMMENT" class="card-body">
-            <img *ngIf="user.userData.avatar == null && user.userData.gender == 'MALE'"
-                src="/assets/img/avatars/male-default.png" width="50" height="50" alt="">
-            <img *ngIf="user.userData.avatar == null && user.userData.gender == 'FEMALE'"
-                src="/assets/img/avatars/female-default.png" width="50" height="50" alt="">
-            <img *ngIf="user.userData.avatar != null" [src]="user.userData.avatar" width="50" height="50" alt="">
-            &nbsp;&nbsp;
-            <strong>{{user.userData.username}}</strong>
-            <span *ngIf="respondingToUser">
-                <em> is responding to </em>
-                <strong>{{respondingToUser}}</strong>
-            </span>
+    <!-- END STAFFS IN PROJECT TABLE -->
+  </div>
+  <!-- END PROJECT DETAIL -->
+  <!---------------------------------END PROJECT-------------------------------------->
+
+  <!----------------------------------START STAFF -------------------------------------->
+  <!-- START ADD && UPDATE STAFF -->
+  <div
+    mat-dialog-content
+    *ngIf="
+      (type == appSettings.TYPE_STAFF &&
+        title == appSettings.TITLE_ADD_STAFF) ||
+      title == appSettings.TITLE_UPDATE_STAFF
+    "
+  >
+    <mat-form-field class="form-group">
+      <mat-label>Username</mat-label>
+      <input
+        matInput
+        placeholder="Username"
+        class="form-control"
+        formControlName="username"
+      />
+    </mat-form-field>
+    <mat-form-field
+      class="form-group"
+      *ngIf="title == appSettings.TITLE_ADD_STAFF"
+    >
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        placeholder="Password"
+        type="password"
+        class="form-control"
+        formControlName="password"
+      />
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>First Name</mat-label>
+      <input
+        matInput
+        placeholder="First Name"
+        class="form-control"
+        formControlName="firstName"
+      />
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Last Name</mat-label>
+      <input
+        matInput
+        placeholder="Last Name"
+        class="form-control"
+        formControlName="lastName"
+      />
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Gender</mat-label>
+      <mat-select
+        class="form-control"
+        formControlName="gender"
+        disableOptionCentering
+        panelClass="myPanelClass"
+        [(value)]="compare1"
+      >
+        <mat-option *ngFor="let gender of staffGenderData" [value]="gender">{{
+          gender
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Email</mat-label>
+      <input
+        matInput
+        placeholder="Email"
+        class="form-control"
+        formControlName="email"
+        type="email"
+      />
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Facebook</mat-label>
+      <input
+        matInput
+        placeholder="Facebook URL"
+        class="form-control"
+        formControlName="facebookUrl"
+      />
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Occupation</mat-label>
+      <input
+        matInput
+        placeholder="Occupation"
+        class="form-control"
+        formControlName="occupation"
+      />
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Department</mat-label>
+      <input
+        matInput
+        placeholder="Department"
+        class="form-control"
+        formControlName="department"
+      />
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Hobbies</mat-label>
+      <input
+        matInput
+        placeholder="Hobbies"
+        class="form-control"
+        formControlName="hobbies"
+      />
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Account Status</mat-label>
+      <mat-select
+        class="form-control"
+        formControlName="accountStatus"
+        disableOptionCentering
+        panelClass="myPanelClass"
+        [(value)]="compare2"
+      >
+        <mat-option *ngFor="let status of staffStatusData" [value]="status">{{
+          status
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <!-- END ADD && UPDATE STAFF -->
+
+  <!-- START STAFF DETAIL -->
+  <div
+    mat-dialog-content
+    *ngIf="
+      type == appSettings.TYPE_STAFF && title == appSettings.TITLE_STAFF_DETAIL
+    "
+  >
+    <div class="card-body">
+      <form [formGroup]="form">
+        <div class="row">
+          <div class="mb-3 col-md-6">
             <mat-form-field class="form-group">
-                <mat-label>Your comment</mat-label>
-                <input matInput placeholder="Your comment" class="form-control" formControlName="description">
+              <mat-label>Username</mat-label>
+              <input
+                matInput
+                [disabled]="true"
+                placeholder="Username"
+                class="form-control"
+                formControlName="username"
+              />
             </mat-form-field>
+          </div>
+          <div class="mb-3 col-md-6">
+            <mat-form-field class="form-group">
+              <mat-label>First Name</mat-label>
+              <input
+                matInput
+                placeholder="First Name"
+                class="form-control"
+                formControlName="firstName"
+              />
+            </mat-form-field>
+          </div>
+          <div class="mb-3 col-md-6">
+            <mat-form-field class="form-group">
+              <mat-label>Last Name</mat-label>
+              <input
+                matInput
+                placeholder="Last Name"
+                class="form-control"
+                formControlName="lastName"
+              />
+            </mat-form-field>
+          </div>
+          <div class="mb-3 col-md-6">
+            <mat-form-field class="form-group">
+              <mat-label>Last Name</mat-label>
+              <input
+                matInput
+                placeholder="Last Name"
+                class="form-control"
+                formControlName="gender"
+              />
+            </mat-form-field>
+          </div>
+          <div class="mb-3 col-md-6">
+            <mat-form-field class="form-group">
+              <mat-label>Email</mat-label>
+              <input
+                matInput
+                placeholder="Email"
+                class="form-control"
+                formControlName="email"
+                type="email"
+              />
+            </mat-form-field>
+          </div>
+          <div class="mb-3 col-md-6">
+            <mat-form-field class="form-group">
+              <mat-label>Facebook</mat-label>
+              <input
+                matInput
+                placeholder="Facebook URL"
+                class="form-control"
+                formControlName="facebookUrl"
+              />
+            </mat-form-field>
+          </div>
+          <div class="mb-3 col-md-6">
+            <mat-form-field class="form-group">
+              <mat-label>Occupation</mat-label>
+              <input
+                matInput
+                placeholder="Occupation"
+                class="form-control"
+                formControlName="occupation"
+              />
+            </mat-form-field>
+          </div>
+          <div class="mb-3 col-md-6">
+            <mat-form-field class="form-group">
+              <mat-label>Department</mat-label>
+              <input
+                matInput
+                placeholder="Department"
+                class="form-control"
+                formControlName="department"
+              />
+            </mat-form-field>
+          </div>
+          <div class="mb-3 col-md-6">
+            <mat-form-field class="form-group">
+              <mat-label>Hobbies</mat-label>
+              <input
+                matInput
+                placeholder="Hobbies"
+                class="form-control"
+                formControlName="hobbies"
+              />
+            </mat-form-field>
+          </div>
+          <div class="mb-3 col-md-6">
+            <mat-form-field class="form-group">
+              <mat-label>Account Status</mat-label>
+              <input
+                matInput
+                placeholder="Account Status"
+                class="form-control"
+                formControlName="accountStatus"
+              />
+            </mat-form-field>
+          </div>
         </div>
+      </form>
     </div>
-    </div>
-    </div>
-    <!-- END USER COMMENT -->
-    <!-------------------------------END COMMENT FORM-------------------------------------->
-    <!-----------------------------START MANAGE STAFF IN PROJECT DIALOG------------------------->
-    <div *ngIf="type == appSettings.TYPE_MANAGE_STAFF_IN_PROJECT">
-        <!-- START PROJECT INFO -->
-        <button type="button" class="btn btn-info"
-        [disabled]="title == appSettings.TITLE_CURRENT_STAFF"
-        (click)="toRemoveStaffFromProjectTable()"
-        > CURRENT STAFFS </button>
-        &nbsp;
-        <button type="button" class="btn btn-primary"
-        [disabled]="title == appSettings.TITLE_AVAILABLE_STAFF"
-        (click)="toAddStaffToProjectTable()"
-        > AVAILABLE STAFFS </button>
-        <div>
-            Project: {{projectData.name}}
-        </div>
-        <div>
-            Leader: {{projectData.leader.username}}
-        </div>
-        <!-- END PROJECT INFO -->
-        <!-- START STAFFS IN PROJECT TABLE -->
+  </div>
+  <!-- END STAFF DETAIL -->
+  <!----------------------------------END STAFF -------------------------------------->
 
-        <div class="card">
-            <div class="card-body">
-            <mat-form-field>
-                <mat-label>Search..?</mat-label>
-                <input matInput placeholder="By keyword" (keyup)="filterByKeyword($event)">
-            </mat-form-field>
-            <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
-                <ng-container matColumnDef="hobbies">
-                    <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>First Name</strong>
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                        <img *ngIf="element.avatar == null && element.gender == 'MALE'"
-                             src="/assets/img/avatars/male-default.png" width="50" height="50" alt="">
-                        <img *ngIf="element.avatar == null && element.gender == 'FEMALE'"
-                             src="/assets/img/avatars/female-default.png" width="50" height="50" alt="">
-                        <img *ngIf="element.avatar != null" [src]="element.avatar" width="50" height="50" alt="">
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="username">
-                    <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Username</strong>
-                    </th>
-                    <td mat-cell *matCellDef="let element"> {{element.username}} </td>
-                </ng-container>
-                <ng-container matColumnDef="email">
-                    <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Email</strong>
-                    </th>
-                    <td mat-cell *matCellDef="let element"> {{element.email}} </td>
-                </ng-container>
-                <ng-container matColumnDef="projects">
-                    <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Projects</strong>
-                    </th>
-                    <td mat-cell *matCellDef="let element"> {{element.projects.length}} </td>
-                </ng-container>
-                <ng-container matColumnDef="action">
-                    <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Action</strong></th>
-                    <td mat-cell *matCellDef="let element">
-                        <button type="button" class="btn btn-danger"
-                        *ngIf="title == appSettings.TITLE_CURRENT_STAFF"
-                        (click)="removeStaffFormProject(element.id)"
-                        > REMOVE </button>
-                        <button type="button" class="btn btn-success"
-                        *ngIf="title == appSettings.TITLE_AVAILABLE_STAFF"
-                        (click)="addStaffToProject(element.id)"
-                        > ADD </button>
-                    </td>
-                </ng-container>
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
-            <mat-paginator [pageSizeOptions]="[5,10,20]" showFirstLastButtons>
-            </mat-paginator>
+  <!----------------------------------START TASK-------------------------------------->
+  <!-- START ADD & UPDATE TASK -->
+  <div
+    mat-dialog-content
+    *ngIf="
+      (type == appSettings.TYPE_TASK && title == appSettings.TITLE_ADD_TASK) ||
+      title == appSettings.TITLE_UPDATE_TASK
+    "
+  >
+    <mat-form-field class="form-group">
+      <mat-label>Name</mat-label>
+      <input
+        matInput
+        placeholder="Name"
+        class="form-control"
+        formControlName="name"
+      />
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Description</mat-label>
+      <input
+        matInput
+        placeholder="Description"
+        class="form-control"
+        formControlName="description"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Start Date Expected</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        formControlName="startDateExpected"
+      />
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>End Date Expected</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker1"
+        formControlName="endDateExpected"
+      />
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Start Date In Fact</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker2"
+        formControlName="startDateInFact"
+      />
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>End Date In Fact</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker3"
+        formControlName="endDateInFact"
+      />
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+      <mat-datepicker #picker3></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Status</mat-label>
+      <mat-select
+        class="form-control"
+        formControlName="status"
+        disableOptionCentering
+        panelClass="myPanelClass"
+        [(value)]="compare1"
+      >
+        <mat-option *ngFor="let status of taskStatusData" [value]="status">{{
+          status
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Project Name</mat-label>
+      <mat-select
+        class="form-control"
+        (valueChange)="taskProjectNameChange($event)"
+        [disabled]="data.title == appSettings.TITLE_UPDATE_TASK"
+        formControlName="projectName"
+        disableOptionCentering
+        panelClass="myPanelClass"
+        [(value)]="compare2"
+      >
+        <mat-option
+          *ngFor="let project of projectData"
+          [value]="project.name"
+          >{{ project.name }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Reporter Username</mat-label>
+      <mat-select
+        class="form-control"
+        formControlName="reporterUsername"
+        disableOptionCentering
+        panelClass="myPanelClass"
+        [(value)]="compare3"
+      >
+        <mat-option>NONE</mat-option>
+        <mat-option *ngFor="let staff of staffData" [value]="staff.username">{{
+          staff.username
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <!-- END ADD & UPDATE TASK -->
+  <div
+    mat-dialog-content
+    *ngIf="
+      type == appSettings.TYPE_TASK && title == appSettings.TITLE_TASK_DETAIL
+    "
+  >
+    <mat-form-field class="form-group">
+      <mat-label>Name</mat-label>
+      <input
+        matInput
+        placeholder="Name"
+        class="form-control"
+        formControlName="name"
+      />
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Description</mat-label>
+      <input
+        matInput
+        placeholder="Description"
+        class="form-control"
+        formControlName="description"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Start Date Expected</mat-label>
+      <input
+        matInput
+        placeholder="Start Date Expected"
+        class="form-control"
+        formControlName="startDateExpected"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>End Date Expected</mat-label>
+      <input
+        matInput
+        placeholder="End Date Expected"
+        class="form-control"
+        formControlName="endDateExpected"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Start Date In Fact</mat-label>
+      <input
+        matInput
+        placeholder="Start Date In Fact"
+        class="form-control"
+        formControlName="startDateInFact"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>End Date In Fact</mat-label>
+      <input
+        matInput
+        placeholder="End Date In Fact"
+        class="form-control"
+        formControlName="endDateInFact"
+      />
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Status</mat-label>
+      <input
+        matInput
+        placeholder="Status"
+        class="form-control"
+        formControlName="status"
+      />
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Project Name</mat-label>
+      <input
+        matInput
+        placeholder="Project Name"
+        class="form-control"
+        formControlName="projectName"
+      />
+    </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Reporter Username</mat-label>
+      <input
+        matInput
+        placeholder="Reporter Username"
+        class="form-control"
+        formControlName="reporterUsername"
+      />
+    </mat-form-field>
+  </div>
+  <!-- START TASK DETAIL -->
+
+  <!-- END TASK DETAIL -->
+  <!-------------------------------END TASK FORM-------------------------------------->
+  <!-------------------------------START COMMENT FORM-------------------------------------->
+  <!-- START PREVIOUS COMMENTS -->
+  <div *ngIf="type == appSettings.TYPE_COMMENT">
+    <div class="card">
+      <div class="card card-body">
+        <div>TASK NAME: {{ element.name }}</div>
+        <div>REPORTER: {{ element.reporterUsername }}</div>
+        <div class="card card-body">
+          <div *ngFor="let element of commentDisplayed">
+            <div *ngIf="element.comment.responseToId == null">
+              <img
+                *ngIf="
+                  element.comment.writer.avatar == null &&
+                  element.comment.writer.gender == 'MALE'
+                "
+                src="/assets/img/avatars/male-default.png"
+                width="50"
+                height="50"
+                alt=""
+              />
+              <img
+                *ngIf="
+                  element.comment.writer.avatar == null &&
+                  element.comment.writer.gender == 'FEMALE'
+                "
+                src="/assets/img/avatars/female-default.png"
+                width="50"
+                height="50"
+                alt=""
+              />
+              <img
+                *ngIf="element.comment.writer.avatar != null"
+                [src]="element.comment.writer.avatar"
+                width="50"
+                height="50"
+                alt=""
+              />
+              &nbsp;&nbsp;
+              <strong>{{ element.comment.writer.username }}</strong>
+              <em> at {{ element.comment.lastModifiedAt }}</em>
+              <br /><br />
+              <div>
+                {{ element.comment.description }}
+              </div>
+              <br />
+              <div>
+                <button
+                  type="button"
+                  class="btn btn-info"
+                  (click)="responseToComment(element.comment)"
+                >
+                  Reply
+                </button>
+              </div>
+              <br />
+              <div
+                class="card card-body"
+                *ngFor="let response of element.responses"
+              >
+                <img
+                  *ngIf="
+                    response.writer.avatar == null &&
+                    response.writer.gender == 'MALE'
+                  "
+                  src="/assets/img/avatars/male-default.png"
+                  width="50"
+                  height="50"
+                  alt=""
+                />
+                <img
+                  *ngIf="
+                    response.writer.avatar == null &&
+                    response.writer.gender == 'FEMALE'
+                  "
+                  src="/assets/img/avatars/female-default.png"
+                  width="50"
+                  height="50"
+                  alt=""
+                />
+                <img
+                  *ngIf="response.writer.avatar != null"
+                  [src]="response.writer.avatar"
+                  width="50"
+                  height="50"
+                  alt=""
+                />
+                &nbsp;&nbsp;
+                <strong> {{ response.writer.username }}</strong>
+                <em> at {{ response.lastModifiedAt }}</em>
+                <br />
+                <div>
+                  {{ response.description }}
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-        <!-- END STAFFS IN PROJECT TABLE -->
-    </div>
-    <!-----------------------------END MANAGE STAFF IN PROJECT DIALOG--------------------------->
-    <!-----------------------------START MANAGE ROLE IN STAFF DIALOG------------------------->
-    <div mat-dialog-content *ngIf="type == appSettings.TYPE_MANAGE_ROLE">
-        <div>User: {{staff.username}}</div>
-        <div *ngFor="let role of roleData" class="manage-role">
-            <mat-checkbox (change)="change($event.checked, role.code)" formControlName="{{role.id}}">{{role.name}}</mat-checkbox>
+      </div>
+      <!-- END PREVIOUS COMMENTS -->
+      <!-- START USER COMMENT -->
+      <div class="card">
+        <div
+          mat-dialog-content
+          *ngIf="type == appSettings.TYPE_COMMENT"
+          class="card-body"
+        >
+          <img
+            *ngIf="
+              user.userData.avatar == null && user.userData.gender == 'MALE'
+            "
+            src="/assets/img/avatars/male-default.png"
+            width="50"
+            height="50"
+            alt=""
+          />
+          <img
+            *ngIf="
+              user.userData.avatar == null && user.userData.gender == 'FEMALE'
+            "
+            src="/assets/img/avatars/female-default.png"
+            width="50"
+            height="50"
+            alt=""
+          />
+          <img
+            *ngIf="user.userData.avatar != null"
+            [src]="user.userData.avatar"
+            width="50"
+            height="50"
+            alt=""
+          />
+          &nbsp;&nbsp;
+          <strong>{{ user.userData.username }}</strong>
+          <span *ngIf="respondingToUser">
+            <em> is responding to </em>
+            <strong>{{ respondingToUser }}</strong>
+          </span>
+          <mat-form-field class="form-group">
+            <mat-label>Your comment</mat-label>
+            <input
+              matInput
+              placeholder="Your comment"
+              class="form-control"
+              formControlName="description"
+            />
+          </mat-form-field>
         </div>
+      </div>
     </div>
-    <!-----------------------------END MANAGE ROLE IN PROJECT DIALOG------------------------->
-    <div mat-dialog-actions class="d-flex justify-content-between">
-        <app-button (onClick)="cancelFunc($event)" [label]=appSettings.BUTTON_CANCEL></app-button>
-        <app-button (onClick)="okFunc($event)" [label]=appSettings.BUTTON_OK></app-button>
+  </div>
+  <!-- END USER COMMENT -->
+  <!-------------------------------END COMMENT FORM-------------------------------------->
+  <!-----------------------------START MANAGE STAFF IN PROJECT DIALOG------------------------->
+  <div *ngIf="type == appSettings.TYPE_MANAGE_STAFF_IN_PROJECT">
+    <!-- START PROJECT INFO -->
+    <button
+      type="button"
+      class="btn btn-info"
+      [disabled]="title == appSettings.TITLE_CURRENT_STAFF"
+      (click)="toRemoveStaffFromProjectTable()"
+    >
+      CURRENT STAFFS
+    </button>
+    &nbsp;
+    <button
+      type="button"
+      class="btn btn-primary"
+      [disabled]="title == appSettings.TITLE_AVAILABLE_STAFF"
+      (click)="toAddStaffToProjectTable()"
+    >
+      AVAILABLE STAFFS
+    </button>
+    <div>Project: {{ projectData.name }}</div>
+    <div>Leader: {{ projectData.leader.username }}</div>
+    <!-- END PROJECT INFO -->
+    <!-- START STAFFS IN PROJECT TABLE -->
+
+    <div class="card">
+      <div class="card-body">
+        <mat-form-field>
+          <mat-label>Search..?</mat-label>
+          <input
+            matInput
+            placeholder="By keyword"
+            (keyup)="filterByKeyword($event)"
+          />
+        </mat-form-field>
+        <table
+          mat-table
+          matSort
+          [dataSource]="dataSource"
+          class="mat-elevation-z8"
+        >
+          <ng-container matColumnDef="hobbies">
+            <th
+              mat-sort-header
+              mat-header-cell
+              *matHeaderCellDef
+              class="fs-6 fst-italic"
+            >
+              <strong>First Name</strong>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <img
+                *ngIf="element.avatar == null && element.gender == 'MALE'"
+                src="/assets/img/avatars/male-default.png"
+                width="50"
+                height="50"
+                alt=""
+              />
+              <img
+                *ngIf="element.avatar == null && element.gender == 'FEMALE'"
+                src="/assets/img/avatars/female-default.png"
+                width="50"
+                height="50"
+                alt=""
+              />
+              <img
+                *ngIf="element.avatar != null"
+                [src]="element.avatar"
+                width="50"
+                height="50"
+                alt=""
+              />
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="username">
+            <th
+              mat-sort-header
+              mat-header-cell
+              *matHeaderCellDef
+              class="fs-6 fst-italic"
+            >
+              <strong>Username</strong>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.username }}</td>
+          </ng-container>
+          <ng-container matColumnDef="email">
+            <th
+              mat-sort-header
+              mat-header-cell
+              *matHeaderCellDef
+              class="fs-6 fst-italic"
+            >
+              <strong>Email</strong>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+          </ng-container>
+          <ng-container matColumnDef="projects">
+            <th
+              mat-sort-header
+              mat-header-cell
+              *matHeaderCellDef
+              class="fs-6 fst-italic"
+            >
+              <strong>Projects</strong>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.projects.length }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic">
+              <strong>Action</strong>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <button
+                type="button"
+                class="btn btn-danger"
+                *ngIf="title == appSettings.TITLE_CURRENT_STAFF"
+                (click)="removeStaffFormProject(element.id)"
+              >
+                REMOVE
+              </button>
+              <button
+                type="button"
+                class="btn btn-success"
+                *ngIf="title == appSettings.TITLE_AVAILABLE_STAFF"
+                (click)="addStaffToProject(element.id)"
+              >
+                ADD
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+        </mat-paginator>
+      </div>
     </div>
+    <!-- END STAFFS IN PROJECT TABLE -->
+  </div>
+  <!-----------------------------END MANAGE STAFF IN PROJECT DIALOG--------------------------->
+  <!-----------------------------START MANAGE ROLE IN STAFF DIALOG------------------------->
+  <div mat-dialog-content *ngIf="type == appSettings.TYPE_MANAGE_ROLE">
+    <div class="my-2">User: {{ staff.username }}</div>
+    <div class="d-flex justify-content-between">
+      <div *ngFor="let role of roleData" class="manage-role">
+        <mat-checkbox
+          (change)="change($event.checked, role.code)"
+          formControlName="{{ role.id }}"
+          >{{ role.name }}</mat-checkbox
+        >
+      </div>
+    </div>
+  </div>
+  <!-----------------------------END MANAGE ROLE IN PROJECT DIALOG------------------------->
+  <div mat-dialog-actions class="d-flex justify-content-between">
+    <app-button
+      (onClick)="cancelFunc($event)"
+      [label]="appSettings.BUTTON_CANCEL"
+    ></app-button>
+    <app-button
+      (onClick)="okFunc($event)"
+      [label]="appSettings.BUTTON_OK"
+    ></app-button>
+  </div>
 </form>
