@@ -19,6 +19,13 @@ import { ServerErrorComponent } from './layouts/error/server-error/server-error.
             ),
         },
         {
+          path: AppSettings.PATH_DASHBOARD,
+          loadChildren: () =>
+            import('../app/pages/components/dashboard/dashboard.module').then(
+              (m) => m.DashboardModule
+            ),
+        },
+        {
           path: AppSettings.PATH_PROJECT,
           loadChildren: () =>
             import('../app/pages/components/project/project.module').then(
@@ -26,8 +33,8 @@ import { ServerErrorComponent } from './layouts/error/server-error/server-error.
             ),
           canActivate: [AuthGuard, PermissionGuard],
           data: {
-            requiredRoles: [AppSettings.ROLE_MANAGER, AppSettings.ROLE_LEADER]
-          }
+            requiredRoles: [AppSettings.ROLE_MANAGER, AppSettings.ROLE_LEADER],
+          },
         },
         {
           path: AppSettings.PATH_TASK,
@@ -37,8 +44,8 @@ import { ServerErrorComponent } from './layouts/error/server-error/server-error.
             ),
           canActivate: [AuthGuard, PermissionGuard],
           data: {
-            requiredRoles: [AppSettings.ROLE_MANAGER, AppSettings.ROLE_LEADER]
-          }
+            requiredRoles: [AppSettings.ROLE_MANAGER, AppSettings.ROLE_LEADER],
+          },
         },
         {
           path: AppSettings.PATH_MY_TASK,
@@ -48,8 +55,8 @@ import { ServerErrorComponent } from './layouts/error/server-error/server-error.
             ),
           canActivate: [AuthGuard, PermissionGuard],
           data: {
-            requiredRoles: [AppSettings.ROLE_EMPLOYEE] //only for employees
-          }
+            requiredRoles: [AppSettings.ROLE_EMPLOYEE], //only for employees
+          },
         },
         {
           path: AppSettings.PATH_STAFF,
@@ -59,8 +66,8 @@ import { ServerErrorComponent } from './layouts/error/server-error/server-error.
             ),
           canActivate: [AuthGuard, PermissionGuard],
           data: {
-            requiredRoles: [AppSettings.ROLE_MANAGER]
-          }
+            requiredRoles: [AppSettings.ROLE_MANAGER],
+          },
         },
         {
           path: AppSettings.PATH_PROFILE,
@@ -70,8 +77,12 @@ import { ServerErrorComponent } from './layouts/error/server-error/server-error.
             ),
           canActivate: [AuthGuard, PermissionGuard],
           data: {
-            requiredRoles: [AppSettings.ROLE_MANAGER, AppSettings.ROLE_LEADER, AppSettings.ROLE_EMPLOYEE]
-          }
+            requiredRoles: [
+              AppSettings.ROLE_MANAGER,
+              AppSettings.ROLE_LEADER,
+              AppSettings.ROLE_EMPLOYEE,
+            ],
+          },
         },
         {
           path: '403',
@@ -100,4 +111,4 @@ import { ServerErrorComponent } from './layouts/error/server-error/server-error.
   ],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

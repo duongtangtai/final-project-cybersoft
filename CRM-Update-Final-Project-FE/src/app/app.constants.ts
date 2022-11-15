@@ -16,6 +16,7 @@ export class AppSettings {
     public static PATH_403 = "403"
     public static PATH_404 = "404";
     public static PATH_500 = "500";
+    public static PATH_DASHBOARD = "dashboard"
     public static PATH_STAFF = "staffs"
     public static PATH_PROJECT = "projects"
     public static PATH_TASK = "tasks"

@@ -1,147 +1,287 @@
 <div class="container-fluid">
-    <div class="page-title">
-        <div class="row">
-            <div class="col-12 col-sm-6">
-                <h3>
-                    Project List</h3>
-            </div>
-        </div>
+  <div class="page-title">
+    <div class="row">
+      <div class="col-12 col-sm-6">
+        <h3>Project List</h3>
+      </div>
     </div>
+  </div>
 </div>
 <div class="container-fluid">
-    <div class="row project-cards">
-        <div class="col-md-12 project-list">
-            <div class="card">
-                <div class="row">
-                    <div class="col-md-6">
-                        <ul class="nav nav-tabs border-tab" id="top-tab" role="tablist">
-                            <li class="nav-item">
-                                <button class="nav-link active" id="top-home-tab" data-bs-toggle="tab"
-                                        href="#top-home" role="tab" aria-controls="top-home"
-                                        aria-selected="true" (click)="getAllProject()">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                         stroke-linejoin="round" class="feather feather-target">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                        <circle cx="12" cy="12" r="6"></circle>
-                                        <circle cx="12" cy="12" r="2"></circle>
-                                    </svg>
-                                    All
-                                </button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="nav-link" id="profile-top-tab" data-bs-toggle="tab"
-                                        href="#top-profile" role="tab" aria-controls="top-profile"
-                                        aria-selected="false" (click)="getAllProjectWithStatus(appSettings.PROJECT_STATUS_DOING)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                         stroke-linejoin="round" class="feather feather-info">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                        <line x1="12" y1="16" x2="12" y2="12"></line>
-                                        <line x1="12" y1="8" x2="12" y2="8"></line>
-                                    </svg>
-                                    Doing
-                                </button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="nav-link" id="contact-top-tab" data-bs-toggle="tab"
-                                        href="#top-contact" role="tab" aria-controls="top-contact"
-                                        aria-selected="false" (click)="getAllProjectWithStatus(appSettings.PROJECT_STATUS_DONE)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                         stroke-linejoin="round" class="feather feather-check-circle">
-                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                                    </svg>
-                                    Done
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-md-6 p-0">
-                        <div class="form-group mb-0 me-0"></div>
-                        <button class="btn btn-primary" (click)="addProject()" *ngIf="appSettings.USER_ROLES.includes(appSettings.ROLE_MANAGER)">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                 stroke-linejoin="round" class="feather feather-plus-square">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                <line x1="12" y1="8" x2="12" y2="16"></line>
-                                <line x1="8" y1="12" x2="16" y2="12"></line>
-                            </svg>
-                            &nbsp;&nbsp;Create New Project
-                        </button>
-                    </div>
-                </div>
-            </div>
+  <div class="row project-cards">
+    <div class="col-md-12 project-list">
+      <div class="card">
+        <div class="row">
+          <div class="col-md-6">
+            <ul class="nav nav-tabs border-tab" id="top-tab" role="tablist">
+              <li class="nav-item">
+                <button
+                  class="nav-link active"
+                  id="top-home-tab"
+                  data-bs-toggle="tab"
+                  role="tab"
+                  aria-controls="top-home"
+                  aria-selected="true"
+                  (click)="getAllProject()"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="feather feather-target"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <circle cx="12" cy="12" r="6"></circle>
+                    <circle cx="12" cy="12" r="2"></circle>
+                  </svg>
+                  All
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  class="nav-link"
+                  id="profile-top-tab"
+                  data-bs-toggle="tab"
+                  role="tab"
+                  aria-controls="top-profile"
+                  aria-selected="false"
+                  (click)="
+                    getAllProjectWithStatus(appSettings.PROJECT_STATUS_DOING)
+                  "
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="feather feather-info"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12" y2="8"></line>
+                  </svg>
+                  Doing
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  class="nav-link"
+                  id="contact-top-tab"
+                  data-bs-toggle="tab"
+                  role="tab"
+                  aria-controls="top-contact"
+                  aria-selected="false"
+                  (click)="
+                    getAllProjectWithStatus(appSettings.PROJECT_STATUS_DONE)
+                  "
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="feather feather-check-circle"
+                  >
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                  </svg>
+                  Done
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-6 p-0">
+            <div class="form-group mb-0 me-0"></div>
+            <button
+              class="btn btn-primary"
+              (click)="addProject()"
+              *ngIf="appSettings.USER_ROLES.includes(appSettings.ROLE_MANAGER)"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-plus-square"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+              </svg>
+              &nbsp;&nbsp;Create New Project
+            </button>
+          </div>
         </div>
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-body">
-
-                    <!-- START PROJECT TABLE -->
-                    <div>
-                        <mat-form-field>
-                            <mat-label>Search..?</mat-label>
-                            <input matInput placeholder="By keyword" (keyup)="filterByKeyword($event)">
-                        </mat-form-field>
-                        <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8" aria-describedby="">
-                            <ng-container matColumnDef="symbol">
-                                <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"><strong>Symbol</strong></th>
-                                <td mat-cell *matCellDef="let element">
-                                    <img *ngIf="element.symbol == null" src="/assets/img/project-symbols/default3.png"
-                                         width="50" height="50" alt="">
-                                    <img *ngIf="element.symbol != null" [src]="'/assets/img/project-symbols/'+element.symbol+'.png'" width="50" height="50" alt="">
-                                </td>
-                            </ng-container>
-                            <ng-container matColumnDef="name">
-                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"><strong>Name</strong></th>
-                                <td mat-cell *matCellDef="let element" (click)="showProjectDetail(element)" class="pointer">{{element.name}}</td>
-                            </ng-container>
-                            <ng-container matColumnDef="description">
-                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic">
-                                    <strong>Description</strong>
-                                </th>
-                                <td mat-cell *matCellDef="let element"> {{element.description}} </td>
-                            </ng-container>
-                            <ng-container matColumnDef="status">
-                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Status</strong>
-                                </th>
-                                <td mat-cell *matCellDef="let element"> 
-                                    <span *ngIf="element.status == appSettings.PROJECT_STATUS_DOING" class="badge bg-label-primary me-1">{{element.status}} </span>
-                                    <span *ngIf="element.status == appSettings.PROJECT_STATUS_DONE" class="badge bg-label-success me-1">{{element.status}} </span>
-                                </td>
-                            </ng-container>
-                            <ng-container matColumnDef="action" *ngIf="appSettings.USER_ROLES.includes(appSettings.ROLE_MANAGER)">
-                                <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Action</strong></th>
-                                <td mat-cell *matCellDef="let element">
-                                    <div class="dropdown">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <button class="dropdown-item" 
-                                                (click)="manageStaffs(element)"><i class='bx bxs-user me-1 bx-tada-hover'></i>Manage Staffs</button
-                                            >
-                                            <button class="dropdown-item" 
-                                                (click)="updateProject(element)"><i class="bx bx-edit-alt me-1 bx-tada-hover"></i> Update</button
-                                            >
-                                            <button class="dropdown-item"
-                                                (click)="deleteProject(element.id)"><i class="bx bx-trash me-1 bx-tada-hover"></i> Delete</button
-                                            >
-                                        </div>
-                                    </div>
-                                </td>
-                            </ng-container>
-                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                        </table>
-                        <mat-paginator [pageSizeOptions]="[5,10,20]" showFirstLastButtons>
-                        </mat-paginator>
-                    </div>
-                    <!-- END PROJECT TABLE -->
-
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <!-- START PROJECT TABLE -->
+          <div>
+            <mat-form-field>
+              <mat-label>Search..?</mat-label>
+              <input
+                matInput
+                placeholder="By keyword"
+                (keyup)="filterByKeyword($event)"
+              />
+            </mat-form-field>
+            <table
+              mat-table
+              matSort
+              [dataSource]="dataSource"
+              class="mat-elevation-z8"
+              aria-describedby=""
+            >
+              <ng-container matColumnDef="symbol">
+                <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic">
+                  <strong>Symbol</strong>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <img
+                    *ngIf="element.symbol == null"
+                    src="/assets/img/project-symbols/default3.png"
+                    width="50"
+                    height="50"
+                    alt=""
+                  />
+                  <img
+                    *ngIf="element.symbol != null"
+                    [src]="
+                      '/assets/img/project-symbols/' + element.symbol + '.png'
+                    "
+                    width="50"
+                    height="50"
+                    alt=""
+                  />
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="name">
+                <th
+                  mat-sort-header
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="fs-6 fst-italic"
+                >
+                  <strong>Name</strong>
+                </th>
+                <td
+                  mat-cell
+                  *matCellDef="let element"
+                  (click)="showProjectDetail(element)"
+                  class="pointer"
+                >
+                  {{ element.name }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="description">
+                <th
+                  mat-sort-header
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="fs-6 fst-italic"
+                >
+                  <strong>Description</strong>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.description }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="status">
+                <th
+                  mat-sort-header
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="fs-6 fst-italic"
+                >
+                  <strong>Status</strong>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <span
+                    *ngIf="element.status == appSettings.PROJECT_STATUS_DOING"
+                    class="badge bg-label-primary me-1"
+                    >{{ element.status }}
+                  </span>
+                  <span
+                    *ngIf="element.status == appSettings.PROJECT_STATUS_DONE"
+                    class="badge bg-label-success me-1"
+                    >{{ element.status }}
+                  </span>
+                </td>
+              </ng-container>
+              <ng-container
+                matColumnDef="action"
+                *ngIf="
+                  appSettings.USER_ROLES.includes(appSettings.ROLE_MANAGER)
+                "
+              >
+                <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic">
+                  <strong>Action</strong>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="dropdown">
+                    <button
+                      type="button"
+                      class="btn p-0 dropdown-toggle hide-arrow"
+                      data-bs-toggle="dropdown"
+                    >
+                      <em class="bx bx-dots-vertical-rounded"></em>
+                    </button>
+                    <div class="dropdown-menu">
+                      <button
+                        class="dropdown-item"
+                        (click)="manageStaffs(element)"
+                      >
+                        <em class="bx bxs-user me-1 bx-tada-hover"></em>Manage
+                        Staffs
+                      </button>
+                      <button
+                        class="dropdown-item"
+                        (click)="updateProject(element)"
+                      >
+                        <em class="bx bx-edit-alt me-1 bx-tada-hover"></em> Update
+                      </button>
+                      <button
+                        class="dropdown-item"
+                        (click)="deleteProject(element.id)"
+                      >
+                        <i class="bx bx-trash me-1 bx-tada-hover"></i> Delete
+                      </button>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+            </mat-paginator>
+          </div>
+          <!-- END PROJECT TABLE -->
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
