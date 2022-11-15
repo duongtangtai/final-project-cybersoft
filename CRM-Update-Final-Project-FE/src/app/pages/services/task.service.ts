@@ -45,4 +45,9 @@ export class TaskService {
     return this.http.delete<IRequestModel>(`${this.config.endpoints.task.root}`+taskId)
         .pipe(map((val: IRequestModel) => val.content));
   }
+
+  completeTask(taskId: String): Observable<ITaskModel>{
+    return this.http.post<IRequestModel>(`${this.config.endpoints.task.completeTask}`+taskId,'')
+        .pipe(map((val: IRequestModel) => val.content));
+  }
 }

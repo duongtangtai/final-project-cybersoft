@@ -80,6 +80,13 @@ public class TaskRestResource {
         return ResponseUtil.get(MessageUtil.getMessage(messageSource, "task.saved"), HttpStatus.OK);
     }
 
+    @Authorized(roles = {RoleUtil.EMPLOYEE})
+    @PostMapping("/complete-task/{id}")
+    public ResponseEntity<ResponseDto> completeTask(@PathVariable("id") @UUIDConstraint String id) {
+        service.completeTask(UUID.fromString(id));
+        return ResponseUtil.get(MessageUtil.getMessage(messageSource, "task.completed"), HttpStatus.OK);
+    }
+
     @Authorized(roles = {RoleUtil.LEADER})
     @PutMapping
     public ResponseEntity<ResponseDto> update(@RequestBody @Validated(UpdateInfo.class) TaskDto taskDto) {

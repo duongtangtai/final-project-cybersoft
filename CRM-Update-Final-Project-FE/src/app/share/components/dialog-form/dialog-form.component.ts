@@ -6,12 +6,12 @@ import { IStaffModel } from './../../../model/staff.model';
 import { StaffService } from './../../../pages/services/staff.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { IProjectModel } from './../../../model/project.model';
-import {Component, Inject, Input, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, Validators} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, Validators } from "@angular/forms";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { ProjectService } from 'src/app/pages/services/project.service';
-import {AppSettings} from "../../../app.constants";
-import { DatePipe} from '@angular/common';
+import { AppSettings } from "../../../app.constants";
+import { DatePipe } from '@angular/common';
 import { CommentService } from 'src/app/pages/services/comment.service';
 import { ThisReceiver } from '@angular/compiler';
 import { MatTableDataSource } from '@angular/material/table';
@@ -122,7 +122,7 @@ export class DialogFormComponent implements OnInit {
     filterByKeyword(event: Event) {
         this.dataSource.filter = (event.target as HTMLInputElement).value;
     }
-    
+
     //-----------------PROJECT FORM---------------------
 
     initProjectForm() {
@@ -133,12 +133,12 @@ export class DialogFormComponent implements OnInit {
             this.staffData = val;
         })
         this.form = this.formBuilder.group({
-            id: ['',{disabled:true}],
+            id: ['', { disabled: true }],
             name: ['', Validators.required],
             description: ['', Validators.required],
             status: ['', Validators.required],
             symbol: ['', Validators.required],
-            creatorUsername: [{value:this.user.userData.username,disabled:true}],
+            creatorUsername: [{ value: this.user.userData.username, disabled: true }],
             leaderUsername: ['', Validators.required],
         })
     }
@@ -162,26 +162,26 @@ export class DialogFormComponent implements OnInit {
 
     setProjectFormValues(projectForm: any) {
         this.form.setValue({
-            id : projectForm.id,
-            name : projectForm.name,
-            description : projectForm.description,
-            status : projectForm.status,
+            id: projectForm.id,
+            name: projectForm.name,
+            description: projectForm.description,
+            status: projectForm.status,
             symbol: this.projectSymbol = projectForm.symbol,
-            creatorUsername : projectForm.creator.username,
-            leaderUsername : projectForm.leader.username,
+            creatorUsername: projectForm.creator.username,
+            leaderUsername: projectForm.leader.username,
         })
     }
 
     showProjectDetail(project: any) {
         this.projectData = project;
         this.form = this.formBuilder.group({
-            name: [{value:project.name,disabled:true}],
-            description: [{value:project.description,disabled:true}],
-            status: [{value:project.status,disabled:true}],
-            creatorUsername: [{value:project.creator.username,disabled:true}],
-            leaderUsername: [{value:project.leader.username,disabled:true}],
+            name: [{ value: project.name, disabled: true }],
+            description: [{ value: project.description, disabled: true }],
+            status: [{ value: project.status, disabled: true }],
+            creatorUsername: [{ value: project.creator.username, disabled: true }],
+            leaderUsername: [{ value: project.leader.username, disabled: true }],
         })
-        this.displayedColumns = ['hobbies', 'username', 'email','projects'];
+        this.displayedColumns = ['hobbies', 'username', 'email', 'projects'];
         this.staffService.getStaffsInsideProject(this.projectData.id)
             .subscribe(content => {
                 this.staffData = content;
@@ -194,20 +194,20 @@ export class DialogFormComponent implements OnInit {
         this.staffService.getStatus().subscribe(val => this.staffStatusData = val)
         this.staffService.getGenders().subscribe(val => this.staffGenderData = val)
         this.form = this.formBuilder.group({
-            id:['',{disabled:true}],
-            username:['',Validators.required],
+            id: ['', { disabled: true }],
+            username: ['', Validators.required],
             //CREATE NEW STAFF NEED A PASSWORD
-            password:['', this.title == AppSettings.TITLE_ADD_STAFF ? Validators.required : {disabled:true}],
-            firstName:['',Validators.required],
-            lastName:['',Validators.required],
-            gender: ['',Validators.required],
-            avatar:[],
-            email:['',Validators.compose([Validators.email, Validators.required])],
-            facebookUrl:[],
-            occupation:[],
-            department:[],
-            hobbies:[],
-            accountStatus:['',Validators.required]
+            password: ['', this.title == AppSettings.TITLE_ADD_STAFF ? Validators.required : { disabled: true }],
+            firstName: ['', Validators.required],
+            lastName: ['', Validators.required],
+            gender: ['', Validators.required],
+            avatar: [],
+            email: ['', Validators.compose([Validators.email, Validators.required])],
+            facebookUrl: [],
+            occupation: [],
+            department: [],
+            hobbies: [],
+            accountStatus: ['', Validators.required]
         })
     }
 
@@ -230,60 +230,60 @@ export class DialogFormComponent implements OnInit {
 
     setStaffFormValues(staffForm: IStaffModel) {
         this.form.setValue({
-            id : staffForm.id,
-            username : staffForm.username,
-            password : staffForm.password, //PASSWORD IS NULL RIGHT NOW
-            firstName : staffForm.firstName,
-            lastName : staffForm.lastName,
-            gender : staffForm.gender,
+            id: staffForm.id,
+            username: staffForm.username,
+            password: staffForm.password, //PASSWORD IS NULL RIGHT NOW
+            firstName: staffForm.firstName,
+            lastName: staffForm.lastName,
+            gender: staffForm.gender,
             avatar: staffForm.avatar,
-            email : staffForm.email,
-            facebookUrl : staffForm.facebookUrl,
-            occupation : staffForm.occupation,
-            department : staffForm.department,
-            hobbies : staffForm.hobbies,
-            accountStatus : staffForm.accountStatus
+            email: staffForm.email,
+            facebookUrl: staffForm.facebookUrl,
+            occupation: staffForm.occupation,
+            department: staffForm.department,
+            hobbies: staffForm.hobbies,
+            accountStatus: staffForm.accountStatus
         })
     }
 
     showStaffDetail(staff: any) {
         this.form = this.formBuilder.group({
-            id:[{value:staff.id,disabled:true}],
-            username:[{value:staff.username,disabled:true}],
-            firstName:[{value:staff.firstName,disabled:true}],
-            lastName:[{value:staff.lastName,disabled:true}],
-            gender: [{value:staff.gender,disabled:true}],
-            avatar:[{value:staff.avatar,disabled:true}],
-            email:[{value:staff.email,disabled:true}],
-            facebookUrl:[{value:staff.facebookUrl,disabled:true}],
-            occupation:[{value:staff.occupation,disabled:true}],
-            department:[{value:staff.department,disabled:true}],
-            hobbies:[{value:staff.hobbies,disabled:true}],
-            accountStatus:[{value:staff.accountStatus,disabled:true}]
+            id: [{ value: staff.id, disabled: true }],
+            username: [{ value: staff.username, disabled: true }],
+            firstName: [{ value: staff.firstName, disabled: true }],
+            lastName: [{ value: staff.lastName, disabled: true }],
+            gender: [{ value: staff.gender, disabled: true }],
+            avatar: [{ value: staff.avatar, disabled: true }],
+            email: [{ value: staff.email, disabled: true }],
+            facebookUrl: [{ value: staff.facebookUrl, disabled: true }],
+            occupation: [{ value: staff.occupation, disabled: true }],
+            department: [{ value: staff.department, disabled: true }],
+            hobbies: [{ value: staff.hobbies, disabled: true }],
+            accountStatus: [{ value: staff.accountStatus, disabled: true }]
         })
     }
 
     //-------------------END STAFF FORM--------------------
     //-------------------START TASK FORM--------------------
     taskProjectNameChange($event: any) { //call API to get StaffData with projectId
-        const projectId = this.projectData.filter((project: any) => project.name == $event).map((project:any) => project.id)
-        this.staffService.getStaffsInsideProject(projectId).subscribe(val => this.staffData = val) 
+        const projectId = this.projectData.filter((project: any) => project.name == $event).map((project: any) => project.id)
+        this.staffService.getStaffsInsideProject(projectId).subscribe(val => this.staffData = val)
     }
 
     initTaskForm() { //initialize all staffs and task status
         this.taskService.getStatus().subscribe(val => this.taskStatusData = val)
         this.projectService.getProjects().subscribe(val => this.projectData = val)
         this.form = this.formBuilder.group({
-            id: ['',{disabled:true}],
-            name: ['',Validators.required],
-            description: ['',Validators.required],
+            id: ['', { disabled: true }],
+            name: ['', Validators.required],
+            description: ['', Validators.required],
             startDateExpected: ['', Validators.required],
-            endDateExpected: ['',Validators.required],
+            endDateExpected: ['', Validators.required],
             startDateInFact: [],
             endDateInFact: [],
-            status: ['',Validators.required],
-            projectName: ['',Validators.required],
-            reporterUsername: ['',Validators.required],
+            status: ['', Validators.required],
+            projectName: ['', Validators.required],
+            reporterUsername: [],
         })
     }
 
@@ -306,7 +306,7 @@ export class DialogFormComponent implements OnInit {
 
     setTaskFormValues(taskForm: any) {
         this.staffService.getStaffsInsideProject(taskForm.project.id)
-            .subscribe(val => this.staffData = val) 
+            .subscribe(val => this.staffData = val)
         this.form = this.formBuilder.group({
             id: taskForm.id,
             name: taskForm.name,
@@ -317,21 +317,21 @@ export class DialogFormComponent implements OnInit {
             endDateInFact: this.convertStringToDate(taskForm.endDateInFact),
             status: taskForm.status,
             projectName: taskForm.project.name,
-            reporterUsername: taskForm.reporter.username,
+            reporterUsername: taskForm.reporter != null ? taskForm.reporter.username : null,
         })
     }
 
     showTaskDetail(task: any) {
         this.form = this.formBuilder.group({
-            name: [{value:task.name,disabled:true}],
-            description: [{value:task.description,disabled:true}],
-            startDateExpected: [{value:task.startDateExpected,disabled:true}],
-            endDateExpected: [{value:task.endDateExpected,disabled:true}],
-            startDateInFact: [{value:task.startDateInFact,disabled:true}],
-            endDateInFact: [{value:task.endDateInFact,disabled:true}],
-            status: [{value:task.status,disabled:true}],
-            projectName: [{value:task.project.name,disabled:true}],
-            reporterUsername: [{value:task.reporter.username,disabled:true}],
+            name: [{ value: task.name, disabled: true }],
+            description: [{ value: task.description, disabled: true }],
+            startDateExpected: [{ value: task.startDateExpected, disabled: true }],
+            endDateExpected: [{ value: task.endDateExpected, disabled: true }],
+            startDateInFact: [{ value: task.startDateInFact != null ? task.startDateInFact : " ", disabled: true }],
+            endDateInFact: [{ value: task.endDateInFact != null ? task.endDateInFact : " ", disabled: true }],
+            status: [{ value: task.status, disabled: true }],
+            projectName: [{ value: task.project.name, disabled: true }],
+            reporterUsername: [{ value: task.reporter != null ? task.reporter.username : " ", disabled: true }],
         })
     }
 
@@ -342,25 +342,25 @@ export class DialogFormComponent implements OnInit {
         this.commentService.getCommentByTaskId(this.element.id)
             .subscribe(content => {
                 this.commentData = content
-                for (let i = 0 ; i < this.commentData.length ; i++) {
+                for (let i = 0; i < this.commentData.length; i++) {
                     const comment = this.commentData[i];
                     let responses = [];
-                    for (let j = i ; j < this.commentData.length ; j++) {
+                    for (let j = i; j < this.commentData.length; j++) {
                         const response = this.commentData[j];
-                        if ( response.responseToId != null && response.responseToId == comment.id) {
+                        if (response.responseToId != null && response.responseToId == comment.id) {
                             responses.push(response)
                         }
                     }
                     this.commentDisplayed.push({
-                        comment : comment,
-                        responses : responses
+                        comment: comment,
+                        responses: responses
                     })
                 }
             });
         this.form = this.formBuilder.group({
             description: ['', Validators.required],
-            writerId: ['',Validators.required],
-            taskId: ['',Validators.required],
+            writerId: ['', Validators.required],
+            taskId: ['', Validators.required],
             responseToId: ['']
         })
     }
@@ -368,8 +368,8 @@ export class DialogFormComponent implements OnInit {
     getCommentForm(element: ITaskModel) {
         this.initCommentForm();
         this.form.patchValue({
-            writerId : this.user.userData.id,
-            taskId : element.id,
+            writerId: this.user.userData.id,
+            taskId: element.id,
         })
     }
 
@@ -385,7 +385,7 @@ export class DialogFormComponent implements OnInit {
     //---------------START MANAGE STAFFS IN PROJECT------------
     getManageStaffInProjectDialog(project: any) {
         this.projectData = project;
-        this.displayedColumns = ['hobbies', 'username', 'email','projects', 'action'];
+        this.displayedColumns = ['hobbies', 'username', 'email', 'projects', 'action'];
         switch (this.title) {
             case AppSettings.TITLE_CURRENT_STAFF:
                 this.initRemoveStaffFromProjectTable()
@@ -452,27 +452,27 @@ export class DialogFormComponent implements OnInit {
         this.staffService.getStaffByIdWithInfo(staff.id).subscribe(content => {
             this.staff = content;
             let staffRoles: string[] = [];
-            for (let i = 0 ; i < this.staff.roles.length ; i++) {
+            for (let i = 0; i < this.staff.roles.length; i++) {
                 staffRoles.push(this.staff.roles[i].code)
             }
             this.roleService.getRoles().subscribe(content => {
                 //WHAT IF ROLES CONTAINS ADMIN? MANAGER? LEADER? EMPLOYEE?
                 this.roleData = content
-                for (let i = 0 ; i < this.roleData.length ; i++) {
+                for (let i = 0; i < this.roleData.length; i++) {
                     if (staffRoles.includes(this.roleData[i].code)) {
                         this.form.addControl(this.roleData[i].id, new FormControl(true))
                     } else {
                         this.form.addControl(this.roleData[i].id, new FormControl(false))
                     }
                 }
-                if (staffRoles.includes('AD')) { //If staff's roles have ADMIN => disable others
-                    this.checkAllAndDisableOthers('AD')
-                } else if (staffRoles.includes('MGR')) { //If staff's roles have ADMIN => disable others
-                    this.checkOneAndDisableOthers('MGR')
-                } else if (staffRoles.includes('LEAD')) { //If staff's roles have LEADER or EMPLOYEE => disable ADMIN and MANAGER
-                    this.checkAndDisableAdminAndManager('LEAD')
-                } else if (staffRoles.includes('EMP')) {
-                    this.checkAndDisableAdminAndManager('EMP')
+                if (staffRoles.includes(AppSettings.ROLE_ADMIN)) { //If staff's roles have ADMIN => disable others
+                    this.checkAllAndDisableOthers(AppSettings.ROLE_ADMIN)
+                } else if (staffRoles.includes(AppSettings.ROLE_MANAGER)) { //If staff's roles have ADMIN => disable others
+                    this.checkOneAndDisableOthers(AppSettings.ROLE_MANAGER)
+                } else if (staffRoles.includes(AppSettings.ROLE_LEADER)) { //If staff's roles have LEADER or EMPLOYEE => disable ADMIN and MANAGER
+                    this.checkAndDisableAdminAndManager(AppSettings.ROLE_LEADER)
+                } else if (staffRoles.includes(AppSettings.ROLE_EMPLOYEE)) {
+                    this.checkAndDisableAdminAndManager(AppSettings.ROLE_EMPLOYEE)
                 }
             })
         })
@@ -480,17 +480,17 @@ export class DialogFormComponent implements OnInit {
 
     change(completed: boolean, roleCode: string) {
         switch (roleCode) {
-            case 'AD': //ADMIN => check all roles and disable other roles
+            case AppSettings.ROLE_ADMIN: //ADMIN => check all roles and disable other roles
                 completed ? this.checkAllAndDisableOthers(roleCode) : this.resetAll()
                 break;
-            case 'MGR': //MANAGER, EMPLOYEE => check this role and disable other roles
+            case AppSettings.ROLE_MANAGER: //MANAGER, EMPLOYEE => check this role and disable other roles
                 completed ? this.checkOneAndDisableOthers(roleCode) : this.resetAll()
                 break;
-            case 'LEAD': //LEADER => check this role and disable ADMIN & MANAGER
+            case AppSettings.ROLE_LEADER: //LEADER => check this role and disable ADMIN & MANAGER
                 completed ? this.checkAndDisableAdminAndManager(roleCode) : this.resetAll()
                 break;
-            case 'EMP':
-                completed ? this.checkAndDisableAdminAndManager(roleCode)  : this.resetAll()
+            case AppSettings.ROLE_EMPLOYEE:
+                completed ? this.checkAndDisableAdminAndManager(roleCode) : this.resetAll()
                 break;
             default:
                 break;
@@ -499,7 +499,7 @@ export class DialogFormComponent implements OnInit {
 
     checkAllAndDisableOthers(roleCode: string) {
         //use the role data that we already initialized, then we loop through it and set all
-        for (let i = 0 ; i < this.roleData.length ; i++) {
+        for (let i = 0; i < this.roleData.length; i++) {
             this.form.setControl(this.roleData[i].id, new FormControl(true)) //CHECK ALL
             if (this.roleData[i].code != roleCode) { //DISABLE OTHERS
                 this.form.get(this.roleData[i].id).disable()
@@ -508,7 +508,7 @@ export class DialogFormComponent implements OnInit {
     }
 
     checkOneAndDisableOthers(roleCode: string) {
-        for (let i = 0 ; i < this.roleData.length ; i++) {
+        for (let i = 0; i < this.roleData.length; i++) {
             this.form.setControl(this.roleData[i].id, new FormControl(false)) //uncheck first
             if (this.roleData[i].code == roleCode) { //check one
                 this.form.setControl(this.roleData[i].id, new FormControl(true))
@@ -519,17 +519,18 @@ export class DialogFormComponent implements OnInit {
     }
 
     checkAndDisableAdminAndManager(roleCode: string) {
-        for (let i = 0 ; i < this.roleData.length ; i++) {
+        for (let i = 0; i < this.roleData.length; i++) {
             if (this.roleData[i].code == roleCode) { //if it's LEADER
                 this.form.setControl(this.roleData[i].id, new FormControl(true)) // checked
-            } else if (this.roleData[i].code == 'AD' || this.roleData[i].code == 'MGR'){ //if it's ADMIN OR MANAGER
+            } else if (this.roleData[i].code == AppSettings.ROLE_ADMIN
+                || this.roleData[i].code == AppSettings.ROLE_MANAGER) { //if it's ADMIN OR MANAGER
                 this.form.get(this.roleData[i].id).disable()
             } //if it's EMPLOYEE, do nothing
         }
     }
 
     resetAll() {
-        for (let i = 0 ; i < this.roleData.length ; i++) {
+        for (let i = 0; i < this.roleData.length; i++) {
             this.form.setControl(this.roleData[i].id, new FormControl(false))
             this.form.get(this.roleData[i].id).enable()
         }
@@ -545,9 +546,13 @@ export class DialogFormComponent implements OnInit {
 
     convertStringToDate(inputPattern: any) {
         //convert string with pattern "dd/MM/yyyy" to date to display
-        var array = inputPattern.split("/");
-        var formattedPattern = array[1] + '/' + array[0] + '/' + array[2];
-        return new Date(formattedPattern);
+        if (inputPattern != null) {
+            var array = inputPattern.split("/");
+            var formattedPattern = array[1] + '/' + array[0] + '/' + array[2];
+            return new Date(formattedPattern);
+        } else {
+            return "";
+        }
     }
 
     handleTaskDates() {
@@ -556,10 +561,10 @@ export class DialogFormComponent implements OnInit {
         let startDateInFact = this.convertDateToString(this.form.get('startDateInFact').value)
         let endDateInFact = this.convertDateToString(this.form.get('endDateInFact').value)
         this.form.patchValue({
-            startDateExpected : startDateExpected,
-            endDateExpected : endDateExpected,
-            startDateInFact : startDateInFact,
-            endDateInFact : endDateInFact
+            startDateExpected: startDateExpected,
+            endDateExpected: endDateExpected,
+            startDateInFact: startDateInFact,
+            endDateInFact: endDateInFact
         })
     }
 
@@ -570,7 +575,7 @@ export class DialogFormComponent implements OnInit {
 
     okFunc($event: any) {
         if (this.type == AppSettings.TYPE_MANAGE_STAFF_IN_PROJECT ||
-            this.title == AppSettings.TITLE_PROJECT_DETAIL || 
+            this.title == AppSettings.TITLE_PROJECT_DETAIL ||
             this.title == AppSettings.TITLE_STAFF_DETAIL ||
             this.title == AppSettings.TITLE_TASK_DETAIL) { //JUST CLOSE
             this.dialogRef.close()
@@ -583,11 +588,10 @@ export class DialogFormComponent implements OnInit {
             });
             this.staffService.updateRoles(this.staff.id, submitForm)
                 .subscribe(content => this.succeededAndClose(content))
-        } else if  (this.form.valid) { //NOT MANAGE STAFF IN PROJECT
+        } else if (this.form.valid) { //NOT MANAGE STAFF IN PROJECT
             if (this.type == AppSettings.TYPE_TASK) {
                 this.handleTaskDates()
             }
-            console.log("form valid")
             const submitForm = this.form.getRawValue()
             switch (this.title) {
                 case AppSettings.TITLE_ADD_PROJECT: //ADD PROJECT
@@ -618,7 +622,7 @@ export class DialogFormComponent implements OnInit {
                     this.commentService.addComment(submitForm)
                         .subscribe(content => {
                             this.myToastrService.success(content)
-                            this.commentDisplayed=[];
+                            this.commentDisplayed = [];
                             this.respondingToUser = '';
                             this.getCommentForm(this.element);
                         })
@@ -629,7 +633,7 @@ export class DialogFormComponent implements OnInit {
         }
     }
 
-    afterClose(){
+    afterClose() {
         this.dialogRef.afterClosed()
     }
 

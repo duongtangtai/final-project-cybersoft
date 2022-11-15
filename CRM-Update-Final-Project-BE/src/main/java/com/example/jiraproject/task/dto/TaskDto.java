@@ -58,7 +58,7 @@ public class TaskDto {
     @NotBlank(message = "{project.name.not-blank}")
     private String projectName;
 
-    @Size(min = 5, max = 25, message = "{task.reporterUsername.size}", groups = {SaveInfo.class, UpdateInfo.class})
-    @NotBlank(message = "{task.reporterUsername.not-blank}", groups = {SaveInfo.class, UpdateInfo.class})
+    @Size(max = 25, message = "{task.reporterUsername.size}", groups = {SaveInfo.class, UpdateInfo.class})
+//    @NotBlank(message = "{task.reporterUsername.not-blank}", groups = {SaveInfo.class, UpdateInfo.class})
     private String reporterUsername;
 }

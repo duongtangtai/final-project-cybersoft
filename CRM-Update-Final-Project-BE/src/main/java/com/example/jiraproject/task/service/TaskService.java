@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ValidationException;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -32,6 +33,7 @@ public interface TaskService extends GenericService<Task, TaskDto, UUID> {
     List<String> findAllStatus();
     TaskDto save(TaskDto taskDto);
     TaskDto update(TaskDto taskDto);
+    void completeTask(UUID id);
 }
 @Service
 @Transactional
@@ -94,10 +96,9 @@ class TaskServiceImpl implements TaskService {
     @Override
     public TaskDto save(TaskDto taskDto) {
         Project project = projectService.findProjectByName(taskDto.getProjectName());
-        User reporter = userService.findByUsername(taskDto.getReporterUsername());
         Task task = mapper.map(taskDto, Task.class);
         task.setProject(project);
-        task.setReporter(reporter);
+        setReporter(task, taskDto.getReporterUsername());
         return mapper.map(repository.save(task), TaskDto.class);
     }
 
@@ -105,10 +106,27 @@ class TaskServiceImpl implements TaskService {
     public TaskDto update(TaskDto taskDto) {
         Task task = findTaskById(taskDto.getId());
         Project project = projectService.findProjectByName(taskDto.getProjectName());
-        User user = userService.findByUsername(taskDto.getReporterUsername());
-        task.setReporter(user);
         task.setProject(project);
+        setReporter(task, taskDto.getReporterUsername());
         mapper.map(taskDto, task);
         return mapper.map(task, TaskDto.class);
+    }
+
+    @Override
+    public void completeTask(UUID id) {
+        //complete task will affect endDateInFact
+        Task task = findTaskById(id);
+        task.setStatus(Task.Status.COMPLETED);
+        task.setEndDateInFact(LocalDate.now());
+    }
+
+
+    private void setReporter(Task task, String reporterUsername) {
+        if (reporterUsername != null) {
+            User reporter = userService.findByUsername(reporterUsername);
+            task.setReporter(reporter);
+        } else {
+            task.setReporter(null);
+        }
     }
 }

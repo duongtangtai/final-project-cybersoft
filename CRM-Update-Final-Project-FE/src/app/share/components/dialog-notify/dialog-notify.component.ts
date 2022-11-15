@@ -1,9 +1,9 @@
 import { MyToastrService } from './../../services/my-toastr.service';
 import { StaffService } from './../../../pages/services/staff.service';
-import {Component, Inject, Input, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import { Component, Inject, Input, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { ProjectService } from 'src/app/pages/services/project.service';
-import {AppSettings} from "../../../app.constants";
+import { AppSettings } from "../../../app.constants";
 import { TaskService } from 'src/app/pages/services/task.service';
 
 @Component({
@@ -53,9 +53,13 @@ export class DialogNotifyComponent implements OnInit {
                 this.taskService.deleteTask(this.id)
                     .subscribe(content => this.myToastrService.success(content.toString()));
                 break;
+            case AppSettings.TITLE_COMPLETE_TASK:
+                this.taskService.completeTask(this.id)
+                    .subscribe(content => this.myToastrService.success(content.toString()));
+                break;
             default:
                 break;
         }
-        this.dialogRef.close({status: true});
+        this.dialogRef.close({ status: true });
     }
 }

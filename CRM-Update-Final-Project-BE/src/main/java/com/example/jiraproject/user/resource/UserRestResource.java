@@ -40,7 +40,7 @@ public class UserRestResource {
         return ResponseUtil.get(userDto, HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER})
+    @Authorized(roles = {RoleUtil.MANAGER})
     @GetMapping
     public ResponseEntity<ResponseDto> findAll() {
         List<UserDto> userList = service.findAll(UserDto.class);
@@ -48,7 +48,7 @@ public class UserRestResource {
         return ResponseUtil.get(userList, HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER})
+    @Authorized(roles = {RoleUtil.MANAGER})
     @GetMapping("/paging")
     public ResponseEntity<ResponseDto> findAllWithPaging(@RequestParam("size") int size,
                                                          @RequestParam("pageIndex") int pageIndex) {
@@ -61,13 +61,13 @@ public class UserRestResource {
         return ResponseUtil.get(service.findByIdWithInfo(UUID.fromString(id)), HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER})
+    @Authorized(roles = {RoleUtil.MANAGER})
     @GetMapping("/with-info")
     public ResponseEntity<ResponseDto> findAllWithInfo(){
         return ResponseUtil.get(service.findAllWithInfo(), HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER})
+    @Authorized(roles = {RoleUtil.MANAGER})
     @GetMapping("/with-info/paging")
     public ResponseEntity<ResponseDto> findAllWithInfoWithPaging(@RequestParam("size") int size,
                                                                  @RequestParam("pageIndex") int pageIndex) {
@@ -93,7 +93,7 @@ public class UserRestResource {
         return ResponseUtil.get(service.findAllInsideProject(UUID.fromString(projectId)), HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.MANAGER})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER})
     @GetMapping("/outside-project/{projectId}")
     public ResponseEntity<ResponseDto> findAllByProject(@PathVariable("projectId")
                                                         @UUIDConstraint String projectId) {
