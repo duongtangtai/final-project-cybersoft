@@ -36,6 +36,7 @@ export const AppConfig: PTSAppConfig = {
       root: `${apiUrl}/v1/tasks/`,
       withInfo: `${apiUrl}/v1/tasks/with-info/`,
       getStatus: `${apiUrl}/v1/tasks/status/`,
+      completeTask: `${apiUrl}/v1/tasks/complete-task/`
     },
     profile: {
       root: `${apiUrl}/v1/profiles/`,

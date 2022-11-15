@@ -24,7 +24,7 @@ import java.util.Set;
 @Table(name = Role.RoleEntity.TABLE_NAME)
 public class Role extends BaseEntity {
 
-    @Column(name = RoleEntity.NAME, nullable = false)
+    @Column(name = RoleEntity.NAME, nullable = false, unique = true)
     @Size(min = 2, max = 50, message = "{role.name.size}")
     @NotBlank(message = "{role.name.not-blank}")
     private String name;

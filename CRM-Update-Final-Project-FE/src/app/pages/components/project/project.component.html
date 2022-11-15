@@ -32,7 +32,7 @@
                             <li class="nav-item">
                                 <button class="nav-link" id="profile-top-tab" data-bs-toggle="tab"
                                         href="#top-profile" role="tab" aria-controls="top-profile"
-                                        aria-selected="false" (click)="getAllProjectWithStatus(projectStatus[0])">
+                                        aria-selected="false" (click)="getAllProjectWithStatus(appSettings.PROJECT_STATUS_DOING)">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                          stroke-linejoin="round" class="feather feather-info">
@@ -46,7 +46,7 @@
                             <li class="nav-item">
                                 <button class="nav-link" id="contact-top-tab" data-bs-toggle="tab"
                                         href="#top-contact" role="tab" aria-controls="top-contact"
-                                        aria-selected="false" (click)="getAllProjectWithStatus(projectStatus[1])">
+                                        aria-selected="false" (click)="getAllProjectWithStatus(appSettings.PROJECT_STATUS_DONE)">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                          stroke-linejoin="round" class="feather feather-check-circle">
@@ -60,8 +60,7 @@
                     </div>
                     <div class="col-md-6 p-0">
                         <div class="form-group mb-0 me-0"></div>
-                        <button class="btn btn-primary" (click)="addProject()" *ngIf="appSettings.USER_ROLES.includes('ADMIN') 
-                        || appSettings.USER_ROLES.includes('MANAGER')">
+                        <button class="btn btn-primary" (click)="addProject()" *ngIf="appSettings.USER_ROLES.includes(appSettings.ROLE_MANAGER)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                  stroke-linejoin="round" class="feather feather-plus-square">
@@ -108,12 +107,11 @@
                                 <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Status</strong>
                                 </th>
                                 <td mat-cell *matCellDef="let element"> 
-                                    <span *ngIf="element.status == 'DOING'" class="badge bg-label-primary me-1">{{element.status}} </span>
-                                    <span *ngIf="element.status == 'DONE'" class="badge bg-label-success me-1">{{element.status}} </span>
+                                    <span *ngIf="element.status == appSettings.PROJECT_STATUS_DOING" class="badge bg-label-primary me-1">{{element.status}} </span>
+                                    <span *ngIf="element.status == appSettings.PROJECT_STATUS_DONE" class="badge bg-label-success me-1">{{element.status}} </span>
                                 </td>
                             </ng-container>
-                            <ng-container matColumnDef="action" *ngIf="appSettings.USER_ROLES.includes('ADMIN') 
-                            || appSettings.USER_ROLES.includes('MANAGER')">
+                            <ng-container matColumnDef="action" *ngIf="appSettings.USER_ROLES.includes(appSettings.ROLE_MANAGER)">
                                 <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Action</strong></th>
                                 <td mat-cell *matCellDef="let element">
                                     <div class="dropdown">

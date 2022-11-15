@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
-import {LocalStorageService} from 'ngx-webstorage';
-import {AppSettings} from 'src/app/app.constants';
-import {AuthService} from "../../core/auth/auth.service";
-import {ProfileService} from "../../pages/services/profile.service";
+import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router";
+import { LocalStorageService } from 'ngx-webstorage';
+import { AppSettings } from 'src/app/app.constants';
+import { AuthService } from "../../core/auth/auth.service";
+import { ProfileService } from "../../pages/services/profile.service";
 
 @Component({
     selector: 'app-header',
@@ -15,8 +15,8 @@ export class HeaderComponent implements OnInit {
     user: any;
     avatar: string = '';
     gender: string = '';
-    firstName: string ='';
-    lastName: string ='';
+    firstName: string = '';
+    lastName: string = '';
     roles: string[] = [];
 
     constructor(
@@ -68,33 +68,34 @@ export class HeaderComponent implements OnInit {
     }
 
     getUserRoles() {
-        this.profileService.rolesData.subscribe((roles: any)=> {
-            if (roles) {
-                this.roles = this.specifyUserRoles(roles);
+        this.profileService.rolesData.subscribe((roleCodes: any) => {
+            if (roleCodes) {
+                this.roles = this.displayUserRoles(roleCodes);
+                AppSettings.USER_ROLES = roleCodes;
             } else {
-                this.roles = this.specifyUserRoles(this.user.roleCodes);
+                this.roles = this.displayUserRoles(this.user.roleCodes);
+                AppSettings.USER_ROLES = this.user.roleCodes;
             }
-            AppSettings.USER_ROLES = this.roles; //set roles for user
         })
     }
 
     getProfile() {
-        this.router.navigateByUrl("/profile").then(r => console.log)
+        this.router.navigateByUrl(AppSettings.PATH_PROFILE).then(r => console.log)
     }
 
     logout() {
         AppSettings.LOG_OUT = true;
         this.authService.logout();
-        this.router.navigateByUrl('/login').then(r => console.log);
+        this.router.navigateByUrl(AppSettings.PATH_LOGIN).then(r => console.log);
     }
 
-    specifyUserRoles(userRoles: string[]) {
-        if (userRoles.includes("AD")) {
+    displayUserRoles(roleCodes: string[]) {
+        if (roleCodes.includes(AppSettings.ROLE_ADMIN)) {
             return ["ADMIN"]
-        } else if (userRoles.includes("MGR")) {
+        } else if (roleCodes.includes(AppSettings.ROLE_MANAGER)) {
             return ["MANAGER"]
-        } else if (userRoles.includes("LEAD")) {
-            return userRoles.includes("EMP") ? ["LEADER", "EMPLOYEE"] : ["LEADER"]
+        } else if (roleCodes.includes(AppSettings.ROLE_LEADER)) {
+            return roleCodes.includes(AppSettings.ROLE_EMPLOYEE) ? ["LEADER", "EMPLOYEE"] : ["LEADER"]
         }
         return ["EMPLOYEE"]
     }

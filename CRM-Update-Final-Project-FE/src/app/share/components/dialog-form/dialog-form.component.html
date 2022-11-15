@@ -44,6 +44,17 @@
             </mat-radio-button>
         </mat-radio-group>
     </div>
+    <!-- <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            This is the expansion title
+          </mat-panel-title>
+          <mat-panel-description>
+            This is a summary of the content
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <p>This is the primary content of the panel.</p>
+    </mat-expansion-panel> -->
     <!-- END ADD PROJECT && UPDATE PROJECT -->
     <!-- START PROJECT DETAIL -->
     <div mat-dialog-content *ngIf="type == appSettings.TYPE_PROJECT && 
@@ -310,6 +321,7 @@
         <mat-form-field class="form-group">
             <mat-label>Reporter Username</mat-label>
             <mat-select class="form-control" formControlName="reporterUsername" disableOptionCentering panelClass="myPanelClass" [(value)]="compare3">
+                <mat-option>NONE</mat-option>
                 <mat-option *ngFor="let staff of staffData" [value]="staff.username">{{staff.username}}</mat-option>
             </mat-select>
         </mat-form-field>

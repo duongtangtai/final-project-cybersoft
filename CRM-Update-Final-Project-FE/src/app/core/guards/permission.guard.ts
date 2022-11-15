@@ -19,7 +19,7 @@ export class PermissionGuard implements CanActivate {
         return true;
       }
     }
-    this.router.navigateByUrl("/403")
+    this.router.navigateByUrl(AppSettings.PATH_403)
     return false;
   }
 }

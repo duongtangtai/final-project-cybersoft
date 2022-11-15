@@ -1,3 +1,4 @@
+import { AppSettings } from 'src/app/app.constants';
 import {Injectable} from '@angular/core';
 import {
     ActivatedRouteSnapshot,
@@ -29,7 +30,7 @@ export class AuthGuard implements CanActivate {
                        take(1),
                        tap((isAuthenticated: boolean) => {
                            if (!isAuthenticated) {
-                               this.router.navigate(['/login']).then(r => console.log)
+                               this.router.navigateByUrl(AppSettings.PATH_LOGIN).then(r => console.log)
                            }
                        })
                    );

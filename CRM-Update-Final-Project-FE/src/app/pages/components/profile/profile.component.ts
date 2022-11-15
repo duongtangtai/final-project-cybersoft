@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
-import {LocalStorageService} from 'ngx-webstorage';
-import {AppSettings} from 'src/app/app.constants';
-import {IStaffModel} from './../../../model/staff.model';
-import {UserModel} from './../../../model/user.model';
-import {MyToastrService} from './../../../share/services/my-toastr.service';
-import {ProfileService} from './../../services/profile.service';
-import {StaffService} from './../../services/staff.service';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { LocalStorageService } from 'ngx-webstorage';
+import { AppSettings } from 'src/app/app.constants';
+import { IStaffModel } from './../../../model/staff.model';
+import { UserModel } from './../../../model/user.model';
+import { MyToastrService } from './../../../share/services/my-toastr.service';
+import { ProfileService } from './../../services/profile.service';
+import { StaffService } from './../../services/staff.service';
 
 @Component({
     selector: 'app-profile',
@@ -15,9 +15,8 @@ import {StaffService} from './../../services/staff.service';
     styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-    private PROFILE_PAGE: string = '/profile'
-    private CHANGE_PASSWORD_PAGE: string = '/profile/change-password'
-    page = this.PROFILE_PAGE || this.CHANGE_PASSWORD_PAGE;
+    appSettings = AppSettings;
+    page = AppSettings.PATH_PROFILE || AppSettings.PATH_PROFILE_CHANGE_PASSWORD;
     form: any;
     user: any;
     userAvatarUrl = '';
@@ -40,12 +39,12 @@ export class ProfileComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.page = this.router.url;
+        this.page = this.router.url.substring(1);
         switch (this.page) {
-            case this.PROFILE_PAGE:
+            case AppSettings.PATH_PROFILE:
                 this.initProfileForm()
                 break;
-            case this.CHANGE_PASSWORD_PAGE:
+            case AppSettings.PATH_PROFILE_CHANGE_PASSWORD:
                 this.initChangePasswordForm()
                 break;
             default:
@@ -63,19 +62,19 @@ export class ProfileComponent implements OnInit {
     //-------------START PROFILE FORM-----------------
     initProfileForm() {
         this.form = this.formBuilder.group({
-            id: [{value: '', disabled: true}],
-            username: [{value: '', disabled: true}],
+            id: [{ value: '', disabled: true }],
+            username: [{ value: '', disabled: true }],
             password: ['', Validators.required],
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
             gender: ['', Validators.required],
-            avatar: [{value: '', disabled: true}],
+            avatar: [{ value: '', disabled: true }],
             email: ['', Validators.compose([Validators.email, Validators.required])],
             facebookUrl: [],
             occupation: [],
             department: [],
             hobbies: [],
-            accountStatus: [{value: '', disabled: true}]
+            accountStatus: [{ value: '', disabled: true }]
         })
         this.staffService.getStatus().subscribe(val => this.staffStatusData = val)
         this.staffService.getGenders().subscribe(val => this.staffGenderData = val)
@@ -148,7 +147,7 @@ export class ProfileComponent implements OnInit {
             this.myToastrService.error("Image Size is over 800K bytes. Please select another one.")
             return;
         }
-        
+
         let reader = new FileReader();
         reader.readAsDataURL(this.newAvatar);
         reader.onload = (_event) => {
@@ -209,9 +208,9 @@ export class ProfileComponent implements OnInit {
 
     initChangePasswordForm() {
         this.form = this.formBuilder.group({
-            oldPassword: ['',Validators.required],
-            newPassword: ['',Validators.required],
-            newPasswordConfirmed: ['',Validators.required]
+            oldPassword: ['', Validators.required],
+            newPassword: ['', Validators.required],
+            newPasswordConfirmed: ['', Validators.required]
         })
     }
 
@@ -224,14 +223,14 @@ export class ProfileComponent implements OnInit {
         if (this.form.valid && this.isPasswordValid(oldPassword, newPassword, newPasswordConfirmed)) {
             //send request if valid
             let submitForm = {
-                userId : userId,
-                oldPassword : oldPassword,
-                newPassword : newPassword,
+                userId: userId,
+                oldPassword: oldPassword,
+                newPassword: newPassword,
             }
-            this.profileService.changePassword(submitForm).subscribe(content => 
-                this.myToastrService.success(content)   
+            this.profileService.changePassword(submitForm).subscribe(content =>
+                this.myToastrService.success(content)
             )
-        } 
+        }
     }
 
     //-----------END CHANGE PASSWORD FORM--------------

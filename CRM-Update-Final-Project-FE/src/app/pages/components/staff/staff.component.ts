@@ -1,3 +1,4 @@
+import { filter } from 'rxjs';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {MatPaginator} from '@angular/material/paginator';
@@ -18,9 +19,9 @@ import {StaffService} from "../../services/staff.service";
 export class StaffComponent implements OnInit {
     dataSource: any;
     staffs: any;
-    accountStatus: string[] = ['ACTIVE', 'TEMPORARILY_BLOCKED', 'PERMANENTLY_BLOCKED'];
+    appSettings = AppSettings;
 
-    displayedColumns: string[] = ['firstName', 'username', 'email', 'accountStatus', 'action'];
+    displayedColumns: string[] = [];
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     @ViewChild(MatSort) sort!: MatSort;
 
@@ -33,6 +34,16 @@ export class StaffComponent implements OnInit {
 
     ngOnInit(): void {
         this.getAllStaffs();
+        this.initDisplayedColumns();
+    }
+    
+    initDisplayedColumns() {
+        const userRoles = AppSettings.USER_ROLES;
+        if (userRoles.includes(AppSettings.ROLE_ADMIN)) { //ADMIN
+            this.displayedColumns = ['firstName', 'username', 'email', 'accountStatus', 'action'];
+        } else { //MANAGER
+            this.displayedColumns = ['firstName', 'username', 'email', 'accountStatus'];
+        }
     }
 
     pagingAndSorting() {
@@ -42,26 +53,15 @@ export class StaffComponent implements OnInit {
     }
 
     getAllStaffs() {
-        this.staffService.getStaffs().subscribe(result => {
-            this.staffs = result;
+        this.staffService.getStaffs().subscribe(content => {
+            this.staffs = content;
             this.pagingAndSorting()
         });
     }
 
     getAllStaffsWithAccountStatus(status: string) {
-        this.staffService.getStaffs().subscribe(result => {
-            this.staffs = result;
-            switch (status) {
-                case this.accountStatus[0]:
-                    this.staffs = this.staffs.filter((element: any) => element.accountStatus == this.accountStatus[0])
-                    break;
-                case this.accountStatus[1]:
-                    this.staffs = this.staffs.filter((element: any) => element.accountStatus == this.accountStatus[1])
-                    break;
-                case this.accountStatus[2]:
-                    this.staffs = this.staffs.filter((element: any) => element.accountStatus == this.accountStatus[2])
-                    break;
-            }
+        this.staffService.getStaffs().subscribe(content => {
+            this.staffs = content.filter((staff: any) => staff.accountStatus == status);
             this.pagingAndSorting()
         });
     }

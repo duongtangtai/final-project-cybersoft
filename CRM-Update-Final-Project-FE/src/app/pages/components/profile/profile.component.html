@@ -1,7 +1,7 @@
 <div class="content-wrapper">
     <!-- Content -->
     <!-- PROFILE FORM -->
-    <div class="container-xxl flex-grow-1 container-p-y" *ngIf="page=='/profile'">
+    <div class="container-xxl flex-grow-1 container-p-y" *ngIf="page==appSettings.PATH_PROFILE">
         <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Account Settings /</span> Account</h4>
 
         <div class="row">
@@ -12,12 +12,13 @@
                             <em class="bx bx-user me-1"></em> Account</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/profile/change-password">
+                        <a class="nav-link" href={{appSettings.PATH_PROFILE_CHANGE_PASSWORD}}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
+                                class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd"
-                                      d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z"/>
-                                <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z"/>
+                                    d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z" />
+                                <path
+                                    d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z" />
                             </svg>
                             Change Password</a>
                     </li>
@@ -27,55 +28,26 @@
                     <!-- Account -->
                     <div class="card-body">
                         <div class="d-flex align-items-start align-items-sm-center gap-4">
-                            <img
-                                    *ngIf="!newAvatarUrl && userAvatarUrl"
-                                    [src]="userAvatarUrl"
-                                    alt="user-avatar"
-                                    class="d-block rounded"
-                                    height="100"
-                                    width="100"
-                            />
-                            <img
-                                    *ngIf="!newAvatarUrl && !userAvatarUrl && userGender == 'MALE'"
-                                    src="/assets/img/avatars/male-default.png"
-                                    alt="user-avatar"
-                                    class="d-block rounded"
-                                    height="100"
-                                    width="100"
-                            />
-                            <img
-                                    *ngIf="!newAvatarUrl && !userAvatarUrl && userGender == 'FEMALE'"
-                                    src="/assets/img/avatars/female-default.png"
-                                    alt="user-avatar"
-                                    class="d-block rounded"
-                                    height="100"
-                                    width="100"
-                            />
-                            <img
-                                    *ngIf="newAvatarUrl"
-                                    [src]="newAvatarUrl"
-                                    alt="user-avatar"
-                                    class="d-block rounded"
-                                    height="100"
-                                    width="100"
-                            />
+                            <img *ngIf="!newAvatarUrl && userAvatarUrl" [src]="userAvatarUrl" alt="user-avatar"
+                                class="d-block rounded" height="100" width="100" />
+                            <img *ngIf="!newAvatarUrl && !userAvatarUrl && userGender == 'MALE'"
+                                src="/assets/img/avatars/male-default.png" alt="user-avatar" class="d-block rounded"
+                                height="100" width="100" />
+                            <img *ngIf="!newAvatarUrl && !userAvatarUrl && userGender == 'FEMALE'"
+                                src="/assets/img/avatars/female-default.png" alt="user-avatar" class="d-block rounded"
+                                height="100" width="100" />
+                            <img *ngIf="newAvatarUrl" [src]="newAvatarUrl" alt="user-avatar" class="d-block rounded"
+                                height="100" width="100" />
                             <div class="button-wrapper">
                                 <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0"
-                                       *ngIf="!newAvatarUrl || !isConfirm">
+                                    *ngIf="!newAvatarUrl || !isConfirm">
                                     <span class="d-none d-sm-block">Upload New Photo</span>
                                     <em class="bx bx-upload d-block d-sm-none"></em>
-                                    <input
-                                            type="file"
-                                            id="upload"
-                                            class="account-file-input"
-                                            hidden
-                                            accept="image/png, image/jpeg"
-                                            (change)="selectFile($event)"
-                                    />
+                                    <input type="file" id="upload" class="account-file-input" hidden
+                                        accept="image/png, image/jpeg" (change)="selectFile($event)" />
                                 </label>
                                 <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0"
-                                       *ngIf="newAvatarUrl && isConfirm == true"
-                                       (click)="uploadAvatar()">
+                                    *ngIf="newAvatarUrl && isConfirm == true" (click)="uploadAvatar()">
                                     <span class="d-none d-sm-block">Confirm New Photo</span>
                                     <em class="bx bx-upload d-block d-sm-none"></em>
                                 </label>
@@ -88,7 +60,7 @@
                             </div>
                         </div>
                     </div>
-                    <hr class="my-0"/>
+                    <hr class="my-0" />
                     <div class="card-body">
                         <form [formGroup]="form">
                             <div class="row">
@@ -96,71 +68,71 @@
                                     <mat-form-field class="form-group">
                                         <mat-label>Username</mat-label>
                                         <input matInput [disabled]="true" placeholder="Username" class="form-control"
-                                               formControlName="username">
+                                            formControlName="username">
                                     </mat-form-field>
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <mat-form-field class="form-group">
                                         <mat-label>First Name</mat-label>
                                         <input matInput placeholder="First Name" class="form-control"
-                                               formControlName="firstName">
+                                            formControlName="firstName">
                                     </mat-form-field>
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <mat-form-field class="form-group">
                                         <mat-label>Last Name</mat-label>
                                         <input matInput placeholder="Last Name" class="form-control"
-                                               formControlName="lastName">
+                                            formControlName="lastName">
                                     </mat-form-field>
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <mat-label>Gender</mat-label>
                                     <mat-select class="form-control" formControlName="gender" disableOptionCentering
-                                                panelClass="myPanelClass" [(value)]="compare1">
-                                        <mat-option *ngFor="let gender of staffGenderData"
-                                                    [value]="gender">{{gender}}</mat-option>
+                                        panelClass="myPanelClass" [(value)]="compare1">
+                                        <mat-option *ngFor="let gender of staffGenderData" [value]="gender">{{gender}}
+                                        </mat-option>
                                     </mat-select>
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <mat-form-field class="form-group">
                                         <mat-label>Email</mat-label>
                                         <input matInput placeholder="Email" class="form-control" formControlName="email"
-                                               type="email">
+                                            type="email">
                                     </mat-form-field>
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <mat-form-field class="form-group">
                                         <mat-label>Facebook</mat-label>
                                         <input matInput placeholder="Facebook URL" class="form-control"
-                                               formControlName="facebookUrl">
+                                            formControlName="facebookUrl">
                                     </mat-form-field>
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <mat-form-field class="form-group">
                                         <mat-label>Occupation</mat-label>
                                         <input matInput placeholder="Occupation" class="form-control"
-                                               formControlName="occupation">
+                                            formControlName="occupation">
                                     </mat-form-field>
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <mat-form-field class="form-group">
                                         <mat-label>Department</mat-label>
                                         <input matInput placeholder="Department" class="form-control"
-                                               formControlName="department">
+                                            formControlName="department">
                                     </mat-form-field>
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <mat-form-field class="form-group">
                                         <mat-label>Hobbies</mat-label>
                                         <input matInput placeholder="Hobbies" class="form-control"
-                                               formControlName="hobbies">
+                                            formControlName="hobbies">
                                     </mat-form-field>
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <mat-form-field class="form-group">
                                         <mat-label>Account Status</mat-label>
                                         <input matInput placeholder="Account Status" class="form-control"
-                                               formControlName="accountStatus">
+                                            formControlName="accountStatus">
                                     </mat-form-field>
                                 </div>
                             </div>
@@ -171,46 +143,47 @@
             </div>
         </div>
     </div>
-    <div class="container-xxl flex-grow-1 container-p-y" *ngIf="page=='/profile/change-password'">
+    <div class="container-xxl flex-grow-1 container-p-y" *ngIf="page==appSettings.PATH_PROFILE_CHANGE_PASSWORD">
         <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Account Settings /</span> Change Password</h4>
 
         <div class="row">
             <div class="col-md-12">
                 <ul class="nav nav-pills flex-column flex-md-row mb-3">
                     <li class="nav-item">
-                        <a class="nav-link" href="/profile">
+                        <a class="nav-link" href={{appSettings.PATH_PROFILE}}>
                             <em class="bx bx-user me-1"></em> Account</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
+                                class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd"
-                                      d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z"/>
-                                <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z"/>
+                                    d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z" />
+                                <path
+                                    d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z" />
                             </svg>
                             Change Password</a>
                     </li>
                 </ul>
                 <div class="card mb-4">
                     <h5 class="card-header">Please insert your current and new password</h5>
-                    <hr class="my-0"/>
+                    <hr class="my-0" />
                     <div class="card-body">
                         <form [formGroup]="form">
                             <mat-form-field class="form-group">
                                 <mat-label class="col-sm-2 col-form-label">Password</mat-label>
                                 <input matInput placeholder="Your password" class="form-control"
-                                       formControlName="oldPassword">
+                                    formControlName="oldPassword">
                             </mat-form-field>
                             <mat-form-field class="form-group">
                                 <mat-label class="col-sm-2 col-form-label">New Password</mat-label>
                                 <input matInput placeholder="Your new password" class="form-control"
-                                       formControlName="newPassword">
+                                    formControlName="newPassword">
                             </mat-form-field>
                             <mat-form-field class="form-group">
                                 <mat-label class="col-sm-2 col-form-label">Confirm New Password</mat-label>
                                 <input matInput placeholder="Repeat your new password" class="form-control"
-                                       formControlName="newPasswordConfirmed">
+                                    formControlName="newPasswordConfirmed">
                             </mat-form-field>
                         </form>
                         <button type="button" class="btn btn-primary me-2 mb-4" (click)="changePassword()">

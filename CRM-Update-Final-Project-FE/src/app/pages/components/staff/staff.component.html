@@ -15,12 +15,11 @@
                     <div class="col-md-6">
                         <ul class="nav nav-tabs border-tab" id="top-tab" role="tablist">
                             <li class="nav-item">
-                                <button class="nav-link active" id="top-home-tab" data-bs-toggle="tab"
-                                        href="#top-home" role="tab" aria-controls="top-home"
-                                        aria-selected="true" (click)="getAllStaffs()">
+                                <button class="nav-link active" id="top-home-tab" data-bs-toggle="tab" href="#top-home"
+                                    role="tab" aria-controls="top-home" aria-selected="true" (click)="getAllStaffs()">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                         stroke-linejoin="round" class="feather feather-target">
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="feather feather-target">
                                         <circle cx="12" cy="12" r="10"></circle>
                                         <circle cx="12" cy="12" r="6"></circle>
                                         <circle cx="12" cy="12" r="2"></circle>
@@ -29,34 +28,37 @@
                                 </button>
                             </li>
                             <li class="nav-item">
-                                <button class="nav-link" id="profile-top-tab" data-bs-toggle="tab"
-                                        href="#top-profile" role="tab" aria-controls="top-profile"
-                                        aria-selected="false" (click)="getAllStaffsWithAccountStatus(accountStatus[0])">
+                                <button class="nav-link" id="profile-top-tab" data-bs-toggle="tab" href="#top-profile"
+                                    role="tab" aria-controls="top-profile" aria-selected="false"
+                                    (click)="getAllStaffsWithAccountStatus(appSettings.STAFF_STATUS_ACTIVE)">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                         class="bi bi-unlock-fill" viewBox="0 0 16 16">
-                                        <path d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2z"/>
+                                        class="bi bi-unlock-fill" viewBox="0 0 16 16">
+                                        <path
+                                            d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2z" />
                                     </svg>
                                     Active
                                 </button>
                             </li>
                             <li class="nav-item">
-                                <button class="nav-link" id="contact-top-tab" data-bs-toggle="tab"
-                                        href="#top-contact" role="tab" aria-controls="top-contact"
-                                        aria-selected="false" (click)="getAllStaffsWithAccountStatus(accountStatus[1])">
+                                <button class="nav-link" id="contact-top-tab" data-bs-toggle="tab" href="#top-contact"
+                                    role="tab" aria-controls="top-contact" aria-selected="false"
+                                    (click)="getAllStaffsWithAccountStatus(appSettings.STAFF_STATUS_TEMPORARILY_BLOCKED)">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                         class="bi bi-lock" viewBox="0 0 16 16">
-                                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
+                                        class="bi bi-lock" viewBox="0 0 16 16">
+                                        <path
+                                            d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" />
                                     </svg>
                                     Temporarily Blocked
                                 </button>
                             </li>
                             <li class="nav-item">
-                                <button class="nav-link" id="contacts-top-tab" data-bs-toggle="tab"
-                                        href="#top-contact" role="tab" aria-controls="top-contact"
-                                        aria-selected="false" (click)="getAllStaffsWithAccountStatus(accountStatus[2])">
+                                <button class="nav-link" id="contacts-top-tab" data-bs-toggle="tab" href="#top-contact"
+                                    role="tab" aria-controls="top-contact" aria-selected="false"
+                                    (click)="getAllStaffsWithAccountStatus(appSettings.STAFF_STATUS_PERMANENTLY_BLOCKED)">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                         class="bi bi-lock-fill" viewBox="0 0 16 16">
-                                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                                        class="bi bi-lock-fill" viewBox="0 0 16 16">
+                                        <path
+                                            d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
                                     </svg>
                                     Permanently Blocked
                                 </button>
@@ -65,12 +67,14 @@
                     </div>
                     <div class="col-md-6 p-0">
                         <div class="form-group mb-0 me-0"></div>
-                        <button class="btn btn-primary" href="projectcreate.html" (click)="addStaff()">
+                        <button class="btn btn-primary" href="projectcreate.html" (click)="addStaff()"
+                            *ngIf="appSettings.USER_ROLES.includes(appSettings.ROLE_ADMIN)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 class="bi bi-person-plus" viewBox="0 0 16 16">
-                                <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                                class="bi bi-person-plus" viewBox="0 0 16 16">
+                                <path
+                                    d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z" />
                                 <path fill-rule="evenodd"
-                                      d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                                    d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
                             </svg>
                             &nbsp;&nbsp;Create New Staff
                         </button>
@@ -90,53 +94,62 @@
                         </mat-form-field>
                         <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
                             <ng-container matColumnDef="firstName">
-                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>First Name</strong>
+                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic">
+                                    <strong>First Name</strong>
                                 </th>
-                                <td mat-cell *matCellDef="let element" class="pointer" (click)="showStaffDetail(element)">
+                                <td mat-cell *matCellDef="let element" class="pointer"
+                                    (click)="showStaffDetail(element)">
                                     <img *ngIf="element.avatar == null && element.gender == 'MALE'"
-                                         src="/assets/img/avatars/male-default.png" width="50" height="50" alt="">
+                                        src="/assets/img/avatars/male-default.png" width="50" height="50" alt="">
                                     <img *ngIf="element.avatar == null && element.gender == 'FEMALE'"
-                                         src="/assets/img/avatars/female-default.png" width="50" height="50" alt="">
-                                    <img *ngIf="element.avatar != null" [src]="element.avatar" width="50" height="50" alt="">
-                                    {{element.firstName}} 
+                                        src="/assets/img/avatars/female-default.png" width="50" height="50" alt="">
+                                    <img *ngIf="element.avatar != null" [src]="element.avatar" width="50" height="50"
+                                        alt="">
+                                    {{element.firstName}}
                                 </td>
                             </ng-container>
                             <ng-container matColumnDef="username">
-                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Username</strong>
+                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic">
+                                    <strong>Username</strong>
                                 </th>
                                 <td mat-cell *matCellDef="let element"> {{element.username}} </td>
                             </ng-container>
                             <ng-container matColumnDef="email">
-                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Email</strong>
+                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic">
+                                    <strong>Email</strong>
                                 </th>
                                 <td mat-cell *matCellDef="let element"> {{element.email}} </td>
                             </ng-container>
                             <ng-container matColumnDef="accountStatus">
-                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Account Status</strong>
+                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic">
+                                    <strong>Account Status</strong>
                                 </th>
                                 <td mat-cell *matCellDef="let element">
-                                    <span *ngIf="element.accountStatus == accountStatus[0]" class="badge bg-label-primary me-1">{{element.accountStatus}} </span>
-                                    <span *ngIf="element.accountStatus == accountStatus[1]" class="badge bg-label-warning me-1">{{element.accountStatus}} </span>
-                                    <span *ngIf="element.accountStatus == accountStatus[2]" class="badge bg-label-danger me-1">{{element.accountStatus}} </span>
+                                    <span *ngIf="element.accountStatus == appSettings.STAFF_STATUS_ACTIVE"
+                                        class="badge bg-label-primary me-1">{{element.accountStatus}} </span>
+                                    <span *ngIf="element.accountStatus == appSettings.STAFF_STATUS_TEMPORARILY_BLOCKED"
+                                        class="badge bg-label-warning me-1">{{element.accountStatus}} </span>
+                                    <span *ngIf="element.accountStatus == appSettings.STAFF_STATUS_PERMANENTLY_BLOCKED"
+                                        class="badge bg-label-danger me-1">{{element.accountStatus}} </span>
                                 </td>
                             </ng-container>
-                            <ng-container matColumnDef="action">
-                                <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Action</strong></th>
+                            <ng-container matColumnDef="action"
+                                *ngIf="appSettings.USER_ROLES.includes(appSettings.ROLE_ADMIN)">
+                                <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Action</strong>
+                                </th>
                                 <td mat-cell *matCellDef="let element">
                                     <div class="dropdown">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                            data-bs-toggle="dropdown">
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <button class="dropdown-item" 
-                                                (click)="manageRole(element)"><i class="bx bx-sitemap me-1 bx-tada-hover"></i> Manage Roles</button
-                                            >
-                                            <button class="dropdown-item" 
-                                                (click)="updateStaff(element)"><i class="bx bx-edit-alt me-1 bx-tada-hover"></i> Update</button
-                                            >
-                                            <button class="dropdown-item"
-                                                (click)="deleteStaff(element.id)"><i class="bx bx-trash me-1 bx-tada-hover"></i> Delete</button
-                                            >
+                                            <button class="dropdown-item" (click)="manageRole(element)"><i
+                                                    class="bx bx-sitemap me-1 bx-tada-hover"></i> Manage Roles</button>
+                                            <button class="dropdown-item" (click)="updateStaff(element)"><i
+                                                    class="bx bx-edit-alt me-1 bx-tada-hover"></i> Update</button>
+                                            <button class="dropdown-item" (click)="deleteStaff(element.id)"><i
+                                                    class="bx bx-trash me-1 bx-tada-hover"></i> Delete</button>
                                         </div>
                                     </div>
                                 </td>

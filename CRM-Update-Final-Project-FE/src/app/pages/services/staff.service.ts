@@ -16,7 +16,7 @@ export class StaffService {
     private myToastrService: MyToastrService
 ) {}
 
-  getStaffs(): Observable<IStaffModel> {  
+  getStaffs(): Observable<any> {  
     return this.http.get<IRequestModel>(`${this.config.endpoints.staff.root}`)
         .pipe(map((val: IRequestModel) => val.content));
   }

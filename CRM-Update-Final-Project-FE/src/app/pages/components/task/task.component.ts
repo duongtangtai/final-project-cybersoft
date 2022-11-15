@@ -1,14 +1,17 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatDialog} from "@angular/material/dialog";
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
-import {ITaskModel} from 'src/app/model/task.model';
-import {AppSettings} from "../../../app.constants";
-import {DialogFormComponent} from "../../../share/components/dialog-form/dialog-form.component";
-import {DialogNotifyComponent} from "../../../share/components/dialog-notify/dialog-notify.component";
-import {ProfileService} from "../../services/profile.service";
-import {TaskService} from '../../services/task.service';
+import { Router } from '@angular/router';
+import { LocalStorageService } from 'ngx-webstorage';
+import { filter } from 'rxjs';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from "@angular/material/dialog";
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { ITaskModel } from 'src/app/model/task.model';
+import { AppSettings } from "../../../app.constants";
+import { DialogFormComponent } from "../../../share/components/dialog-form/dialog-form.component";
+import { DialogNotifyComponent } from "../../../share/components/dialog-notify/dialog-notify.component";
+import { ProfileService } from "../../services/profile.service";
+import { TaskService } from '../../services/task.service';
 
 @Component({
     selector: 'app-task',
@@ -18,7 +21,8 @@ import {TaskService} from '../../services/task.service';
 export class TaskComponent implements OnInit {
     dataSource: any;
     tasks: any;
-    taskStatus: string[] = ['UNASSIGNED', 'STARTED', 'COMPLETED'];
+    appSettings = AppSettings;
+    page: string = AppSettings.PATH_TASK || AppSettings.PATH_MY_TASK;
 
     displayedColumns: string[] = ['name', 'projectName', 'status', 'action'];
     @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -28,11 +32,16 @@ export class TaskComponent implements OnInit {
     constructor(
         private taskService: TaskService,
         private dialog: MatDialog,
+        private localStorageService: LocalStorageService,
+        private router: Router,
     ) {
     }
 
     ngOnInit(): void {
+        this.page = this.router.url.substring(1);
         this.getAllTasks();
+        //IF THIS IS MY TASK => THIS IS FOR EMPLOYEE 
+        //OTHER WISE => THIS IS FOR LEADER OR MANAGER
     }
 
     pagingAndSorting() {
@@ -41,29 +50,72 @@ export class TaskComponent implements OnInit {
         this.dataSource.sort = this.sort;
     }
 
-    getAllTasks() {
-        this.taskService.getTasksWithInfo().subscribe(result => {
-            this.tasks = result;
-            this.pagingAndSorting()
-        });
+    getAllTasks() { //Get tasks based on page
+        console.log("getAllTasks")
+        switch (this.page) { //page "TASKS"
+            case AppSettings.PATH_TASK:
+                //CASE MANAGER -> show all tasks
+                if (AppSettings.USER_ROLES.includes(AppSettings.ROLE_MANAGER)) {
+                    this.taskService.getTasksWithInfo().subscribe(content => {
+                        this.tasks = content;
+                        this.pagingAndSorting()
+                    });
+                } else if (AppSettings.USER_ROLES.includes(AppSettings.ROLE_LEADER)) {
+                    //CASE LEADER -> show tasks belong to their projects
+                    this.taskService.getTasksWithInfo().subscribe(content => {
+                        const leaderUsername = this.localStorageService.retrieve(AppSettings.AUTH_DATA)
+                            .userData.username;
+                        this.tasks = content
+                            .filter((task: any) => task.project.leaderUsername == leaderUsername)
+                        this.pagingAndSorting()
+                    });
+                }
+                break;
+            case AppSettings.PATH_MY_TASK: //page "MY-TASKS"
+                console.log("THIS IS MY TASKS")
+                //EMPLOYEE -> fetch all TASKs that they are reporting
+                this.taskService.getTasksWithInfo().subscribe(content => {
+                    const reporterUsername = this.localStorageService.retrieve(AppSettings.AUTH_DATA)
+                        .userData.username;
+                    this.tasks = content.filter((task: any) => task.reporter.username == reporterUsername 
+                    && task.status != AppSettings.TASK_STATUS_UNASSIGNED)
+                    this.pagingAndSorting()
+                });
+                break;
+        }
     }
 
     getAllTasksWithStatus(status: string) {
-        this.taskService.getTasksWithInfo().subscribe(result => {
-            this.tasks = result;
-            switch (status) {
-                case this.taskStatus[0]:
-                    this.tasks = this.tasks.filter((element: any) => element.status == this.taskStatus[0])
-                    break;
-                case this.taskStatus[1]:
-                    this.tasks = this.tasks.filter((element: any) => element.status == this.taskStatus[1])
-                    break;
-                case this.taskStatus[2]:
-                    this.tasks = this.tasks.filter((element: any) => element.status == this.taskStatus[2])
-                    break;
-            }
-            this.pagingAndSorting()
-        });
+        switch (this.page) {
+            case AppSettings.PATH_TASK:
+                //MANAGER
+                if (AppSettings.USER_ROLES.includes(AppSettings.ROLE_MANAGER)) {
+                    this.taskService.getTasksWithInfo().subscribe(content => {
+                        this.tasks = content.filter((task: any) => task.status == status)
+                        this.pagingAndSorting()
+                    });
+                } else if (AppSettings.USER_ROLES.includes(AppSettings.ROLE_LEADER)) {
+                    //CASE LEADER -> show tasks belong to their projects
+                    this.taskService.getTasksWithInfo().subscribe(content => {
+                        const leaderUsername = this.localStorageService.retrieve(AppSettings.AUTH_DATA)
+                            .userData.username;
+                        this.tasks = content
+                            .filter((task: any) => task.project.leaderUsername == leaderUsername
+                                && task.status == status)
+                        this.pagingAndSorting()
+                    });
+                }
+                break;
+            case AppSettings.PATH_MY_TASK:
+                this.taskService.getTasksWithInfo().subscribe(content => {
+                    const reporterUsername = this.localStorageService.retrieve(AppSettings.AUTH_DATA)
+                        .userData.username;
+                    this.tasks = content.filter((task: any) => task.reporter.username == reporterUsername
+                        && task.status == status)
+                    this.pagingAndSorting()
+                });
+                break;
+        }
     }
 
     filterByKeyword(event: Event) {
@@ -113,6 +165,17 @@ export class TaskComponent implements OnInit {
             },
             height: "80%",
             width: "75%",
+        }).afterClosed().subscribe(() => this.getAllTasks())
+    }
+
+    completeTask(taskId: any) {
+        this.dialog.open(DialogNotifyComponent, {
+            panelClass: 'widthDialogForm',
+            data: {
+                title: AppSettings.TITLE_COMPLETE_TASK,
+                message: AppSettings.MESSAGE_COMPLETE_TASK,
+                id: taskId,
+            },
         }).afterClosed().subscribe(() => this.getAllTasks())
     }
 

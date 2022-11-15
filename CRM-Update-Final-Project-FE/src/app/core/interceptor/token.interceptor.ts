@@ -18,14 +18,13 @@ export class TokenInterceptor implements HttpInterceptor {
     ): Observable<HttpEvent<any>> {
         const authData = this.localStorageService.retrieve(AppSettings.AUTH_DATA);
         let modifiedReq
-        if (AppSettings.LOG_OUT) {
-            return EMPTY;
-        }
         if (authData != null) {
             modifiedReq = request.clone({
                 headers: request.headers.set('Authorization', `Bearer ${authData.accessToken}`),
             });
             return next.handle(modifiedReq)
+        } else if (AppSettings.LOG_OUT) {
+            return EMPTY
         }
         return next.handle(request);
     }

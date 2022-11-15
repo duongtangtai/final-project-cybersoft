@@ -31,11 +31,11 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             } else if (exception.status == 401) {
               return this.handle401Request(request, next)
             } else if (exception.status == 403) {
-              this.router.navigate(['/403']).then(console.log);
+              this.router.navigateByUrl(AppSettings.PATH_403).then(console.log);
             } else if (exception.status == 404) {
-              this.router.navigate(['/404']).then(console.log);
+              this.router.navigateByUrl(AppSettings.PATH_404).then(console.log);
             } else if (exception.status == 500) {
-              this.router.navigate(['/500']).then(console.log);
+              this.router.navigateByUrl(AppSettings.PATH_500).then(console.log);
             }
             return throwError("");
          }))
