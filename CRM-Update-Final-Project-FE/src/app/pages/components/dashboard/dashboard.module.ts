@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
+import { NgApexchartsModule } from "ng-apexcharts";
 
 @NgModule({
   imports: [
@@ -10,6 +11,7 @@ import { DashboardComponent } from './dashboard.component';
     ReactiveFormsModule,
     FormsModule,
     DashboardRoutingModule,
+    NgApexchartsModule,
   ],
   declarations: [DashboardComponent],
 })
