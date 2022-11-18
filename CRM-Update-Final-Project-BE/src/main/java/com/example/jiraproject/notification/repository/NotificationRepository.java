@@ -5,6 +5,7 @@ import com.example.jiraproject.notification.model.Notification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -16,17 +17,12 @@ import java.util.UUID;
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, UUID> {
 
-    @Query(value = "select n from Notification n left join fetch n.sender left join fetch n.receiver where n.id = ?1")
-    Optional<Notification> findByIdWithInfo(UUID id);
+    @Query(value = "select n from Notification n left join fetch  n.sender left join fetch n.receiver " +
+            "where n.receiver.id = ?1 and n.status = ?2 " +
+            "order by n.createdAt desc ")
+    Set<Notification> findAllWithReceiverAndStatus(UUID receiverId, Notification.Status status);
 
-    @Query(value = "select n from Notification n left join fetch n.sender left join fetch n.receiver order by n.createdAt")
-    Set<Notification> findAllWithInfo();
-
-    @Query(value = "select n from Notification n left join fetch n.sender left join fetch n.receiver",
-    countQuery = "select count(n) from Notification n left join n.sender left join n.receiver")
-    Page<Notification> findAllWithInfoWithPaging(Pageable pageable);
-
-    //Find notifications by a receiver's id -> return with descending order
-    @Query(value = "select n from Notification n left join fetch  n.sender left join fetch n.receiver where n.receiver.id = ?1 order by n.createdAt desc ")
-    Set<Notification> findAllWithInfoByReceiverId(UUID receiverId);
+    @Modifying
+    @Query(value = "update Notification n set n.status = ?2 where n.receiver.id = ?1 ")
+    void setStatusByReceiver(UUID id, Notification.Status status);
 }

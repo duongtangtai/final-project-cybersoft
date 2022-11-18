@@ -1,9 +1,13 @@
+import { MyToastrService } from './../../share/services/my-toastr.service';
+import { NotificationService } from './../../pages/services/notification.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { LocalStorageService } from 'ngx-webstorage';
 import { AppSettings } from 'src/app/app.constants';
 import { AuthService } from "../../core/auth/auth.service";
 import { ProfileService } from "../../pages/services/profile.service";
+import { MatDialog } from '@angular/material/dialog';
+import { DialogFormComponent } from 'src/app/share/components/dialog-form/dialog-form.component';
 
 @Component({
     selector: 'app-header',
@@ -24,6 +28,9 @@ export class HeaderComponent implements OnInit {
         private authService: AuthService,
         private profileService: ProfileService,
         private localStorageService: LocalStorageService,
+        private notificationService: NotificationService,
+        private dialog: MatDialog,
+        private myToastrService: MyToastrService,
     ) {
     }
 
@@ -33,6 +40,7 @@ export class HeaderComponent implements OnInit {
         this.getUserFirstName();
         this.getUserLastName();
         this.getUserRoles();
+        this.initNotification();
     }
 
     getAvatarLink() {
@@ -99,4 +107,43 @@ export class HeaderComponent implements OnInit {
         }
         return ["EMPLOYEE"]
     }
+
+
+    //-----------NOTIFICATION------------
+    eventSrc: EventSource | undefined;
+    notificationNum: number = 0;
+
+    seeNotification() {
+        this.dialog
+            .open(DialogFormComponent, {
+                panelClass: 'widthDialogForm',
+                data: {
+                    title: AppSettings.TITLE_NEW_NOTIFICATION,
+                    type: AppSettings.TYPE_NOTIFICATION,
+                    element: this.user, //send user to fetch notification
+                },
+            }).afterClosed().subscribe(() =>
+                this.notificationService.readAllByReceiver(this.user.userData.id)
+                    .subscribe(() => this.notificationNum = 0)
+            )
+    }
+
+    initNotification() {
+        //fetch number of notification that has not been read 
+        this.notificationService.getNewNotification(this.user.userData.id)
+            .subscribe(content => {
+                this.notificationNum = content.length
+            })
+
+        //subscritbe
+        this.eventSrc = this.notificationService.subscribeNotification()
+
+        let current = this;
+        //add listeners
+        this.eventSrc.addEventListener("newNotification", function (event) { //receive a number
+            current.notificationNum++
+            current.myToastrService.info(event.data)
+        })
+    }
+    //-----------------------------------
 }

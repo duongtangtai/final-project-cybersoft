@@ -30,7 +30,7 @@ export class ProjectComponent implements OnInit {
     private projectService: ProjectService,
     private dialog: MatDialog,
     private localStorageService: LocalStorageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getAllProject();
