@@ -56,6 +56,7 @@ export const AppConfig: PTSAppConfig = {
     notification: {
       root: `${apiUrl}/v1/notifications/`,
       subscribe: `${apiUrl}/v1/notifications/subscribe/`,
+      unsubscribe: `${apiUrl}/v1/notifications/unsubscribe/`,
       getNewByReceiver: `${apiUrl}/v1/notifications/with-info/sent/by-receiver/`,
       getOldByReceiver: `${apiUrl}/v1/notifications/with-info/read/by-receiver/`,
       readAllByReceiver: `${apiUrl}/v1/notifications/read-all/by-receiver/`,

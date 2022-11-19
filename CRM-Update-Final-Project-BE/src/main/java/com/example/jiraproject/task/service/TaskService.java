@@ -113,10 +113,13 @@ class TaskServiceImpl implements TaskService {
         User oldReporter = task.getReporter();
         if (taskDto.getReporterUsername() != null) { //if update with newReporter
             User newReporter = userService.findByUsername(taskDto.getReporterUsername());
-            if (oldReporter != null) { //oldReporter is not null => simply remove from task, handle notifications
+            //check whether oldReporter and newReporter are the same
+            if (oldReporter == null) {
+                addReporterToTask(task, newReporter);
+            } else if (!oldReporter.getUsername().equals(newReporter.getUsername())) {
                 removeReporterFromTask(task, oldReporter);
+                addReporterToTask(task, newReporter);
             }
-            addReporterToTask(task, newReporter);
         } //else do nothing with reporter
         mapper.map(taskDto, task);
         return mapper.map(task, TaskDto.class);

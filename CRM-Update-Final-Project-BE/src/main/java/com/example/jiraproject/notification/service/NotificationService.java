@@ -28,6 +28,7 @@ public interface NotificationService extends GenericService<Notification, Notifi
     SseEmitter subscribe(String token);
     void sendNotificationToUser(String receiverUsername, String content);
     void sendNotificationToAll(String content);
+    void unsubscribe(String username);
 }
 @Service
 @RequiredArgsConstructor
@@ -121,6 +122,15 @@ class NotificationServiceImpl implements NotificationService {
             } catch (IOException e) {
                 subscribers.remove(subscriber.getKey());
             }
+        }
+    }
+
+    @Override
+    public void unsubscribe(String subscriberUsername) {
+        for (String username: subscribers.keySet()) {
+           if (username.equals(subscriberUsername)) {
+               subscribers.remove(username);
+           }
         }
     }
 }
