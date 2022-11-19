@@ -1,163 +1,325 @@
 <div class="container-fluid">
-    <div class="page-title">
-        <div class="row">
-            <div class="col-12 col-sm-6">
-                <h3 *ngIf="page == appSettings.PATH_TASK">Task List</h3>
-                <h3 *ngIf="page == appSettings.PATH_MY_TASK">My Tasks</h3>
-            </div>
-        </div>
+  <div class="page-title">
+    <div class="row">
+      <div class="col-12 col-sm-6">
+        <h3 *ngIf="page == appSettings.PATH_TASK">Task List</h3>
+        <h3 *ngIf="page == appSettings.PATH_MY_TASK">My Tasks</h3>
+      </div>
     </div>
+  </div>
 </div>
 <div class="container-fluid">
-    <div class="row project-cards">
-        <div class="col-md-12 project-list">
-            <div class="card">
-                <div class="row">
-                    <div class="col-md-6">
-                        <ul class="nav nav-tabs border-tab" id="top-tab" role="tablist">
-                            <li class="nav-item">
-                                <button class="nav-link active" id="top-home-tab" data-bs-toggle="tab" href="#top-home"
-                                    role="tab" aria-controls="top-home" aria-selected="true" (click)="getAllTasks()">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="feather feather-target">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                        <circle cx="12" cy="12" r="6"></circle>
-                                        <circle cx="12" cy="12" r="2"></circle>
-                                    </svg>
-                                    All
-                                </button>
-                            </li>
-                            <li class="nav-item" *ngIf="page == appSettings.PATH_TASK">
-                                <button class="nav-link" id="profile-top-tab" data-bs-toggle="tab" href="#top-profile"
-                                    role="tab" aria-controls="top-profile" aria-selected="false"
-                                    (click)="getAllTasksWithStatus(appSettings.TASK_STATUS_UNASSIGNED)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                        class="bi bi-calendar" viewBox="0 0 16 16">
-                                        <path
-                                            d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
-                                    </svg>
-                                    UNASSIGNED
-                                </button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="nav-link" id="contact-top-tab" data-bs-toggle="tab" href="#top-contact"
-                                    role="tab" aria-controls="top-contact" aria-selected="false"
-                                    (click)="getAllTasksWithStatus(appSettings.TASK_STATUS_STARTED)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                        class="bi bi-calendar-check" viewBox="0 0 16 16">
-                                        <path
-                                            d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
-                                        <path
-                                            d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
-                                    </svg>
-                                    STARTED
-                                </button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="nav-link" id="contacts-top-tab" data-bs-toggle="tab" href="#top-contact"
-                                    role="tab" aria-controls="top-contact" aria-selected="false"
-                                    (click)="getAllTasksWithStatus(appSettings.TASK_STATUS_COMPLETED)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                        class="bi bi-calendar-check-fill" viewBox="0 0 16 16">
-                                        <path
-                                            d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zm-5.146-5.146-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708z" />
-                                    </svg>
-                                    COMPLETED
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-md-6 p-0">
-                        <div class="form-group mb-0 me-0"></div>
-                        <button class="btn btn-primary" href="projectcreate.html" (click)="addTask()"
-                            *ngIf="page == appSettings.PATH_TASK && appSettings.USER_ROLES.includes(appSettings.ROLE_LEADER)">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-calendar-plus" viewBox="0 0 16 16">
-                                <path
-                                    d="M8 7a.5.5 0 0 1 .5.5V9H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V10H6a.5.5 0 0 1 0-1h1.5V7.5A.5.5 0 0 1 8 7z" />
-                                <path
-                                    d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
-                            </svg>
-                            &nbsp;&nbsp;Create New Task
-                        </button>
-                    </div>
-                </div>
-            </div>
+  <div class="row project-cards">
+    <div class="col-md-12 project-list">
+      <div class="card">
+        <div class="row">
+          <div class="col-md-6">
+            <ul class="nav nav-tabs border-tab" id="top-tab" role="tablist">
+              <li class="nav-item">
+                <button
+                  class="nav-link active"
+                  id="top-home-tab"
+                  data-bs-toggle="tab"
+                  href="#top-home"
+                  role="tab"
+                  aria-controls="top-home"
+                  aria-selected="true"
+                  (click)="getAllTasks()"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="feather feather-target"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <circle cx="12" cy="12" r="6"></circle>
+                    <circle cx="12" cy="12" r="2"></circle>
+                  </svg>
+                  All
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  class="nav-link"
+                  id="profile-top-tab"
+                  data-bs-toggle="tab"
+                  href="#top-profile"
+                  role="tab"
+                  aria-controls="top-profile"
+                  aria-selected="false"
+                  (click)="getAllTasksWithStatus(appSettings.TASK_STATUS_TODO)"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-calendar"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"
+                    />
+                  </svg>
+                  TODO
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  class="nav-link"
+                  id="contact-top-tab"
+                  data-bs-toggle="tab"
+                  href="#top-contact"
+                  role="tab"
+                  aria-controls="top-contact"
+                  aria-selected="false"
+                  (click)="
+                    getAllTasksWithStatus(appSettings.TASK_STATUS_IN_PROGRESS)
+                  "
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-calendar-check"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"
+                    />
+                    <path
+                      d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"
+                    />
+                  </svg>
+                  IN PROGRESS
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  class="nav-link"
+                  id="contacts-top-tab"
+                  data-bs-toggle="tab"
+                  href="#top-contact"
+                  role="tab"
+                  aria-controls="top-contact"
+                  aria-selected="false"
+                  (click)="getAllTasksWithStatus(appSettings.TASK_STATUS_DONE)"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-calendar-check-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zm-5.146-5.146-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708z"
+                    />
+                  </svg>
+                  DONE
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-6 p-0">
+            <div class="form-group mb-0 me-0"></div>
+            <button
+              class="btn btn-primary"
+              href="projectcreate.html"
+              (click)="addTask()"
+              *ngIf="
+                page == appSettings.PATH_TASK &&
+                appSettings.USER_ROLES.includes(appSettings.ROLE_LEADER)
+              "
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-calendar-plus"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M8 7a.5.5 0 0 1 .5.5V9H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V10H6a.5.5 0 0 1 0-1h1.5V7.5A.5.5 0 0 1 8 7z"
+                />
+                <path
+                  d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"
+                />
+              </svg>
+              &nbsp;&nbsp;Create New Task
+            </button>
+          </div>
         </div>
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-body">
-
-                    <!-- START TASK TABLE -->
-                    <div>
-                        <mat-form-field>
-                            <mat-label>Search..?</mat-label>
-                            <input matInput placeholder="By keyword" (keyup)="filterByKeyword($event)">
-                        </mat-form-field>
-                        <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
-                            <ng-container matColumnDef="name">
-                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic">
-                                    <strong>Name</strong>
-                                </th>
-                                <td mat-cell *matCellDef="let element" class="pointer" (click)="taskDetail(element)">
-                                    {{element.name}} </td>
-                            </ng-container>
-                            <ng-container matColumnDef="projectName">
-                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic">
-                                    <strong>Project</strong>
-                                </th>
-                                <td mat-cell *matCellDef="let element"> {{element.project.name}} </td>
-                            </ng-container>
-                            <ng-container matColumnDef="status">
-                                <th mat-sort-header mat-header-cell *matHeaderCellDef class="fs-6 fst-italic">
-                                    <strong>Status</strong>
-                                </th>
-                                <td mat-cell *matCellDef="let element">
-                                    <span *ngIf="element.status == appSettings.TASK_STATUS_UNASSIGNED"
-                                        class="badge bg-label-info me-1">{{element.status}} </span>
-                                    <span *ngIf="element.status == appSettings.TASK_STATUS_STARTED"
-                                        class="badge bg-label-primary me-1">{{element.status}} </span>
-                                    <span *ngIf="element.status == appSettings.TASK_STATUS_COMPLETED"
-                                        class="badge bg-label-success me-1">{{element.status}} </span>
-                                </td>
-                            </ng-container>
-                            <ng-container matColumnDef="action">
-                                <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic"> <strong>Action</strong>
-                                </th>
-                                <td mat-cell *matCellDef="let element">
-                                    <div class="dropdown">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                            data-bs-toggle="dropdown">
-                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <button class="dropdown-item" (click)="updateTask(element)" *ngIf="appSettings.USER_ROLES.includes(appSettings.ROLE_LEADER) &&
-                                                page == appSettings.PATH_TASK"><i
-                                                    class="bx bx-edit-alt me-1 bx-tada-hover"></i> Update</button>
-                                            <button class="dropdown-item" (click)="deleteTask(element.id)" *ngIf="appSettings.USER_ROLES.includes(appSettings.ROLE_LEADER) && 
-                                                page == appSettings.PATH_TASK"><i
-                                                    class="bx bx-trash me-1 bx-tada-hover"></i> Delete</button>
-                                            <button class="dropdown-item" (click)="commentTask(element)"><i
-                                                    class='bx bxs-comment-detail bx-tada-hover'></i> Comment</button>
-                                            <!-- EMPLOYEE can finish the task -->
-                                            <button class="dropdown-item" *ngIf="page == appSettings.PATH_MY_TASK"
-                                                (click)="completeTask(element.id)"><i
-                                                    class='bx bx-check bx-tada-hover'></i> Complete </button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </ng-container>
-                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                        </table>
-                        <mat-paginator [pageSizeOptions]="[5,10,20]" showFirstLastButtons>
-                        </mat-paginator>
-                    </div>
-                    <!-- END TASK TABLE -->
-
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <!-- START TASK TABLE -->
+          <div>
+            <mat-form-field>
+              <mat-label>Search..?</mat-label>
+              <input
+                matInput
+                placeholder="By keyword"
+                (keyup)="filterByKeyword($event)"
+              />
+            </mat-form-field>
+            <table
+              mat-table
+              matSort
+              [dataSource]="dataSource"
+              class="mat-elevation-z8"
+            >
+              <ng-container matColumnDef="name">
+                <th
+                  mat-sort-header
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="fs-6 fst-italic"
+                >
+                  <strong>Name</strong>
+                </th>
+                <td
+                  mat-cell
+                  *matCellDef="let element"
+                  class="pointer"
+                  (click)="taskDetail(element)"
+                >
+                  {{ element.name }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="projectName">
+                <th
+                  mat-sort-header
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="fs-6 fst-italic"
+                >
+                  <strong>Project</strong>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.project.name }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="status">
+                <th
+                  mat-sort-header
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="fs-6 fst-italic"
+                >
+                  <strong>Status</strong>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <span
+                    *ngIf="element.status == appSettings.TASK_STATUS_TODO"
+                    class="badge bg-label-info me-1"
+                    >{{ element.status }}
+                  </span>
+                  <span
+                    *ngIf="
+                      element.status == appSettings.TASK_STATUS_IN_PROGRESS
+                    "
+                    class="badge bg-label-primary me-1"
+                    >{{ element.status }}
+                  </span>
+                  <span
+                    *ngIf="element.status == appSettings.TASK_STATUS_DONE"
+                    class="badge bg-label-success me-1"
+                    >{{ element.status }}
+                  </span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef class="fs-6 fst-italic">
+                  <strong>Action</strong>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="dropdown">
+                    <button
+                      type="button"
+                      class="btn p-0 dropdown-toggle hide-arrow"
+                      data-bs-toggle="dropdown"
+                    >
+                      <i class="bx bx-dots-vertical-rounded"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                      <button
+                        class="dropdown-item"
+                        (click)="updateTask(element)"
+                        *ngIf="
+                          appSettings.USER_ROLES.includes(
+                            appSettings.ROLE_LEADER
+                          ) && page == appSettings.PATH_TASK
+                        "
+                      >
+                        <i class="bx bx-edit-alt me-1 bx-tada-hover"></i> Update
+                      </button>
+                      <button
+                        class="dropdown-item"
+                        (click)="deleteTask(element.id)"
+                        *ngIf="
+                          appSettings.USER_ROLES.includes(
+                            appSettings.ROLE_LEADER
+                          ) && page == appSettings.PATH_TASK
+                        "
+                      >
+                        <i class="bx bx-trash me-1 bx-tada-hover"></i> Delete
+                      </button>
+                      <button
+                        class="dropdown-item"
+                        (click)="commentTask(element)"
+                      >
+                        <i class="bx bxs-comment-detail bx-tada-hover"></i>
+                        Comment
+                      </button>
+                      <!-- EMPLOYEE can finish the task -->
+                      <button
+                        class="dropdown-item"
+                        *ngIf="
+                          element.status == appSettings.TASK_STATUS_TODO &&
+                          page == appSettings.PATH_MY_TASK
+                        "
+                        (click)="workWithTask(element.id)"
+                      >
+                        <i class="bx bx-check bx-tada-hover"></i> In Progress
+                      </button>
+                      <!-- EMPLOYEE can finish the task -->
+                      <button
+                        class="dropdown-item"
+                        *ngIf="
+                          element.status ==
+                            appSettings.TASK_STATUS_IN_PROGRESS &&
+                          page == appSettings.PATH_MY_TASK
+                        "
+                        (click)="completeTask(element.id)"
+                      >
+                        <i class="bx bx-check bx-tada-hover"></i> Done
+                      </button>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+            </mat-paginator>
+          </div>
+          <!-- END TASK TABLE -->
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

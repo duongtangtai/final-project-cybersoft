@@ -81,6 +81,13 @@ public class TaskRestResource {
     }
 
     @Authorized(roles = {RoleUtil.EMPLOYEE})
+    @PostMapping("work-with-task/{id}")
+    public ResponseEntity<ResponseDto> workWithTask(@PathVariable("id") @UUIDConstraint String id) {
+        service.workWithTask(UUID.fromString(id));
+        return ResponseUtil.get(MessageUtil.getMessage(messageSource, "task.in_progress"), HttpStatus.OK);
+    }
+
+    @Authorized(roles = {RoleUtil.EMPLOYEE})
     @PostMapping("/complete-task/{id}")
     public ResponseEntity<ResponseDto> completeTask(@PathVariable("id") @UUIDConstraint String id) {
         service.completeTask(UUID.fromString(id));

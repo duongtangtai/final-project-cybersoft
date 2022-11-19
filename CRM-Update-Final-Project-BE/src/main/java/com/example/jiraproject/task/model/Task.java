@@ -113,9 +113,9 @@ public class Task extends BaseEntity {
     }
 
     public enum Status {
-        UNASSIGNED,
-        STARTED,
-        COMPLETED
+        TODO,
+        IN_PROGRESS,
+        DONE
     }
 
     @UtilityClass

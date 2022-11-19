@@ -3,7 +3,7 @@ export class AppSettings {
     public static API_ENDPOINT = "http://localhost:8088/jira/api";
     public static LOG_OUT = false;
     public static AUTH_DATA = "auth_data";
-    
+
     //-----------------------ROLES--------------------------
     public static USER_ROLES: any;
     public static ROLE_ADMIN = "ADM" //ADMIN
@@ -77,6 +77,8 @@ export class AppSettings {
     public static TITLE_UPDATE_TASK = 'Update Task';
     public static TITLE_DELETE_TASK = 'Delete Task';
     public static MESSAGE_DELETE_TASK = 'Do you really want to delete this task?'
+    public static TITLE_IN_PROGRESS_TASK = 'In Progress Task';
+    public static MESSAGE_IN_PROGRESS_TASK = 'Do you really want to work this task?';
     public static TITLE_COMPLETE_TASK = 'Complete Task';
     public static MESSAGE_COMPLETE_TASK = 'Do you really want to complete this task?';
     //FOR TASK DETAILS
@@ -85,9 +87,9 @@ export class AppSettings {
     public static TYPE_COMMENT = "comment";
     public static TITLE_ADD_COMMENT = "Write Comment";
     //TASK STATUS
-    public static TASK_STATUS_UNASSIGNED = "UNASSIGNED"
-    public static TASK_STATUS_STARTED = "STARTED"
-    public static TASK_STATUS_COMPLETED = "COMPLETED"
+    public static TASK_STATUS_TODO = "TODO"
+    public static TASK_STATUS_IN_PROGRESS = "IN_PROGRESS"
+    public static TASK_STATUS_DONE = "DONE"
     //------------------------------------------------
 
 

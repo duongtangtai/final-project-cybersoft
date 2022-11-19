@@ -28,14 +28,24 @@ import java.util.UUID;
 
 public interface TaskService extends GenericService<Task, TaskDto, UUID> {
     Task findTaskById(UUID taskId);
+
     TaskWithInfoDto findByIdWithInfo(UUID taskId);
+
     List<TaskWithInfoDto> findAllWithInfo();
+
     List<TaskWithInfoDto> findAllWithInfoWithPaging(int size, int pageIndex);
+
     List<String> findAllStatus();
+
     TaskDto save(TaskDto taskDto);
+
     TaskDto update(TaskDto taskDto);
+
+    void workWithTask(UUID id);
+
     void completeTask(UUID id);
 }
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -111,7 +121,7 @@ class TaskServiceImpl implements TaskService {
     public TaskDto update(TaskDto taskDto) { //update task can't change project, only reporters
         Task task = findTaskById(taskDto.getId());
         User oldReporter = task.getReporter();
-        if (taskDto.getReporterUsername() != null) { //if update with newReporter
+        if (taskDto.getReporterUsername() != null) { //if update with newReporter, reporter -> staff
             User newReporter = userService.findByUsername(taskDto.getReporterUsername());
             //check whether oldReporter and newReporter are the same
             if (oldReporter == null) {
@@ -125,11 +135,18 @@ class TaskServiceImpl implements TaskService {
         return mapper.map(task, TaskDto.class);
     }
 
+    public void workWithTask(UUID id) {
+        // work task will affect endDateInFact
+        Task task = findTaskById(id);
+        task.setStatus(Task.Status.IN_PROGRESS);
+        task.setStartDateInFact(LocalDate.now());
+    }
+
     @Override
     public void completeTask(UUID id) {
         //complete task will affect endDateInFact
         Task task = findTaskById(id);
-        task.setStatus(Task.Status.COMPLETED);
+        task.setStatus(Task.Status.DONE);
         task.setEndDateInFact(LocalDate.now());
     }
 

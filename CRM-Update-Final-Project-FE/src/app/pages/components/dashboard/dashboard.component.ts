@@ -48,13 +48,13 @@ export class DashboardComponent implements OnInit {
     this.taskService.getTasksWithInfo().subscribe((content: any) => {
       this.taskTotal = content.length;
       this.taskStatusUnassigned = content.filter(
-        (task: any) => task.status == AppSettings.TASK_STATUS_UNASSIGNED
+        (task: any) => task.status == AppSettings.TASK_STATUS_TODO
       ).length;
       this.taskStatusStarted = content.filter(
-        (task: any) => task.status == AppSettings.TASK_STATUS_STARTED
+        (task: any) => task.status == AppSettings.TASK_STATUS_IN_PROGRESS
       ).length;
       this.taskStatusCompleted = content.filter(
-        (task: any) => task.status == AppSettings.TASK_STATUS_COMPLETED
+        (task: any) => task.status == AppSettings.TASK_STATUS_DONE
       ).length;
       this.taskChartSeries = [
         this.taskStatusUnassigned,
@@ -91,9 +91,9 @@ export class DashboardComponent implements OnInit {
   };
   taskChartColors = ['#0dcaf0', '#0d6efd', '#198754'];
   taskChartLabels = [
-    AppSettings.TASK_STATUS_UNASSIGNED,
-    AppSettings.TASK_STATUS_STARTED,
-    AppSettings.TASK_STATUS_COMPLETED,
+    AppSettings.TASK_STATUS_TODO,
+    AppSettings.TASK_STATUS_IN_PROGRESS,
+    AppSettings.TASK_STATUS_DONE,
   ];
   //----------------------------------------------------
 }

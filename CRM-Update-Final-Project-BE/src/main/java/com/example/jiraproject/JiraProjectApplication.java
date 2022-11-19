@@ -285,7 +285,7 @@ public class JiraProjectApplication implements CommandLineRunner {
                 .endDateExpected(LocalDate.now())
                 .startDateInFact(LocalDate.now())
                 .endDateInFact(LocalDate.now())
-                .status(Task.Status.UNASSIGNED)
+                .status(Task.Status.TODO)
                 .project(project1)
                 .reporter(user1)
                 .build();
@@ -296,7 +296,7 @@ public class JiraProjectApplication implements CommandLineRunner {
                 .endDateExpected(LocalDate.now())
                 .startDateInFact(LocalDate.now())
                 .endDateInFact(LocalDate.now())
-                .status(Task.Status.STARTED)
+                .status(Task.Status.IN_PROGRESS)
                 .project(project1)
                 .reporter(user2)
                 .build();
@@ -307,7 +307,7 @@ public class JiraProjectApplication implements CommandLineRunner {
                 .endDateExpected(LocalDate.now())
                 .startDateInFact(LocalDate.now())
                 .endDateInFact(LocalDate.now())
-                .status(Task.Status.COMPLETED)
+                .status(Task.Status.DONE)
                 .project(project2)
                 .reporter(user3)
                 .build();

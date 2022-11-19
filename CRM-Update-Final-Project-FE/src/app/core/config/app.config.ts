@@ -36,6 +36,7 @@ export const AppConfig: PTSAppConfig = {
       root: `${apiUrl}/v1/tasks/`,
       withInfo: `${apiUrl}/v1/tasks/with-info/`,
       getStatus: `${apiUrl}/v1/tasks/status/`,
+      workWithTask: `${apiUrl}/v1/tasks/work-with-task/`,
       completeTask: `${apiUrl}/v1/tasks/complete-task/`
     },
     profile: {
@@ -51,7 +52,7 @@ export const AppConfig: PTSAppConfig = {
       getByTaskId: `${apiUrl}/v1/comments/with-info/by-task/`,
     },
     role: {
-      root: `${apiUrl}/v1/roles/`,    
+      root: `${apiUrl}/v1/roles/`,
     },
     notification: {
       root: `${apiUrl}/v1/notifications/`,

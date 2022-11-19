@@ -53,8 +53,6 @@ export class TaskComponent implements OnInit {
   getAllTasks() {
     //Get tasks based on page
     this.statusTask = '';
-    console.log("getAll")
-    console.log(this.statusTask)
     switch (
       this.page //page "TASKS"
     ) {
@@ -86,9 +84,7 @@ export class TaskComponent implements OnInit {
             AppSettings.AUTH_DATA
           ).userData.username;
           this.tasks = content.filter(
-            (task: any) =>
-              task.reporter.username == reporterUsername &&
-              task.status != AppSettings.TASK_STATUS_UNASSIGNED
+            (task: any) => task.reporter.username == reporterUsername
           );
           this.pagingAndSorting();
         });
@@ -98,8 +94,8 @@ export class TaskComponent implements OnInit {
 
   getAllTasksWithStatus(status: string) {
     this.statusTask = status;
-    console.log("getAllWithStatus")
-    console.log(this.statusTask)
+    console.log('getAllWithStatus');
+    console.log(this.statusTask);
     switch (this.page) {
       case AppSettings.PATH_TASK:
         //MANAGER
@@ -201,6 +197,20 @@ export class TaskComponent implements OnInit {
       .subscribe(() => this.statusTaskAfterClosePopup());
   }
 
+  workWithTask(taskId: any) {
+    this.dialog
+      .open(DialogNotifyComponent, {
+        panelClass: 'widthDialogForm',
+        data: {
+          title: AppSettings.TITLE_IN_PROGRESS_TASK,
+          message: AppSettings.MESSAGE_IN_PROGRESS_TASK,
+          id: taskId,
+        },
+      })
+      .afterClosed()
+      .subscribe(() => this.statusTaskAfterClosePopup());
+  }
+
   completeTask(taskId: any) {
     this.dialog
       .open(DialogNotifyComponent, {
@@ -230,9 +240,9 @@ export class TaskComponent implements OnInit {
   }
 
   statusTaskAfterClosePopup() {
-    console.log("statusTask:")
-    console.log(this.statusTask)
-    console.log(this.statusTask == "")
+    console.log('statusTask:');
+    console.log(this.statusTask);
+    console.log(this.statusTask == '');
     return this.statusTask
       ? this.getAllTasksWithStatus(this.statusTask)
       : this.getAllTasks();
