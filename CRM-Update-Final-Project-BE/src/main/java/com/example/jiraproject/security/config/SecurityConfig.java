@@ -40,6 +40,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .antMatchers("/v1/auth/login/**").permitAll()
                 .antMatchers("/v1/auth/refresh-token/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/v1/files/**").permitAll()
+                .antMatchers("/v1/notifications/subscribe/**").permitAll()
                 .anyRequest().authenticated();
 
         http.formLogin().disable();

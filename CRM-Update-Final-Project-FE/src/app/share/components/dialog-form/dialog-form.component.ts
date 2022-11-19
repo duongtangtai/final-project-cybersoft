@@ -18,6 +18,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { RoleService } from 'src/app/pages/services/role.service';
+import { NotificationService } from 'src/app/pages/services/notification.service';
 
 @Component({
   selector: 'app-dialog',
@@ -50,6 +51,8 @@ export class DialogFormComponent implements OnInit {
   commentData: any;
   commentDisplayed: any[] = [];
   respondingToUser: string = '';
+  //NOTIFICATION
+  notificationData: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -61,8 +64,9 @@ export class DialogFormComponent implements OnInit {
     private taskService: TaskService,
     private commentService: CommentService,
     private roleService: RoleService,
-    private myToastrService: MyToastrService
-  ) {}
+    private myToastrService: MyToastrService,
+    private notificationService: NotificationService,
+  ) { }
 
   ngOnInit(): void {
     this.user = this.localStorageService.retrieve(AppSettings.AUTH_DATA);
@@ -92,6 +96,10 @@ export class DialogFormComponent implements OnInit {
         break;
       case AppSettings.TYPE_MANAGE_ROLE:
         this.getManageRoleInStaffDialog(element);
+        break;
+      case AppSettings.TYPE_NOTIFICATION:
+        this.getNotification(element);
+        this.form = this.formBuilder.group('');//we don't need form control
         break;
       default:
         break;
@@ -288,13 +296,24 @@ export class DialogFormComponent implements OnInit {
   }
 
   initTaskForm() {
-    //initialize all staffs and task status
+    //initialize task status
     this.taskService
       .getStatus()
-      .subscribe((val) => (this.taskStatusData = val));
-    this.projectService
-      .getProjects()
-      .subscribe((val) => (this.projectData = val));
+      .subscribe((content) => (this.taskStatusData = content));
+    //init projects based on user roles
+    if (AppSettings.USER_ROLES.includes(AppSettings.ROLE_MANAGER)) {
+      this.projectService
+        .getProjects()
+        .subscribe((content) => (this.projectData = content));
+    } else if (AppSettings.USER_ROLES.includes(AppSettings.ROLE_LEADER)) {
+      this.projectService
+        .getProjects()
+        .subscribe((content: any) => {
+          this.projectData = content
+            .filter((project: any) => project.leaderUsername == this.user.userData.username)
+          console.log(this.projectData)
+        });
+    }
     this.form = this.formBuilder.group({
       id: ['', { disabled: true }],
       name: ['', Validators.required],
@@ -603,6 +622,40 @@ export class DialogFormComponent implements OnInit {
   }
 
   //--------------END MANAGE ROLES IN STAFF------------
+  //--------------------START NOTIFICATION------------------
+
+  getNotification(user: any) {
+    this.user = user;
+    this.initNewNotification()
+  }
+
+  initNewNotification() {
+    this.title = AppSettings.TITLE_NEW_NOTIFICATION
+    this.displayedColumns = ['description', 'createdAt', 'action']
+    this.notificationService.getNewNotification(this.user.userData.id).subscribe(content => {
+      this.notificationData = content;
+      this.pagingAndSorting(content);
+    })
+  }
+
+  initOldNotification() {
+    this.title = AppSettings.TITLE_OLD_NOTIFICATION
+    this.notificationService.getOldNotification(this.user.userData.id).subscribe(content => {
+      this.notificationData = content;
+      this.pagingAndSorting(content);
+    })
+  }
+
+  deleteNotification(notificationId: string) {
+    this.notificationService.deleteById(notificationId).subscribe(content => {
+      this.myToastrService.info(content)
+      this.title == AppSettings.TITLE_NEW_NOTIFICATION ?
+        this.initNewNotification() : this.initOldNotification();
+    })
+  }
+
+
+  //--------------------END NOTIFICATION------------------
   //-------------------HANDLE FUNCTIONS--------------------
   convertDateToString(date: any) {
     //convert date to String with pattern ("dd/MM/yyyy") before sending a request to BE
@@ -652,7 +705,8 @@ export class DialogFormComponent implements OnInit {
       this.type == AppSettings.TYPE_MANAGE_STAFF_IN_PROJECT ||
       this.title == AppSettings.TITLE_PROJECT_DETAIL ||
       this.title == AppSettings.TITLE_STAFF_DETAIL ||
-      this.title == AppSettings.TITLE_TASK_DETAIL
+      this.title == AppSettings.TITLE_TASK_DETAIL ||
+      this.type == AppSettings.TYPE_NOTIFICATION
     ) {
       //JUST CLOSE
       this.dialogRef.close();

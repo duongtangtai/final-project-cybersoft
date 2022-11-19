@@ -52,6 +52,13 @@ export const AppConfig: PTSAppConfig = {
     },
     role: {
       root: `${apiUrl}/v1/roles/`,    
+    },
+    notification: {
+      root: `${apiUrl}/v1/notifications/`,
+      subscribe: `${apiUrl}/v1/notifications/subscribe/`,
+      getNewByReceiver: `${apiUrl}/v1/notifications/with-info/sent/by-receiver/`,
+      getOldByReceiver: `${apiUrl}/v1/notifications/with-info/read/by-receiver/`,
+      readAllByReceiver: `${apiUrl}/v1/notifications/read-all/by-receiver/`,
     }
   }
 };

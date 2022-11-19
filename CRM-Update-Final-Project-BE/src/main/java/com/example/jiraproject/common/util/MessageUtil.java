@@ -29,4 +29,7 @@ public class MessageUtil {
     public static String getMessage(MessageSource messageSource, String messageCode) {
         return messageSource.getMessage(messageCode, null, Locale.getDefault());
     }
+    public static String getMessage(MessageSource messageSource, Object[] params, String messageCode) {
+        return messageSource.getMessage(messageCode, params, Locale.getDefault());
+    }
 }

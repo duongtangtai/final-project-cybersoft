@@ -345,9 +345,9 @@ public class JiraProjectApplication implements CommandLineRunner {
 
         //ADD NOTIFICATIONS
         Notification notification1 = Notification.builder()
-                .sender(user1)
-                .receiver(user2)
-                .description(user1.getFirstName() + " vừa thêm bạn vào dự án mới")
+                .sender(user2)
+                .receiver(user1)
+                .description(user2.getFirstName() + " vừa thêm bạn vào dự án mới")
                 .build();
         Notification notification2 = Notification.builder()
                 .sender(user2)
@@ -356,8 +356,9 @@ public class JiraProjectApplication implements CommandLineRunner {
                 .build();
         Notification notification3 = Notification.builder()
                 .sender(user3)
-                .receiver(user2)
+                .receiver(user1)
                 .description(user3.getFirstName() + " đã thêm " + user2.getFirstName() + " vào danh sách bạn thân")
+                .status(Notification.Status.READ)
                 .build();
         notificationRepository.save(notification1);
         notificationRepository.save(notification2);

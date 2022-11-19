@@ -1,8 +1,9 @@
+import { BehaviorSubject } from 'rxjs';
 export class AppSettings {
     public static API_ENDPOINT = "http://localhost:8088/jira/api";
     public static LOG_OUT = false;
     public static AUTH_DATA = "auth_data";
-
+    
     //-----------------------ROLES--------------------------
     public static USER_ROLES: any;
     public static ROLE_ADMIN = "ADM" //ADMIN
@@ -88,6 +89,13 @@ export class AppSettings {
     public static TASK_STATUS_STARTED = "STARTED"
     public static TASK_STATUS_COMPLETED = "COMPLETED"
     //------------------------------------------------
+
+
+    //-----------------FOR NOTIFICATION---------------------
+    public static TYPE_NOTIFICATION = "notification"
+    public static TITLE_NEW_NOTIFICATION = "New Notification"
+    public static TITLE_OLD_NOTIFICATION = "Old Notification"
+    //------------------------------------------------------
 
     //NOTIFY BUTTON
     public static BUTTON_CANCEL = 'CANCEL';

@@ -2,6 +2,7 @@ package com.example.jiraproject.task.service;
 
 import com.example.jiraproject.common.service.GenericService;
 import com.example.jiraproject.common.util.MessageUtil;
+import com.example.jiraproject.notification.service.NotificationService;
 import com.example.jiraproject.project.model.Project;
 import com.example.jiraproject.project.service.ProjectService;
 import com.example.jiraproject.task.dto.TaskDto;
@@ -45,6 +46,7 @@ class TaskServiceImpl implements TaskService {
     private static final String UUID_NOT_FOUND = "task.id.not-found";
     private final ProjectService projectService;
     private final UserService userService;
+    private final NotificationService notificationService;
 
     @Override
     public JpaRepository<Task, UUID> getRepository() {
@@ -98,16 +100,24 @@ class TaskServiceImpl implements TaskService {
         Project project = projectService.findProjectByName(taskDto.getProjectName());
         Task task = mapper.map(taskDto, Task.class);
         task.setProject(project);
-        setReporter(task, taskDto.getReporterUsername());
+        if (taskDto.getReporterUsername() != null) { //if reporter is not null
+            User reporter = userService.findByUsername(taskDto.getReporterUsername());
+            addReporterToTask(task, reporter);
+        }
         return mapper.map(repository.save(task), TaskDto.class);
     }
 
     @Override
-    public TaskDto update(TaskDto taskDto) {
+    public TaskDto update(TaskDto taskDto) { //update task can't change project, only reporters
         Task task = findTaskById(taskDto.getId());
-        Project project = projectService.findProjectByName(taskDto.getProjectName());
-        task.setProject(project);
-        setReporter(task, taskDto.getReporterUsername());
+        User oldReporter = task.getReporter();
+        if (taskDto.getReporterUsername() != null) { //if update with newReporter
+            User newReporter = userService.findByUsername(taskDto.getReporterUsername());
+            if (oldReporter != null) { //oldReporter is not null => simply remove from task, handle notifications
+                removeReporterFromTask(task, oldReporter);
+            }
+            addReporterToTask(task, newReporter);
+        } //else do nothing with reporter
         mapper.map(taskDto, task);
         return mapper.map(task, TaskDto.class);
     }
@@ -120,13 +130,21 @@ class TaskServiceImpl implements TaskService {
         task.setEndDateInFact(LocalDate.now());
     }
 
+    private void addReporterToTask(Task task, User reporter) {
+        task.setReporter(reporter);
+        String content = MessageUtil.getMessage(messageSource,
+                new Object[]{task.getProject().getLeader().getUsername(), task.getName()},
+                "notification.add-staff-to-task");
+        notificationService.saveNotification(content, task.getProject().getLeader(), reporter);
+        notificationService.sendNotificationToUser(reporter.getUsername(), content);
+    }
 
-    private void setReporter(Task task, String reporterUsername) {
-        if (reporterUsername != null) {
-            User reporter = userService.findByUsername(reporterUsername);
-            task.setReporter(reporter);
-        } else {
-            task.setReporter(null);
-        }
+    private void removeReporterFromTask(Task task, User reporter) {
+        task.setReporter(null);
+        String content = MessageUtil.getMessage(messageSource,
+                new Object[]{task.getProject().getLeader().getUsername(), task.getName()},
+                "notification.remove-staff-from-task");
+        notificationService.saveNotification(content, task.getProject().getLeader(), reporter);
+        notificationService.sendNotificationToUser(reporter.getUsername(), content);
     }
 }

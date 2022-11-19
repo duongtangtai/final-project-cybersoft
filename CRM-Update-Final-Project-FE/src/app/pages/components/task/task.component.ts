@@ -53,7 +53,8 @@ export class TaskComponent implements OnInit {
   getAllTasks() {
     //Get tasks based on page
     this.statusTask = '';
-    console.log('getAllTasks');
+    console.log("getAll")
+    console.log(this.statusTask)
     switch (
       this.page //page "TASKS"
     ) {
@@ -97,6 +98,8 @@ export class TaskComponent implements OnInit {
 
   getAllTasksWithStatus(status: string) {
     this.statusTask = status;
+    console.log("getAllWithStatus")
+    console.log(this.statusTask)
     switch (this.page) {
       case AppSettings.PATH_TASK:
         //MANAGER
@@ -227,8 +230,11 @@ export class TaskComponent implements OnInit {
   }
 
   statusTaskAfterClosePopup() {
+    console.log("statusTask:")
+    console.log(this.statusTask)
+    console.log(this.statusTask == "")
     return this.statusTask
       ? this.getAllTasksWithStatus(this.statusTask)
-      : this.getAllTasks;
+      : this.getAllTasks();
   }
 }

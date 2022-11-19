@@ -2,6 +2,7 @@ package com.example.jiraproject.project.service;
 
 import com.example.jiraproject.common.service.GenericService;
 import com.example.jiraproject.common.util.MessageUtil;
+import com.example.jiraproject.notification.service.NotificationService;
 import com.example.jiraproject.project.dto.ProjectDto;
 import com.example.jiraproject.project.dto.ProjectWithInfoDto;
 import com.example.jiraproject.project.model.Project;
@@ -42,6 +43,7 @@ class ProjectServiceImpl implements ProjectService {
     private final ModelMapper mapper;
     private final MessageSource messageSource;
     private final UserService userService;
+    private final NotificationService notificationService;
     private static final String UUID_NOT_FOUND = "project.id.not-found";
 
     @Override
@@ -106,6 +108,12 @@ class ProjectServiceImpl implements ProjectService {
         Project project = mapper.map(dto, Project.class);
         project.setCreator(creator);
         project.setLeader(leader);
+        //save & send notification to leader
+        String content = MessageUtil.getMessage(messageSource,
+                new Object[]{creator.getUsername(), project.getName()},
+                "notification.add-leader-to-project");
+        notificationService.saveNotification(content, creator, leader);
+        notificationService.sendNotificationToUser(leader.getUsername(), content);
         return mapper.map(repository.save(project), ProjectDto.class);
     }
 
@@ -113,10 +121,27 @@ class ProjectServiceImpl implements ProjectService {
     public ProjectDto update(ProjectDto dto) {
         Project project = findProjectById(dto.getId());
         User creator = userService.findByUsername(dto.getCreatorUsername());
-        User leader = userService.findByUsername(dto.getLeaderUsername());
+        User newLeader = userService.findByUsername(dto.getLeaderUsername());
+        //store oldLeader to check
+        User oldLeader = project.getLeader();
         project.setCreator(creator);
-        project.setLeader(leader);
+        project.setLeader(newLeader);
         mapper.map(dto, project);
+        //check oldLeader and newLeader are the same after the logic is complete
+        if (!oldLeader.getUsername().equals(newLeader.getUsername())) { //if leader is replaced
+            //save & send notification to oldLeader
+            String content = MessageUtil.getMessage(messageSource,
+                    new Object[]{ creator.getUsername(), project.getName()},
+                    "notification.remove-leader-from-project");
+            notificationService.saveNotification(content, creator, oldLeader);
+            notificationService.sendNotificationToUser(oldLeader.getUsername(), content);
+            //save & send notification to newLeader
+            content = MessageUtil.getMessage(messageSource,
+                    new Object[]{ creator.getUsername(), project.getName()},
+                    "notification.add-leader-to-project");
+            notificationService.saveNotification(content, creator, newLeader);
+            notificationService.sendNotificationToUser(newLeader.getUsername(), content);
+        }
         return mapper.map(project, ProjectDto.class);
     }
 
@@ -125,6 +150,13 @@ class ProjectServiceImpl implements ProjectService {
         Project project = findProjectById(projectId);
         List<User> users = userService.findAllByIds(userIds);
         users.forEach(project::addUser);
+        //save send notifications to all users
+        users.forEach(user -> {
+            String content = MessageUtil.getMessage(messageSource,
+                    new Object[]{ project.getCreator().getUsername(), project.getName()},
+                    "notification.add-staff-to-project");
+            notificationService.sendNotificationToUser(user.getUsername(), content);
+        });
         return mapper.map(project, ProjectWithInfoDto.class);
     }
 
@@ -133,6 +165,13 @@ class ProjectServiceImpl implements ProjectService {
         Project project = findProjectById(projectId);
         List<User> users = userService.findAllByIds(userIds);
         users.forEach(project::removeUser);
+        //save & send notifications to all users
+        users.forEach(user -> {
+            String content = MessageUtil.getMessage(messageSource,
+                    new Object[]{ project.getCreator().getUsername(), project.getName()},
+                    "notification.remove-staff-from-project");
+            notificationService.sendNotificationToUser(user.getUsername(), content);
+        });
         return mapper.map(project, ProjectWithInfoDto.class);
     }
 }
