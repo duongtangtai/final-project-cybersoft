@@ -92,6 +92,9 @@ export class HeaderComponent implements OnInit {
     }
 
     logout() {
+        this.notificationService.unsubscribeNotification(
+            this.localStorageService.retrieve(AppSettings.AUTH_DATA).userData.username
+        ).subscribe(console.log)
         AppSettings.LOG_OUT = true;
         this.authService.logout();
         this.router.navigateByUrl(AppSettings.PATH_LOGIN).then(r => console.log);

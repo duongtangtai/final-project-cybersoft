@@ -46,6 +46,12 @@ public class NotificationRestResource {
         return service.subscribe(token);
     }
 
+    @PostMapping("/unsubscribe/{username}")
+    public ResponseEntity<ResponseDto> unsubscribe(@PathVariable("username") String username) {
+        service.unsubscribe(username);
+        return ResponseUtil.get("OK", HttpStatus.OK );
+    }
+
     @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER, RoleUtil.EMPLOYEE})
     @PostMapping("/read-all/by-receiver/{receiverId}")
     public ResponseEntity<ResponseDto> readAllByReceiver(@PathVariable("receiverId") @UUIDConstraint String receiverId) {

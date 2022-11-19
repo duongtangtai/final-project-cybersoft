@@ -33,6 +33,11 @@ export class NotificationService {
     return eventSrc;
   }
 
+  unsubscribeNotification(username: string) {
+    return this.http.post<IRequestModel>(`${this.config.endpoints.notification.unsubscribe}` + username, '')
+    .pipe(map((val: IRequestModel) => val.content));
+  }
+
   getSubscribeEndPoint() {
     return this.config.endpoints.notification.subscribe
   }

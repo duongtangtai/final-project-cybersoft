@@ -111,7 +111,7 @@ class ProjectServiceImpl implements ProjectService {
         //save & send notification to leader
         String content = MessageUtil.getMessage(messageSource,
                 new Object[]{creator.getUsername(), project.getName()},
-                "notification.add-leader-to-project");
+                "notification.leader.manager-add-leader-to-project");
         notificationService.saveNotification(content, creator, leader);
         notificationService.sendNotificationToUser(leader.getUsername(), content);
         return mapper.map(repository.save(project), ProjectDto.class);
@@ -132,13 +132,13 @@ class ProjectServiceImpl implements ProjectService {
             //save & send notification to oldLeader
             String content = MessageUtil.getMessage(messageSource,
                     new Object[]{ creator.getUsername(), project.getName()},
-                    "notification.remove-leader-from-project");
+                    "notification.leader.manager-remove-leader-from-project");
             notificationService.saveNotification(content, creator, oldLeader);
             notificationService.sendNotificationToUser(oldLeader.getUsername(), content);
             //save & send notification to newLeader
             content = MessageUtil.getMessage(messageSource,
                     new Object[]{ creator.getUsername(), project.getName()},
-                    "notification.add-leader-to-project");
+                    "notification.leader.manager-add-leader-to-project");
             notificationService.saveNotification(content, creator, newLeader);
             notificationService.sendNotificationToUser(newLeader.getUsername(), content);
         }
@@ -150,12 +150,19 @@ class ProjectServiceImpl implements ProjectService {
         Project project = findProjectById(projectId);
         List<User> users = userService.findAllByIds(userIds);
         users.forEach(project::addUser);
-        //save send notifications to all users
+        //save & send notifications to all staffs
         users.forEach(user -> {
             String content = MessageUtil.getMessage(messageSource,
                     new Object[]{ project.getCreator().getUsername(), project.getName()},
-                    "notification.add-staff-to-project");
+                    "notification.staff.manager-add-staff-to-project");
+            notificationService.saveNotification(content, project.getCreator(), user);
             notificationService.sendNotificationToUser(user.getUsername(), content);
+            //save & send notifications to leaders
+            content = MessageUtil.getMessage(messageSource,
+                    new Object[]{ project.getCreator().getUsername(), user.getUsername(), project.getName()},
+                    "notification.leader.manager-add-staff-to-project");
+            notificationService.saveNotification(content, project.getCreator(), project.getLeader());
+            notificationService.sendNotificationToUser(project.getLeader().getUsername(), content);
         });
         return mapper.map(project, ProjectWithInfoDto.class);
     }
@@ -165,12 +172,19 @@ class ProjectServiceImpl implements ProjectService {
         Project project = findProjectById(projectId);
         List<User> users = userService.findAllByIds(userIds);
         users.forEach(project::removeUser);
-        //save & send notifications to all users
+        //save & send notifications to all staffs
         users.forEach(user -> {
             String content = MessageUtil.getMessage(messageSource,
                     new Object[]{ project.getCreator().getUsername(), project.getName()},
-                    "notification.remove-staff-from-project");
+                    "notification.staff.manager-remove-staff-from-project");
+            notificationService.saveNotification(content, project.getCreator(), user);
             notificationService.sendNotificationToUser(user.getUsername(), content);
+            //save & send notifications to leaders
+            content = MessageUtil.getMessage(messageSource,
+                    new Object[]{ project.getCreator().getUsername(), user.getUsername(), project.getName()},
+                    "notification.leader.manager-remove-staff-from-project");
+            notificationService.saveNotification(content, project.getCreator(), project.getLeader());
+            notificationService.sendNotificationToUser(project.getLeader().getUsername(), content);
         });
         return mapper.map(project, ProjectWithInfoDto.class);
     }
