@@ -28,6 +28,24 @@ export class TaskService {
       .pipe(map((val: IRequestModel) => val.content));
   }
 
+  getTasksByProject(projectId: string) {
+    return this.http
+    .get<IRequestModel>(`${this.config.endpoints.task.byProject}` + projectId)
+    .pipe(map((val: IRequestModel) => val.content));
+  }
+
+  getTasksByProjectAndStaff(projectId: string, userId: string) {
+    return this.http
+    .get<IRequestModel>(`${this.config.endpoints.task.byProjectAndStaff}` + projectId + "/" + userId)
+    .pipe(map((val: IRequestModel) => val.content));
+  }
+
+  getTasksByStaff(staffId: string) {
+    return this.http
+    .get<IRequestModel>(`${this.config.endpoints.task.byStaff}` + staffId)
+    .pipe(map((val: IRequestModel) => val.content));
+  }
+
   getStatus(): Observable<ITaskModel> {
     return this.http
       .get<IRequestModel>(`${this.config.endpoints.task.getStatus}`)

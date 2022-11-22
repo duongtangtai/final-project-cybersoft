@@ -77,7 +77,6 @@ export class TaskComponent implements OnInit {
         }
         break;
       case AppSettings.PATH_MY_TASK: //page "MY-TASKS"
-        console.log('THIS IS MY TASKS');
         //EMPLOYEE -> fetch all TASKs that they are reporting
         this.taskService.getTasksWithInfo().subscribe((content) => {
           const reporterUsername = this.localStorageService.retrieve(
@@ -94,8 +93,6 @@ export class TaskComponent implements OnInit {
 
   getAllTasksWithStatus(status: string) {
     this.statusTask = status;
-    console.log('getAllWithStatus');
-    console.log(this.statusTask);
     switch (this.page) {
       case AppSettings.PATH_TASK:
         //MANAGER
@@ -240,9 +237,6 @@ export class TaskComponent implements OnInit {
   }
 
   statusTaskAfterClosePopup() {
-    console.log('statusTask:');
-    console.log(this.statusTask);
-    console.log(this.statusTask == '');
     return this.statusTask
       ? this.getAllTasksWithStatus(this.statusTask)
       : this.getAllTasks();

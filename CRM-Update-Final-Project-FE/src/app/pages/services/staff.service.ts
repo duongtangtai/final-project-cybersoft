@@ -71,6 +71,11 @@ export class StaffService {
       .pipe(map((val: IRequestModel) => val.content));
   }
 
+  getStaffsInsideProjectWithTask(projectId: string): Observable<IStaffModel> {
+    return this.http.get<IRequestModel>(`${this.config.endpoints.staff.insideProjectWithTask}` + projectId)
+      .pipe(map((val: IRequestModel) => val.content));
+  }
+
   getStaffsOutsideProject(projectId: string): Observable<IStaffModel>{
     return this.http.get<IRequestModel>(`${this.config.endpoints.staff.outsideProject}` + projectId)
       .pipe(map((val: IRequestModel) => val.content));

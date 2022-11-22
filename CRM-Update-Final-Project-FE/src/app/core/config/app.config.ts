@@ -29,12 +29,16 @@ export const AppConfig: PTSAppConfig = {
       getStatus: `${apiUrl}/v1/users/account-status/`,
       getGenders: `${apiUrl}/v1/users/genders/`,
       insideProject: `${apiUrl}/v1/users/inside-project/`,
+      insideProjectWithTask: `${apiUrl}/v1/users/inside-project-with-task/`,
       outsideProject: `${apiUrl}/v1/users/outside-project/`,
       updateRoles: `${apiUrl}/v1/users/update-roles/`,
     },
     task: {
       root: `${apiUrl}/v1/tasks/`,
       withInfo: `${apiUrl}/v1/tasks/with-info/`,
+      byProject: `${apiUrl}/v1/tasks/by-project/`,
+      byProjectAndStaff: `${apiUrl}/v1/tasks/by-project-and-user/`,
+      byStaff: `${apiUrl}/v1/tasks/by-user/`,
       getStatus: `${apiUrl}/v1/tasks/status/`,
       workWithTask: `${apiUrl}/v1/tasks/work-with-task/`,
       completeTask: `${apiUrl}/v1/tasks/complete-task/`

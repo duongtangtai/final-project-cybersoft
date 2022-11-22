@@ -15,4 +15,4 @@ springdoc:
 server:
   port: 8088
   servlet:
-    context-path: /jira/api
+    context-path: /rira/api
