@@ -178,8 +178,8 @@ export class ProjectComponent implements OnInit {
           type: AppSettings.TYPE_PROJECT,
           element: project,
         },
-        width: '75%',
-        height: '85%',
+        width: '65%',
+        height: '80%',
       })
       .afterClosed()
       .subscribe(() => this.statusProjectAfterClosePopup());

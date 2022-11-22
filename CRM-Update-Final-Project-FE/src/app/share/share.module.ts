@@ -9,6 +9,8 @@ import {ButtonComponent} from './components/button/button.component';
 import {DialogFormComponent} from "./components/dialog-form/dialog-form.component";
 import {DialogNotifyComponent} from './components/dialog-notify/dialog-notify.component';
 import {MaterialModule} from "./modules/material-module";
+import { NgApexchartsModule } from "ng-apexcharts";
+
 
 @NgModule({
     imports: [
@@ -18,7 +20,8 @@ import {MaterialModule} from "./modules/material-module";
         NgxWebstorageModule.forRoot(),
         ReactiveFormsModule,
         MaterialModule,
-        ToastrModule.forRoot()
+        ToastrModule.forRoot(),
+        NgApexchartsModule,
     ],
     declarations: [DialogFormComponent, DialogNotifyComponent, DialogNotifyComponent, ButtonComponent],
     exports: [

@@ -1,4 +1,4 @@
-import { filter } from 'rxjs';
+import { filter, delay } from 'rxjs';
 import { MyToastrService } from './../../services/my-toastr.service';
 import { ITaskModel } from 'src/app/model/task.model';
 import { TaskService } from './../../../pages/services/task.service';
@@ -19,6 +19,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { RoleService } from 'src/app/pages/services/role.service';
 import { NotificationService } from 'src/app/pages/services/notification.service';
+import { ApexChart, ApexNonAxisChartSeries } from 'ng-apexcharts';
 
 @Component({
   selector: 'app-dialog',
@@ -37,22 +38,53 @@ export class DialogFormComponent implements OnInit {
   user: any;
   dataSource: any;
   displayedColumns: string[] = [];
-  //PROJECT
+  page: string = '';
+  //----------PROJECT-------------
   projectData: any;
   projectStatusData: any;
   projectSymbol?: string;
-  //STAFF
+  //task statistics
+  taskTotal: number = 0;
+  taskStatusToDo: number = 0;
+  taskStatusInProgress: number = 0;
+  taskStatusDone: number = 0;
+  taskChartSeries: ApexNonAxisChartSeries = [];
+  taskChartDetails: ApexChart = {
+    width: 400,
+    type: 'pie',
+    toolbar: {
+      show: true,
+    },
+    animations: {
+      enabled: true,
+      dynamicAnimation: {
+        enabled: true
+      },
+    }
+  };
+  taskChartColors = ['#0dcaf0', '#0d6efd', '#198754'];
+  taskChartLabels: string[] = [];
+  //staff statistics
+  isStaffStatisticOn = false;
+  statisticOfStaff: string = '';
+  //--------------------------------
+  //--------------STAFF-------------
   staffData: any;
   staffStatusData: any;
   staffGenderData: any;
-  //TASK
+  //--------------------------------
+  //--------------TASK-------------
   taskStatusData: any;
-  //COMMENT
+  //--------------------------------
+  //------------COMMENT-------------
   commentData: any;
   commentDisplayed: any[] = [];
   respondingToUser: string = '';
-  //NOTIFICATION
+  //--------------------------------
+  //----------NOTIFICATION----------
   notificationData: any;
+  //--------------------------------
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -162,7 +194,7 @@ export class DialogFormComponent implements OnInit {
         this.setProjectFormValues(project);
         break;
       case AppSettings.TITLE_PROJECT_DETAIL: //PROJECT DETAIL
-        this.showProjectDetail(project);
+        this.initProjectDetail(project);
         break;
       default:
         break;
@@ -181,7 +213,7 @@ export class DialogFormComponent implements OnInit {
     });
   }
 
-  showProjectDetail(project: any) {
+  initProjectDetail(project: any) {
     this.projectData = project;
     this.form = this.formBuilder.group({
       name: [{ value: project.name, disabled: true }],
@@ -190,13 +222,92 @@ export class DialogFormComponent implements OnInit {
       creatorUsername: [{ value: project.creator.username, disabled: true }],
       leaderUsername: [{ value: project.leader.username, disabled: true }],
     });
-    this.displayedColumns = ['hobbies', 'username', 'email', 'projects'];
+    this.displayedColumns = ['hobbies', 'username', 'email', 'tasks', 'action'];
+    //show project information
+    this.showProjectInformation()
+  }
+
+  showProjectInformation() {
+    this.page = AppSettings.TITLE_PROJECT_DETAIL_INFORMATION
+    this.isStaffStatisticOn = false;
+    //fetch all tasks inside project
+    this.taskService
+      .getTasksByProject(this.projectData.id)
+      .subscribe(content => {
+        this.taskTotal = content.length;
+        this.taskStatusToDo = content.filter(
+          (task: any) => task.status == AppSettings.TASK_STATUS_TODO
+        ).length;
+        this.taskStatusInProgress = content.filter(
+          (task: any) => task.status == AppSettings.TASK_STATUS_IN_PROGRESS
+        ).length;
+        this.taskStatusDone = content.filter(
+          (task: any) => task.status == AppSettings.TASK_STATUS_DONE
+        ).length;
+        this.taskChartSeries = [
+          this.taskStatusToDo,
+          this.taskStatusInProgress,
+          this.taskStatusDone,
+        ];
+        this.taskChartLabels = [
+          AppSettings.TASK_STATUS_TODO,
+          AppSettings.TASK_STATUS_IN_PROGRESS,
+          AppSettings.TASK_STATUS_DONE,
+        ]
+      })
+  }
+
+  showProjectStaffList() {
+    this.page = AppSettings.TITLE_PROJECT_DETAIL_STAFF_LIST
+    //fetch all staffs inside project
     this.staffService
-      .getStaffsInsideProject(this.projectData.id)
-      .subscribe((content) => {
+      .getStaffsInsideProjectWithTask(this.projectData.id)
+      .subscribe(content => {
         this.staffData = content;
         this.pagingAndSorting(this.staffData);
+        console.log("find all inside project with Task")
+        console.log(content)
       });
+  }
+
+  clearTaskStatistic() {
+    this.taskTotal = 0;
+    this.taskStatusToDo = 0;
+    this.taskStatusInProgress = 0;
+    this.taskStatusDone = 0;
+    this.taskChartSeries = []
+    this.taskChartLabels = [];
+  }
+
+  showProjectStaffStatistic(staff: any) {
+    this.isStaffStatisticOn = true;
+    this.statisticOfStaff = staff.username;
+    //fetch all tasks by staffId
+    this.clearTaskStatistic()
+    this.taskService.getTasksByProjectAndStaff(this.projectData.id, staff.id)
+      .subscribe(content => {
+        this.taskTotal = content.length;
+        this.taskStatusToDo = content.filter(
+          (task: any) => task.status == AppSettings.TASK_STATUS_TODO
+        ).length;
+        this.taskStatusInProgress = content.filter(
+          (task: any) => task.status == AppSettings.TASK_STATUS_IN_PROGRESS
+        ).length;
+        this.taskStatusDone = content.filter(
+          (task: any) => task.status == AppSettings.TASK_STATUS_DONE
+        ).length;
+        this.taskChartSeries = [
+          this.taskStatusToDo,
+          this.taskStatusInProgress,
+          this.taskStatusDone,
+        ];
+        this.taskChartLabels = [
+          AppSettings.TASK_STATUS_TODO,
+          AppSettings.TASK_STATUS_IN_PROGRESS,
+          AppSettings.TASK_STATUS_DONE,
+        ];
+      })
+    console.log("OK")
   }
   //-------------------END PROJECT FORM--------------------
   //-------------------START STAFF FORM--------------------

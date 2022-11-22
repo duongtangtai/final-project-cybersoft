@@ -1,6 +1,6 @@
 import { BehaviorSubject } from 'rxjs';
 export class AppSettings {
-    public static API_ENDPOINT = "http://localhost:8088/jira/api";
+    public static API_ENDPOINT = "http://localhost:8088/rira/api";
     public static LOG_OUT = false;
     public static AUTH_DATA = "auth_data";
 
@@ -46,6 +46,8 @@ export class AppSettings {
     public static TYPE_MANAGE_STAFF_IN_PROJECT = 'Manage Staffs'
     //FOR PROJECT DETAILS
     public static TITLE_PROJECT_DETAIL = "PROJECT DETAIL"
+    public static TITLE_PROJECT_DETAIL_INFORMATION = "INFORMATION"
+    public static TITLE_PROJECT_DETAIL_STAFF_LIST = "STAFF LIST"
     //PROJECT STATUS
     public static PROJECT_STATUS_DOING = "DOING"
     public static PROJECT_STATUS_DONE = "DONE"
