@@ -143,9 +143,18 @@ export class HeaderComponent implements OnInit {
 
         let current = this;
         //add listeners
-        this.eventSrc.addEventListener("newNotification", function (event) { //receive a number
+        this.eventSrc.addEventListener(AppSettings.NOTIFICATION_EVENT, function (event) { //receive a number
             current.notificationNum++
             current.myToastrService.info(event.data)
+        })
+
+        this.eventSrc.addEventListener(AppSettings.LOGOUT_EVENT, function (event) {
+            //when logout event occurs. This means another browser uses this account.
+            //this browser will be logged out and receive a message
+            AppSettings.LOG_OUT = true;
+            current.authService.logout();
+            current.router.navigateByUrl(AppSettings.PATH_LOGIN).then(r => console.log);
+            current.myToastrService.error(event.data)
         })
     }
     //-----------------------------------

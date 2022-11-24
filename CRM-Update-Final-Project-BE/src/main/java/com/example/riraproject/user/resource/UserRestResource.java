@@ -6,6 +6,7 @@ import com.example.riraproject.common.util.ResponseUtil;
 import com.example.riraproject.common.validation.annotation.UUIDConstraint;
 import com.example.riraproject.common.validation.group.SaveInfo;
 import com.example.riraproject.common.validation.group.UpdateInfo;
+import com.example.riraproject.notification.service.NotificationService;
 import com.example.riraproject.role.util.RoleUtil;
 import com.example.riraproject.security.aop.Authorized;
 import com.example.riraproject.user.dto.UserDto;
@@ -29,6 +30,7 @@ import java.util.UUID;
 @SecurityRequirement(name = "bearerAuth")
 public class UserRestResource {
     private final UserService service;
+    private final NotificationService notificationService;
     private final MessageSource messageSource;
 
     @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER, RoleUtil.EMPLOYEE})
@@ -130,7 +132,9 @@ public class UserRestResource {
     @Authorized(roles = {RoleUtil.ADMIN})
     @PutMapping
     public ResponseEntity<ResponseDto> update(@RequestBody @Validated(UpdateInfo.class) UserDto dto) {
-        service.update(dto);
+        UserDto user = service.update(dto);
+        //if user status is blocked => send log out event
+        notificationService.checkUserStatus(user);
         return ResponseUtil.get(MessageUtil.getMessage(messageSource, "user.updated"), HttpStatus.OK);
     }
 

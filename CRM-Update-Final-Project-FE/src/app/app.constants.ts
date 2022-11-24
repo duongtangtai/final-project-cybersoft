@@ -99,6 +99,8 @@ export class AppSettings {
     public static TYPE_NOTIFICATION = "notification"
     public static TITLE_NEW_NOTIFICATION = "New Notification"
     public static TITLE_OLD_NOTIFICATION = "Old Notification"
+    public static NOTIFICATION_EVENT = "NOTIFICATION_EVENT"
+    public static LOGOUT_EVENT = "LOGOUT_EVENT"
     //------------------------------------------------------
 
     //NOTIFY BUTTON

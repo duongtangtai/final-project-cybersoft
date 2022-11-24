@@ -2,6 +2,7 @@ package com.example.riraproject.user.service;
 
 import com.example.riraproject.common.service.GenericService;
 import com.example.riraproject.common.util.MessageUtil;
+import com.example.riraproject.notification.service.NotificationService;
 import com.example.riraproject.role.repository.RoleRepository;
 import com.example.riraproject.role.service.RoleService;
 import com.example.riraproject.user.dto.UserDto;
@@ -42,7 +43,6 @@ public interface UserService extends GenericService<User, UserDto, UUID> {
 }
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 class UserServiceImpl implements UserService {
     private final UserRepository repository;
@@ -163,6 +163,7 @@ class UserServiceImpl implements UserService {
                 .toList();
     }
 
+    @Transactional
     @Override
     public UserWithProjectInfoDto updateRoles(UUID userId, Set<UUID> roleIds) {
         User user = repository.findById(userId)
@@ -176,6 +177,7 @@ class UserServiceImpl implements UserService {
         return mapper.map(user, UserWithProjectInfoDto.class);
     }
 
+    @Transactional
     @Override
     public UserDto save(UserDto dto) {
         User user = mapper.map(dto, User.class);
@@ -183,6 +185,7 @@ class UserServiceImpl implements UserService {
         return mapper.map(repository.save(user), UserDto.class);
     }
 
+    @Transactional
     @Override
     public UserDto update(UserDto dto) {
         User user = repository.findById(dto.getId())

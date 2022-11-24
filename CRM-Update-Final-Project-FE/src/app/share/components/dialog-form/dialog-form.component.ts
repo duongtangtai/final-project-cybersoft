@@ -265,8 +265,6 @@ export class DialogFormComponent implements OnInit {
       .subscribe(content => {
         this.staffData = content;
         this.pagingAndSorting(this.staffData);
-        console.log("find all inside project with Task")
-        console.log(content)
       });
   }
 
@@ -307,7 +305,6 @@ export class DialogFormComponent implements OnInit {
           AppSettings.TASK_STATUS_DONE,
         ];
       })
-    console.log("OK")
   }
   //-------------------END PROJECT FORM--------------------
   //-------------------START STAFF FORM--------------------
@@ -422,7 +419,6 @@ export class DialogFormComponent implements OnInit {
         .subscribe((content: any) => {
           this.projectData = content
             .filter((project: any) => project.leaderUsername == this.user.userData.username)
-          console.log(this.projectData)
         });
     }
     this.form = this.formBuilder.group({
