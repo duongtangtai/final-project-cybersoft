@@ -1,16 +1,20 @@
 package com.example.riraproject.notification.service;
 
 import com.example.riraproject.common.service.GenericService;
+import com.example.riraproject.common.util.MessageUtil;
 import com.example.riraproject.notification.dto.NotificationDto;
 import com.example.riraproject.notification.dto.NotificationWithInfoDto;
 import com.example.riraproject.notification.model.Notification;
 import com.example.riraproject.notification.repository.NotificationRepository;
+import com.example.riraproject.notification.util.NotificationUtil;
 import com.example.riraproject.security.util.JwtUtil;
+import com.example.riraproject.user.dto.UserDto;
 import com.example.riraproject.user.model.User;
 import com.example.riraproject.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.CopyOnWriteLinkedHashMap;
+import org.springframework.context.MessageSource;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +33,9 @@ public interface NotificationService extends GenericService<Notification, Notifi
     void sendNotificationToUser(String receiverUsername, String content);
     void sendNotificationToAll(String content);
     void unsubscribe(String username);
+    boolean isSubscriber(String username);
+    void sendLogoutEvent(String username, String content);
+    void checkUserStatus(UserDto userDto);
 }
 @Service
 @RequiredArgsConstructor
@@ -37,6 +44,7 @@ class NotificationServiceImpl implements NotificationService {
     private final ModelMapper mapper;
     private final UserService userService;
     private final JwtUtil jwtUtil;
+    private final MessageSource messageSource;
     private final Map<String, SseEmitter> subscribers = new CopyOnWriteLinkedHashMap<>();
 
     @Override
@@ -89,7 +97,7 @@ class NotificationServiceImpl implements NotificationService {
         }
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE); //default 30 seconds
         try {
-            emitter.send(SseEmitter.event().name("result").data("succeeded"));
+            emitter.send(SseEmitter.event().name(NotificationUtil.SUBSCRIPTION_EVENT).data("succeeded"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -104,7 +112,7 @@ class NotificationServiceImpl implements NotificationService {
             try {
                 if (subscriber.getKey().equals(receiverUsername)) {
                     SseEmitter emitter = subscriber.getValue();
-                    emitter.send(SseEmitter.event().name("newNotification").data(content));
+                    emitter.send(SseEmitter.event().name(NotificationUtil.NOTIFICATION_EVENT).data(content));
                     break; //finish
                 }
             } catch (IOException e) {
@@ -118,7 +126,7 @@ class NotificationServiceImpl implements NotificationService {
         for (Map.Entry<String, SseEmitter> subscriber: subscribers.entrySet()) {
             try {
                 SseEmitter emitter = subscriber.getValue();
-                emitter.send(SseEmitter.event().name("newNotification").data(content));
+                emitter.send(SseEmitter.event().name(NotificationUtil.NOTIFICATION_EVENT).data(content));
             } catch (IOException e) {
                 subscribers.remove(subscriber.getKey());
             }
@@ -131,6 +139,40 @@ class NotificationServiceImpl implements NotificationService {
            if (username.equals(subscriberUsername)) {
                subscribers.remove(username);
            }
+        }
+    }
+
+    @Override
+    public boolean isSubscriber(String username) {
+        return subscribers.containsKey(username);
+    }
+
+    @Override
+    public void sendLogoutEvent(String username, String content) {
+        for (Map.Entry<String, SseEmitter> subscriber: subscribers.entrySet()) {
+            try {
+                if (subscriber.getKey().equals(username)) {
+                    SseEmitter emitter = subscriber.getValue();
+                    emitter.send(SseEmitter.event().name(NotificationUtil.LOGOUT_EVENT).data(
+                            content
+                    ));
+                    subscribers.remove(subscriber.getKey()); //remove when user log out
+                    break; //finish
+                }
+            } catch (IOException e) {
+                subscribers.remove(subscriber.getKey());
+            }
+        }
+    }
+
+    @Override
+    public void checkUserStatus(UserDto userDto) {
+        if (isSubscriber(userDto.getUsername()) &&
+                userDto.getAccountStatus().equals(User.AccountStatus.TEMPORARILY_BLOCKED) || 
+                userDto.getAccountStatus().equals(User.AccountStatus.PERMANENTLY_BLOCKED)) {
+            sendLogoutEvent(userDto.getUsername(),
+                    MessageUtil.getMessage(messageSource,
+                            "account.blocked"));
         }
     }
 }

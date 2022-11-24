@@ -36,26 +36,26 @@ import java.util.stream.Collectors;
 
 @SpringBootApplication
 @RequiredArgsConstructor
-public class RiraProjectApplication implements CommandLineRunner {
-    private final RoleRepository roleRepository;
-    private final RoleService roleService;
-    private final OperationService operationService;
-    private final UserRepository userRepository;
-    private final UserService userService;
-    private final ProjectRepository projectRepository;
-    private final ProjectService projectService;
-    private final TaskRepository taskRepository;
-    private final TaskService taskservice;
-    private final CommentRepository commentRepository;
-    private final CommentService commentService;
-    private final NotificationRepository notificationRepository;
-    private final NotificationService notificationService;
-    private final BCryptPasswordEncoder passwordEncoder;
-    private final FileService fileService;
+public class RiraProjectApplication {
+//    private final RoleRepository roleRepository;
+//    private final RoleService roleService;
+//    private final OperationService operationService;
+//    private final UserRepository userRepository;
+//    private final UserService userService;
+//    private final ProjectRepository projectRepository;
+//    private final ProjectService projectService;
+//    private final TaskRepository taskRepository;
+//    private final TaskService taskservice;
+//    private final CommentRepository commentRepository;
+//    private final CommentService commentService;
+//    private final NotificationRepository notificationRepository;
+//    private final NotificationService notificationService;
+//    private final BCryptPasswordEncoder passwordEncoder;
+//    private final FileService fileService;
     public static void main(String[] args) {
         SpringApplication.run(RiraProjectApplication.class, args);
     }
-
+/*
     @Override
     public void run(String... args) throws Exception {
         //4 ROLES: ADMIN - MANAGER -
@@ -372,4 +372,5 @@ public class RiraProjectApplication implements CommandLineRunner {
         Set<UUID> userIds = Arrays.stream(user).map(BaseEntity::getId).collect(Collectors.toSet());
         projectService.addUsers(project.getId(), userIds);
     }
+ */
 }

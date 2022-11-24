@@ -2,6 +2,7 @@ package com.example.riraproject.security.service;
 
 import com.example.riraproject.common.exception.RiraAuthenticationException;
 import com.example.riraproject.common.util.MessageUtil;
+import com.example.riraproject.notification.service.NotificationService;
 import com.example.riraproject.role.model.Role;
 import com.example.riraproject.security.dto.LoginFormDto;
 import com.example.riraproject.security.dto.LoginResultDto;
@@ -25,10 +26,12 @@ public interface AuthService {
 @RequiredArgsConstructor
 class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final ModelMapper mapper;
     private final MessageSource messageSource;
+
 
     @Override
     public LoginResultDto login(LoginFormDto dto) {
@@ -45,6 +48,11 @@ class AuthServiceImpl implements AuthService {
             throw new RiraAuthenticationException(
                     MessageUtil.getMessage(messageSource, "account.blocked"));
         } else {
+            if(notificationService.isSubscriber(user.getUsername())) {
+                notificationService.sendLogoutEvent(user.getUsername(),
+                        MessageUtil.getMessage(messageSource,
+                                "notification.login-from-another-device"));
+            }
             UserDto userDto = mapper.map(user, UserDto.class);
             userDto.setPassword(null);
             return LoginResultDto.builder()
