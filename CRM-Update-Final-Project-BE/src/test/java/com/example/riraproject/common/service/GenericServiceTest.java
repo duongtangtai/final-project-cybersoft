@@ -69,11 +69,9 @@ class GenericServiceTest {
     void findAllWithPagingTest() {
         Pageable pageable = PageRequest.of(2, 5, Sort.by("createdAt"));
         Page page = Mockito.mock(Page.class);
-        Stream stream = Mockito.mock(Stream.class);
         Mockito.when(repository.findAll(pageable))
                 .thenReturn(page);
-        Mockito.when(page.stream()).thenReturn(stream);
-        Mockito.when(stream.toList()).thenReturn(List.of(model));
+        Mockito.when(page.stream()).thenReturn(List.of(model).stream());
         Mockito.when(mapper.map(model, Object.class)).thenReturn(dto);
         Assertions.assertEquals(List.of(dto),
                 service.findAllWithPaging(Object.class, 5, 2));
@@ -101,7 +99,7 @@ class GenericServiceTest {
 
     @Test
     void updateTest() {
-        //MOCKING
+        //SETUP
         Mockito.when(repository.findById(id)).thenReturn(Optional.of(model));
         Mockito.doNothing().when(mapper).map(dto, model);
         Mockito.when(repository.save(model)).thenReturn(model);
@@ -113,17 +111,20 @@ class GenericServiceTest {
         //CASE 2 : ID IS INVALID
         Mockito.when(repository.findById(id)).thenReturn(Optional.empty());
         Assertions.assertThrowsExactly(ValidationException.class, () -> service.update(id, dto));
+        Mockito.verify(repository, Mockito.times(2)).findById(id);
     }
 
     @Test
     void deleteByIdTest() {
-        //MOCKING
+        //SETUP
         Mockito.when(repository.findById(id)).thenReturn(Optional.of(model));
         Mockito.doNothing().when(repository).delete(model);
         //CASE 1 : ID IS VALID
         Assertions.assertDoesNotThrow(() -> service.deleteById(id));
+        Mockito.verify(repository).findById(id);
         //CASE 2 : ID IS INVALID
         Mockito.when(repository.findById(id)).thenReturn(Optional.empty());
         Assertions.assertThrowsExactly(ValidationException.class, () -> service.deleteById(id));
+        Mockito.verify(repository, Mockito.times(2)).findById(id);
     }
 }

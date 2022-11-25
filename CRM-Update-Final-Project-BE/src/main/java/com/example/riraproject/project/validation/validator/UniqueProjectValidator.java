@@ -52,7 +52,6 @@ public class UniqueProjectValidator implements ConstraintValidator<UniqueProject
     private boolean isOldProjectValid(ProjectDto dto, ConstraintValidatorContext context) {
         Optional<Project> projectOptional = repository.findById(dto.getId());
         if (projectOptional.isEmpty()) {
-            message = MessageUtil.getMessage(messageSource, "project.id.not-found");
             buildContext(message, context);
             return false;
         }

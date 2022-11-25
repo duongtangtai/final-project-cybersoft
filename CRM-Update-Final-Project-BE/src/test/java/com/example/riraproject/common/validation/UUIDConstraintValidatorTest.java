@@ -22,7 +22,7 @@ public class UUIDConstraintValidatorTest {
 
     @Test
     void validatorShouldWork() {
-        //MOCKING
+        //SETUP
         UUIDConstraint constraint = Mockito.mock(UUIDConstraint.class);
         Mockito.when(constraint.message()).thenReturn(message);
         ConstraintValidatorContext context = Mockito.mock(ConstraintValidatorContext.class);

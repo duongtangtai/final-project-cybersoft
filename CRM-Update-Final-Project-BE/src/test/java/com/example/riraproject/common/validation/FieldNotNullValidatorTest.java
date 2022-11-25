@@ -21,7 +21,7 @@ class FieldNotNullValidatorTest {
 
     @Test
     void validatorShouldWork() {
-        //MOCKING
+        //SETUP
         FieldNotNull constraint = Mockito.mock(FieldNotNull.class);
         Mockito.when(constraint.message()).thenReturn(message);
         ConstraintValidatorContext context = Mockito.mock(ConstraintValidatorContext.class);

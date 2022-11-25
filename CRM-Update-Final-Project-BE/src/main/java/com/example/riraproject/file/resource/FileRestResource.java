@@ -35,27 +35,10 @@ public class FileRestResource {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Resource> findFindByUsername(@PathVariable("id") String id) {
+    public ResponseEntity<Resource> findById(@PathVariable("id") String id) {
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(service.load(id));
-    }
-
-    @GetMapping
-    public ResponseEntity<List<FileInfoDto>> getAllFileInfo() {
-        List<FileInfoDto> fileList = service.loadAll().map(path -> {
-            String pathString = path.getFileName().toString();
-           String fileName = pathString.substring(0, pathString.length() - FileUtil.SUFFIX.length());
-           String url = MvcUriComponentsBuilder
-                   .fromMethodName(FileRestResource.class, "findFindByUsername",
-                           fileName)
-                   .build().toString();
-           return FileInfoDto.builder()
-                   .fileName(fileName)
-                   .url(url)
-                   .build();
-        }).toList();
-        return ResponseEntity.ok().body(fileList);
     }
 
     @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER, RoleUtil.EMPLOYEE})
