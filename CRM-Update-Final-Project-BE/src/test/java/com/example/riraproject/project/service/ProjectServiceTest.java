@@ -9,13 +9,15 @@ import com.example.riraproject.project.repository.ProjectRepository;
 import com.example.riraproject.user.model.User;
 import com.example.riraproject.user.service.UserService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,18 +26,25 @@ import org.springframework.data.domain.Sort;
 import javax.validation.ValidationException;
 import java.util.*;
 
+@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class ProjectServiceTest {
     @Mock private ProjectRepository repository;
-    @Mock private ModelMapper mapper;
+    @Autowired private ModelMapper mapper;
     @Mock private MessageSource messageSource;
     @Mock private UserService userService;
     @Mock private NotificationService notificationService;
-    @InjectMocks private ProjectServiceImpl service;
+    private ProjectServiceImpl service;
     private final UUID id = UUID.randomUUID();
-    @Mock private Project model;
-    @Mock private ProjectDto dto;
-    @Mock private ProjectWithInfoDto dtoWithInfo;
+    private Project model;
+
+    @BeforeEach
+    void init() {
+        service = new ProjectServiceImpl(repository, mapper, messageSource, userService, notificationService);
+        model = Project.builder()
+                .name("project")
+                .build();
+    }
 
     @Test
     void getRepositoryAndMapper() {
@@ -78,11 +87,9 @@ class ProjectServiceTest {
     void findByIdWithInfoTest() {
         //SETUP
         Mockito.when(repository.findByIdWithInfo(id)).thenReturn(Optional.of(model));
-        Mockito.when(mapper.map(model, ProjectWithInfoDto.class))
-                .thenReturn(dtoWithInfo);
         //TRY
         //CASE 1: ID IS VALID
-        Assertions.assertEquals(dtoWithInfo, service.findByIdWithInfo(id));
+        Assertions.assertEquals(model.getName(), service.findByIdWithInfo(id).getName());
         Mockito.verify(repository).findByIdWithInfo(id);
         //CASE 2: ID IS INVALID
         Mockito.when(repository.findByIdWithInfo(id)).thenReturn(Optional.empty());
@@ -95,10 +102,10 @@ class ProjectServiceTest {
     void findAllWithInfoTest() {
         //SETUP
         Mockito.when(repository.findAllWithCreatorAndLeader()).thenReturn(Set.of(model));
-        Mockito.when(mapper.map(model, ProjectWithInfoDto.class))
-                .thenReturn(dtoWithInfo);
         //TRY
-        Assertions.assertEquals(List.of(dtoWithInfo), service.findAllWithInfo());
+        List<ProjectWithInfoDto> result = service.findAllWithInfo();
+        Assertions.assertEquals(1, result.size());
+        Assertions.assertEquals(model.getName(), result.get(0).getName());
         Mockito.verify(repository).findAllWithCreatorAndLeader();
     }
 
@@ -110,11 +117,10 @@ class ProjectServiceTest {
                 PageRequest.of(2, 3, Sort.by("createdAt"))))
                 .thenReturn(page);
         Mockito.when(page.stream()).thenReturn(List.of(model).stream());
-        Mockito.when(mapper.map(model, ProjectWithInfoDto.class))
-                .thenReturn(dtoWithInfo);
         //TRY
-        Assertions.assertEquals(List.of(dtoWithInfo),
-                service.findAllWithInfoWithPaging(3, 2));
+        List<ProjectWithInfoDto> result = service.findAllWithInfoWithPaging(3, 2);
+        Assertions.assertEquals(1, result.size());
+        Assertions.assertEquals(model.getName(), result.get(0).getName());
         Mockito.verify(repository).findAllWithUserWithPaging(
                 PageRequest.of(2, 3, Sort.by("createdAt")));
     }
@@ -142,20 +148,20 @@ class ProjectServiceTest {
                 .leaderUsername("leader")
                 .build();
         Project savedModel = Project.builder()
+                .name("savedModel")
+                .creator(creator)
+                .leader(leader)
                 .build();
         Mockito.when(userService.findByUsername("creator"))
                 .thenReturn(creator);
         Mockito.when(userService.findByUsername("leader"))
                 .thenReturn(leader);
-        Mockito.when(mapper.map(input, Project.class))
-                .thenReturn(savedModel);
-        Mockito.when(repository.save(savedModel)).thenReturn(savedModel);
-        Mockito.when(mapper.map(savedModel, ProjectDto.class))
-                .thenReturn(dto);
+        Mockito.when(repository.save(Mockito.any(Project.class))).thenReturn(savedModel);
         //TRY
-        Assertions.assertEquals(dto, service.save(input));
-        Assertions.assertEquals(creator, savedModel.getCreator());
-        Assertions.assertEquals(leader, savedModel.getLeader());
+        ProjectDto result = service.save(input);
+        Assertions.assertEquals(savedModel.getName(), result.getName());
+        Assertions.assertEquals(savedModel.getLeader().getUsername(), result.getLeaderUsername());
+        Assertions.assertEquals(savedModel.getCreator().getUsername(), result.getCreatorUsername());
         Mockito.verify(userService).findByUsername("creator");
         Mockito.verify(userService).findByUsername("leader");
         Mockito.verify(notificationService).saveNotification(Mockito.any(), Mockito.any(), Mockito.any());
@@ -187,10 +193,8 @@ class ProjectServiceTest {
         Mockito.when(repository.findById(id)).thenReturn(Optional.of(project));
         Mockito.when(userService.findByUsername("oldLeader")).thenReturn(oldLeader);
         Mockito.when(userService.findByUsername("creator")).thenReturn(creator);
-        Mockito.doNothing().when(mapper).map(input, project);
         //TRY
         //CASE 1: DON'T UPDATE LEADER
-        Mockito.when(mapper.map(project, ProjectDto.class)).thenReturn(dto);
         Assertions.assertDoesNotThrow(() -> service.update(input));
         Assertions.assertEquals(creator, project.getCreator());
         Assertions.assertEquals(oldLeader, project.getLeader());
@@ -204,7 +208,6 @@ class ProjectServiceTest {
                 .leaderUsername("newLeader")
                 .creatorUsername("creator")
                 .build();
-        Mockito.doNothing().when(mapper).map(input2, project);
         Assertions.assertDoesNotThrow(() -> service.update(input2));
         Assertions.assertEquals(creator, project.getCreator());
         Assertions.assertEquals(newLeader, project.getLeader());
@@ -242,7 +245,6 @@ class ProjectServiceTest {
         newUsers.add(User.builder().username("user5").projects(new HashSet<>()).build());
         Mockito.when(repository.findById(id)).thenReturn(Optional.of(project));
         Mockito.when(userService.findAllByIds(userIds)).thenReturn(newUsers);
-        Mockito.when(mapper.map(project, ProjectWithInfoDto.class)).thenReturn(dtoWithInfo);
         //TRY
         //CASE 1: PROJECT ID IS VALID
         Assertions.assertDoesNotThrow(() -> service.addUsers(id, userIds));
@@ -284,7 +286,6 @@ class ProjectServiceTest {
         removedUsers.add(User.builder().username("user2").projects(new HashSet<>()).build());
         Mockito.when(repository.findById(id)).thenReturn(Optional.of(project));
         Mockito.when(userService.findAllByIds(userIds)).thenReturn(removedUsers);
-        Mockito.when(mapper.map(project, ProjectWithInfoDto.class)).thenReturn(dtoWithInfo);
         //TRY
         //CASE 1: PROJECT ID IS VALID
         Assertions.assertDoesNotThrow(() -> service.removeUsers(id, userIds));

@@ -1,10 +1,11 @@
-package com.example.riraproject.project.resource;
+package com.example.riraproject.task.resource;
 
 import com.example.riraproject.common.dto.ResponseDto;
 import com.example.riraproject.common.util.MessageUtil;
-import com.example.riraproject.project.dto.ProjectDto;
-import com.example.riraproject.project.dto.ProjectWithInfoDto;
-import com.example.riraproject.project.service.ProjectService;
+import com.example.riraproject.task.dto.TaskDto;
+import com.example.riraproject.task.dto.TaskWithInfoDto;
+import com.example.riraproject.task.model.Task;
+import com.example.riraproject.task.service.TaskService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,30 +19,29 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-class ProjectRestResourceTest {
-    @Mock private ProjectService service;
-    @Autowired private MessageSource messageSource;
-    private ProjectRestResource restResource;
+class TaskRestResourceTest {
     private final String id = UUID.randomUUID().toString();
-    @Mock private ProjectDto dto;
-    @Mock private ProjectWithInfoDto dtoWithInfo;
+    @Autowired private MessageSource messageSource;
+    @Mock private TaskService service;
+    private TaskRestResource restResource;
+    @Mock private TaskDto dto;
+    @Mock private TaskWithInfoDto dtoWithInfo;
 
     @BeforeEach
     void init() {
-        restResource = new ProjectRestResource(service, messageSource);
+        restResource = new TaskRestResource(service, messageSource);
     }
 
     @Test
     void findByIdTest() {
         //SETUP
-        Mockito.when(service.findById(ProjectDto.class, UUID.fromString(id)))
+        Mockito.when(service.findById(TaskDto.class, UUID.fromString(id)))
                 .thenReturn(dto);
         ResponseEntity<ResponseDto> result = restResource.findById(id);
         //TRY
@@ -53,13 +53,14 @@ class ProjectRestResourceTest {
         Assertions.assertNull(body.getErrors());
         Assertions.assertEquals(HttpStatus.OK.value(), body.getStatusCode());
         Assertions.assertNotNull(body.getTimeStamp());
-        Mockito.verify(service).findById(ProjectDto.class, UUID.fromString(id));
+        Mockito.verify(service).findById(TaskDto.class, UUID.fromString(id));
     }
+
 
     @Test
     void findAllTest() {
         //SETUP
-        Mockito.when(service.findAll(ProjectDto.class))
+        Mockito.when(service.findAll(TaskDto.class))
                 .thenReturn(List.of(dto));
         ResponseEntity<ResponseDto> result = restResource.findAll();
         //TRY
@@ -71,7 +72,7 @@ class ProjectRestResourceTest {
         Assertions.assertNull(body.getErrors());
         Assertions.assertEquals(HttpStatus.OK.value(), body.getStatusCode());
         Assertions.assertNotNull(body.getTimeStamp());
-        Mockito.verify(service).findAll(ProjectDto.class);
+        Mockito.verify(service).findAll(TaskDto.class);
     }
 
     @Test
@@ -79,7 +80,7 @@ class ProjectRestResourceTest {
         //SETUP
         int size = 2;
         int page = 3;
-        Mockito.when(service.findAllWithPaging(ProjectDto.class, size, page))
+        Mockito.when(service.findAllWithPaging(TaskDto.class, size, page))
                 .thenReturn(List.of(dto));
         ResponseEntity<ResponseDto> result = restResource.findAllWithPaging(size, page);
         //TRY
@@ -91,7 +92,7 @@ class ProjectRestResourceTest {
         Assertions.assertNull(body.getErrors());
         Assertions.assertEquals(HttpStatus.OK.value(), body.getStatusCode());
         Assertions.assertNotNull(body.getTimeStamp());
-        Mockito.verify(service).findAllWithPaging(ProjectDto.class, size, page);
+        Mockito.verify(service).findAllWithPaging(TaskDto.class, size, page);
     }
 
     @Test
@@ -151,95 +152,162 @@ class ProjectRestResourceTest {
     }
 
     @Test
-    void findAllProjectStatusTest() {
+    void findAllByProjectTest() {
         //SETUP
-        Mockito.when(service.findAllProjectStatus())
-                .thenReturn(List.of("status"));
-        ResponseEntity<ResponseDto> result = restResource.findAllProjectStatus();
+        List<TaskWithInfoDto> list = new ArrayList<>();
+        list.add(new TaskWithInfoDto());
+        list.add(new TaskWithInfoDto());
+        list.add(new TaskWithInfoDto());
+        Mockito.when(service.findAllByProject(UUID.fromString(id)))
+                .thenReturn(list);
         //TRY
-        Assertions.assertNotNull(result);
-        Assertions.assertNotNull(result.getBody());
-        ResponseDto body = result.getBody();
-        Assertions.assertEquals(List.of("status"), body.getContent());
+        ResponseEntity<ResponseDto> response = restResource.findAllByProject(id);
+        Assertions.assertNotNull(response);
+        Assertions.assertNotNull(response.getBody());
+        ResponseDto body = response.getBody();
+        Assertions.assertEquals(list, body.getContent());
         Assertions.assertFalse(body.isHasErrors());
         Assertions.assertNull(body.getErrors());
         Assertions.assertEquals(HttpStatus.OK.value(), body.getStatusCode());
         Assertions.assertNotNull(body.getTimeStamp());
-        Mockito.verify(service).findAllProjectStatus();
+    }
+
+    @Test
+    void findAllByProjectAndUserTest() {
+        //SETUP
+        List<TaskWithInfoDto> list = new ArrayList<>();
+        list.add(new TaskWithInfoDto());
+        list.add(new TaskWithInfoDto());
+        list.add(new TaskWithInfoDto());
+        String projectId = UUID.randomUUID().toString();
+        String userId = UUID.randomUUID().toString();
+        Mockito.when(service.findAllByProjectAndUser(UUID.fromString(projectId), UUID.fromString(userId)))
+                .thenReturn(list);
+        //TRY
+        ResponseEntity<ResponseDto> response = restResource.findAllByProjectAndUser(projectId, userId);
+        Assertions.assertNotNull(response);
+        Assertions.assertNotNull(response.getBody());
+        ResponseDto body = response.getBody();
+        Assertions.assertEquals(list, body.getContent());
+        Assertions.assertFalse(body.isHasErrors());
+        Assertions.assertNull(body.getErrors());
+        Assertions.assertEquals(HttpStatus.OK.value(), body.getStatusCode());
+        Assertions.assertNotNull(body.getTimeStamp());
+    }
+
+    @Test
+    void findAllByUserTest() {
+        //SETUP
+        List<TaskWithInfoDto> list = new ArrayList<>();
+        list.add(new TaskWithInfoDto());
+        list.add(new TaskWithInfoDto());
+        list.add(new TaskWithInfoDto());
+        Mockito.when(service.findAllByUser(UUID.fromString(id)))
+                .thenReturn(list);
+        //TRY
+        ResponseEntity<ResponseDto> response = restResource.findAllByUser(id);
+        Assertions.assertNotNull(response);
+        Assertions.assertNotNull(response.getBody());
+        ResponseDto body = response.getBody();
+        Assertions.assertEquals(list, body.getContent());
+        Assertions.assertFalse(body.isHasErrors());
+        Assertions.assertNull(body.getErrors());
+        Assertions.assertEquals(HttpStatus.OK.value(), body.getStatusCode());
+        Assertions.assertNotNull(body.getTimeStamp());
+    }
+
+    @Test
+    void findAllStatusTest() {
+        //SETUP
+        List<String> list = new ArrayList<>();
+        list.add(Task.Status.TODO.toString());
+        list.add(Task.Status.IN_PROGRESS.toString());
+        list.add(Task.Status.DONE.toString());
+        Mockito.when(service.findAllStatus()).thenReturn(list);
+        //TRY
+        ResponseEntity<ResponseDto> response = restResource.findAllStatus();
+        Assertions.assertNotNull(response);
+        Assertions.assertNotNull(response.getBody());
+        ResponseDto body = response.getBody();
+        Assertions.assertEquals(list, body.getContent());
+        Assertions.assertFalse(body.isHasErrors());
+        Assertions.assertNull(body.getErrors());
+        Assertions.assertEquals(HttpStatus.OK.value(), body.getStatusCode());
+        Assertions.assertNotNull(body.getTimeStamp());
     }
 
     @Test
     void saveTest() {
         //SETUP
-        Mockito.when(service.save(dto)).thenReturn(null);
+        TaskDto taskDto = Mockito.mock(TaskDto.class);
+        Mockito.when(service.save(taskDto)).thenReturn(taskDto);
         //TRY
-        ResponseEntity<ResponseDto> result = restResource.save(dto);
-        Assertions.assertNotNull(result);
-        Assertions.assertNotNull(result.getBody());
-        ResponseDto body = result.getBody();
-        Assertions.assertEquals(MessageUtil.getMessage(messageSource,
-                "project.saved"), body.getContent());
-        Assertions.assertFalse(body.isHasErrors());
-        Assertions.assertNull(body.getErrors());
-        Assertions.assertEquals(HttpStatus.CREATED.value(), body.getStatusCode());
-        Assertions.assertNotNull(body.getTimeStamp());
-        Mockito.verify(service).save(dto);
-    }
-
-    @Test
-    void addUsersTest() {
-        //SETUP
-        Set<UUID> userIds = new HashSet<>();
-        Mockito.when(service.addUsers(UUID.fromString(id), userIds)).thenReturn(dtoWithInfo);
-        //TRY
-        ResponseEntity<ResponseDto> result = restResource.addUsers(id, userIds);
-        Assertions.assertNotNull(result);
-        Assertions.assertNotNull(result.getBody());
-        ResponseDto body = result.getBody();
-        Assertions.assertEquals(MessageUtil.getMessage(messageSource,
-                "project.add-user.successfully"), body.getContent());
+        ResponseEntity<ResponseDto> response = restResource.save(taskDto);
+        Assertions.assertNotNull(response);
+        Assertions.assertNotNull(response.getBody());
+        ResponseDto body = response.getBody();
+        Assertions.assertEquals(MessageUtil.getMessage(messageSource, "task.saved"),
+                body.getContent());
         Assertions.assertFalse(body.isHasErrors());
         Assertions.assertNull(body.getErrors());
         Assertions.assertEquals(HttpStatus.OK.value(), body.getStatusCode());
         Assertions.assertNotNull(body.getTimeStamp());
-        Mockito.verify(service).addUsers(UUID.fromString(id), userIds);
+        Mockito.verify(service).save(taskDto);
     }
 
     @Test
-    void removeUsersTest() {
+    void workWithTaskTest() {
         //SETUP
-        Set<UUID> userIds = new HashSet<>();
-        Mockito.when(service.removeUsers(UUID.fromString(id), userIds)).thenReturn(dtoWithInfo);
+        Mockito.doNothing().when(service).workWithTask(UUID.fromString(id));
         //TRY
-        ResponseEntity<ResponseDto> result = restResource.removeUsers(id, userIds);
-        Assertions.assertNotNull(result);
-        Assertions.assertNotNull(result.getBody());
-        ResponseDto body = result.getBody();
-        Assertions.assertEquals(MessageUtil.getMessage(messageSource,
-                "project.remove-user.successfully"), body.getContent());
+        ResponseEntity<ResponseDto> response = restResource.workWithTask(id);
+        Assertions.assertNotNull(response);
+        Assertions.assertNotNull(response.getBody());
+        ResponseDto body = response.getBody();
+        Assertions.assertEquals(MessageUtil.getMessage(messageSource, "task.in-progress"),
+                body.getContent());
         Assertions.assertFalse(body.isHasErrors());
         Assertions.assertNull(body.getErrors());
         Assertions.assertEquals(HttpStatus.OK.value(), body.getStatusCode());
         Assertions.assertNotNull(body.getTimeStamp());
-        Mockito.verify(service).removeUsers(UUID.fromString(id), userIds);
+        Mockito.verify(service).workWithTask(UUID.fromString(id));
     }
 
     @Test
-    void updateTest() {
+    void completeTaskTest() {
         //SETUP
-        Mockito.when(service.update(dto)).thenReturn(dto);
+        Mockito.doNothing().when(service).completeTask(UUID.fromString(id));
         //TRY
-        ResponseEntity<ResponseDto> result = restResource.update(dto);
-        Assertions.assertNotNull(result);
-        Assertions.assertNotNull(result.getBody());
-        ResponseDto body = result.getBody();
-        Assertions.assertEquals(MessageUtil.getMessage(messageSource,
-                "project.updated"), body.getContent());
+        ResponseEntity<ResponseDto> response = restResource.completeTask(id);
+        Assertions.assertNotNull(response);
+        Assertions.assertNotNull(response.getBody());
+        ResponseDto body = response.getBody();
+        Assertions.assertEquals(MessageUtil.getMessage(messageSource, "task.completed"),
+                body.getContent());
         Assertions.assertFalse(body.isHasErrors());
         Assertions.assertNull(body.getErrors());
         Assertions.assertEquals(HttpStatus.OK.value(), body.getStatusCode());
         Assertions.assertNotNull(body.getTimeStamp());
-        Mockito.verify(service).update(dto);
+        Mockito.verify(service).completeTask(UUID.fromString(id));
+    }
+
+    @Test
+    void updateTask() {
+        //SETUP
+        TaskDto taskDto = Mockito.mock(TaskDto.class);
+        Mockito.when(service.update(taskDto)).thenReturn(taskDto);
+        //TRY
+        ResponseEntity<ResponseDto> response = restResource.update(taskDto);
+        Assertions.assertNotNull(response);
+        Assertions.assertNotNull(response.getBody());
+        ResponseDto body = response.getBody();
+        Assertions.assertEquals(MessageUtil.getMessage(messageSource, "task.updated"),
+                body.getContent());
+        Assertions.assertFalse(body.isHasErrors());
+        Assertions.assertNull(body.getErrors());
+        Assertions.assertEquals(HttpStatus.OK.value(), body.getStatusCode());
+        Assertions.assertNotNull(body.getTimeStamp());
+        Mockito.verify(service).update(taskDto);
     }
 
     @Test
@@ -247,12 +315,12 @@ class ProjectRestResourceTest {
         //SETUP
         Mockito.doNothing().when(service).deleteById(UUID.fromString(id));
         //TRY
-        ResponseEntity<ResponseDto> result = restResource.deleteById(id);
-        Assertions.assertNotNull(result);
-        Assertions.assertNotNull(result.getBody());
-        ResponseDto body = result.getBody();
-        Assertions.assertEquals(MessageUtil.getMessage(messageSource,
-                "project.deleted"), body.getContent());
+        ResponseEntity<ResponseDto> response = restResource.deleteById(id);
+        Assertions.assertNotNull(response);
+        Assertions.assertNotNull(response.getBody());
+        ResponseDto body = response.getBody();
+        Assertions.assertEquals(MessageUtil.getMessage(messageSource, "task.deleted"),
+                body.getContent());
         Assertions.assertFalse(body.isHasErrors());
         Assertions.assertNull(body.getErrors());
         Assertions.assertEquals(HttpStatus.OK.value(), body.getStatusCode());

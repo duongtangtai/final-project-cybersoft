@@ -4,12 +4,14 @@ import com.example.riraproject.common.dto.ResponseDto;
 import com.example.riraproject.common.util.MessageUtil;
 import com.example.riraproject.file.service.FileService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -17,18 +19,24 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
+@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class FileRestResourceTest {
     @Mock private FileService service;
-    @Mock private MessageSource messageSource;
-    @InjectMocks private FileRestResource restResource;
-    private final String id = "fileID";
+    @Autowired private MessageSource messageSource;
+    private FileRestResource restResource;
     @Mock private Resource resource;
     @Mock private MultipartFile file;
+
+    @BeforeEach
+    void init() {
+        restResource = new FileRestResource(service, messageSource);
+    }
 
     @Test
     void findByIdTest() {
         //SETUP
+        String id = "fileID";
         Mockito.when(service.load(id)).thenReturn(resource);
         ResponseEntity<Resource> result = restResource.findById(id);
         //TRY

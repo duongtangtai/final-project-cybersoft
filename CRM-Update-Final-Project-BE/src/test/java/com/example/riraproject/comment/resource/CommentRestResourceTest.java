@@ -2,40 +2,44 @@ package com.example.riraproject.comment.resource;
 
 import com.example.riraproject.comment.dto.CommentDto;
 import com.example.riraproject.comment.dto.CommentWithInfoDto;
-import com.example.riraproject.comment.model.Comment;
 import com.example.riraproject.comment.service.CommentService;
 import com.example.riraproject.common.dto.ResponseDto;
 import com.example.riraproject.common.util.MessageUtil;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class CommentRestResourceTest {
-    @Mock
-    private CommentService service;
-    @Mock
-    private MessageSource messageSource;
-    @InjectMocks
+    @Mock private CommentService service;
+    @Autowired private MessageSource messageSource;
     private CommentRestResource restResource;
-    @Mock
-    private Comment model;
-    @Mock
     private CommentDto dto;
-    @Mock
     private CommentWithInfoDto dtoWithInfo;
     private final String id = UUID.randomUUID().toString();
+
+    @BeforeEach
+    void init() {
+        restResource = new CommentRestResource(service, messageSource);
+        dto = CommentDto.builder()
+                .description("this is a dto")
+                .build();
+        dtoWithInfo = new CommentWithInfoDto();
+        dtoWithInfo.setDescription("this is a dtoWithInfo");
+    }
 
     @Test
     void findByIdTest() {
@@ -54,7 +58,7 @@ class CommentRestResourceTest {
         Assertions.assertNotNull(body.getTimeStamp());
         Mockito.verify(service).findById(CommentDto.class, UUID.fromString(id));
     }
-
+//
     @Test
     void findAllTest() {
         //SETUP

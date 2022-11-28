@@ -39,7 +39,7 @@ public class CustomOncePerRequestFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
                 log.info("Token is valid");
             } catch (Exception e) {
-                log.error("Token is invalid: " + e.getMessage());
+                log.info("Token is invalid: " + e.getMessage());
                 response.setStatus(UNAUTHORIZED.value());
                 response.setContentType(APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(),

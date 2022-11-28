@@ -10,6 +10,8 @@ import com.example.riraproject.notification.service.NotificationService;
 import com.example.riraproject.role.util.RoleUtil;
 import com.example.riraproject.security.aop.Authorized;
 import com.example.riraproject.user.dto.UserDto;
+import com.example.riraproject.user.dto.UserWithProjectInfoDto;
+import com.example.riraproject.user.dto.UserWithTaskInfoDto;
 import com.example.riraproject.user.service.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
@@ -53,26 +55,34 @@ public class UserRestResource {
     @GetMapping("/paging")
     public ResponseEntity<ResponseDto> findAllWithPaging(@RequestParam("size") int size,
                                                          @RequestParam("pageIndex") int pageIndex) {
-        return ResponseUtil.get(service.findAllWithPaging(UserDto.class, size, pageIndex), HttpStatus.OK);
+        List<UserDto> userList = service.findAllWithPaging(UserDto.class, size, pageIndex);
+        userList.forEach(user -> user.setPassword(null));
+        return ResponseUtil.get(userList, HttpStatus.OK);
     }
 
     @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER, RoleUtil.EMPLOYEE})
     @GetMapping("/with-info/{id}")
     public ResponseEntity<ResponseDto> findByIdWithInfo(@PathVariable("id") @UUIDConstraint String id){
-        return ResponseUtil.get(service.findByIdWithInfo(UUID.fromString(id)), HttpStatus.OK);
+        UserWithProjectInfoDto user = service.findByIdWithInfo(UUID.fromString(id));
+        user.setPassword(null);
+        return ResponseUtil.get(user, HttpStatus.OK);
     }
 
     @Authorized(roles = {RoleUtil.MANAGER})
     @GetMapping("/with-info")
     public ResponseEntity<ResponseDto> findAllWithInfo(){
-        return ResponseUtil.get(service.findAllWithInfo(), HttpStatus.OK);
+        List<UserWithProjectInfoDto> userList = service.findAllWithInfo();
+        userList.forEach(user -> user.setPassword(null));
+        return ResponseUtil.get(userList, HttpStatus.OK);
     }
 
     @Authorized(roles = {RoleUtil.MANAGER})
     @GetMapping("/with-info/paging")
     public ResponseEntity<ResponseDto> findAllWithInfoWithPaging(@RequestParam("size") int size,
                                                                  @RequestParam("pageIndex") int pageIndex) {
-        return ResponseUtil.get(service.findAllWithInfoWithPaging(size, pageIndex), HttpStatus.OK);
+        List<UserWithProjectInfoDto> userList = service.findAllWithInfoWithPaging(size, pageIndex);
+        userList.forEach(user -> user.setPassword(null));
+        return ResponseUtil.get(userList, HttpStatus.OK);
     }
 
     @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER, RoleUtil.EMPLOYEE})
@@ -91,27 +101,35 @@ public class UserRestResource {
     @GetMapping("/inside-project/{projectId}")
     public ResponseEntity<ResponseDto> findAllInsideProject(@PathVariable("projectId")
                                                             @UUIDConstraint String projectId) {
-        return ResponseUtil.get(service.findAllInsideProject(UUID.fromString(projectId)), HttpStatus.OK);
+        List<UserWithProjectInfoDto> userList = service.findAllInsideProject(UUID.fromString(projectId));
+        userList.forEach(user -> user.setPassword(null));
+        return ResponseUtil.get(userList, HttpStatus.OK);
     }
 
     @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER})
     @GetMapping("/inside-project-with-task/{projectId}")
     public ResponseEntity<ResponseDto> findAllInsideProjectWithTask(@PathVariable("projectId")
                                                             @UUIDConstraint String projectId) {
-        return ResponseUtil.get(service.findAllInsideProjectWithTask(UUID.fromString(projectId)), HttpStatus.OK);
+        List<UserWithTaskInfoDto> userList = service.findAllInsideProjectWithTask(UUID.fromString(projectId));
+        userList.forEach(user -> user.setPassword(null));
+        return ResponseUtil.get(userList, HttpStatus.OK);
     }
 
     @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER})
     @GetMapping("/outside-project/{projectId}")
-    public ResponseEntity<ResponseDto> findAllByProject(@PathVariable("projectId")
+    public ResponseEntity<ResponseDto> findAllOutsideProject(@PathVariable("projectId")
                                                         @UUIDConstraint String projectId) {
-        return ResponseUtil.get(service.findAllOutsideProject(UUID.fromString(projectId)), HttpStatus.OK);
+        List<UserWithProjectInfoDto> userList = service.findAllOutsideProject(UUID.fromString(projectId));
+        userList.forEach(user -> user.setPassword(null));
+        return ResponseUtil.get(userList, HttpStatus.OK);
     }
 
     @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER})
     @GetMapping("/leader-role")
     public ResponseEntity<ResponseDto> findAllLeaderRole() {
-        return ResponseUtil.get(service.findAllLeaderRole(), HttpStatus.OK);
+        List<UserDto> userList = service.findAllLeaderRole();
+        userList.forEach(user -> user.setPassword(null));
+        return ResponseUtil.get(userList, HttpStatus.OK);
     }
 
     @Authorized(roles = {RoleUtil.ADMIN})

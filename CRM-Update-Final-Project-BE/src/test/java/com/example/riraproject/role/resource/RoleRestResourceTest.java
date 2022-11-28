@@ -6,12 +6,13 @@ import com.example.riraproject.role.dto.RoleDto;
 import com.example.riraproject.role.model.Role;
 import com.example.riraproject.role.service.RoleService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +20,19 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 import java.util.UUID;
 
+@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class RoleRestResourceTest {
     @Mock private RoleService service;
     @Mock private MessageSource messageSource;
-    @InjectMocks private RoleRestResource restResource;
+    private RoleRestResource restResource;
     private final String id = UUID.randomUUID().toString();
-    @Mock private Role model;
     @Mock private RoleDto dto;
+
+    @BeforeEach
+    void init() {
+        restResource = new RoleRestResource(service, messageSource);
+    }
 
     @Test
     void findByIdTest() {

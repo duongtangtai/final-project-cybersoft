@@ -20,7 +20,7 @@ import java.util.Set;
 @ExtendWith(MockitoExtension.class)
 class ExceptionHandlerTest {
 
-    private GlobalExceptionHandler handler = new GlobalExceptionHandler();
+    private final GlobalExceptionHandler handler = new GlobalExceptionHandler();
     private final String message = "some error message";
 
     private void checkResult(ResponseEntity<ResponseDto> result) {

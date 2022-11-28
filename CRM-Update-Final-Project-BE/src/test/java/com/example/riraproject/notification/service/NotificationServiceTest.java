@@ -10,33 +10,40 @@ import com.example.riraproject.user.dto.UserDto;
 import com.example.riraproject.user.model.User;
 import com.example.riraproject.user.service.UserService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
+@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class NotificationServiceTest {
     @Mock private NotificationRepository repository;
-    @Mock private ModelMapper mapper;
+    @Autowired private ModelMapper mapper;
     @Mock private UserService userService;
     @Mock private JwtUtil jwtUtil;
-    @Mock private MessageSource messageSource;
-    @Mock private Notification model;
-    @Mock private NotificationDto dto;
-    @Mock private NotificationWithInfoDto dtoWithInfo;
+    @Autowired private MessageSource messageSource;
+    private NotificationServiceImpl service;
 
-    @InjectMocks private NotificationServiceImpl service;
+    @BeforeEach
+    void init() {
+        service = new NotificationServiceImpl(repository, mapper, userService, jwtUtil, messageSource);
+    }
 
 
     @Test
@@ -52,36 +59,36 @@ class NotificationServiceTest {
         User user = Mockito.mock(User.class);
         Notification.Status sentStatus = Notification.Status.SENT;
         Notification.Status readStatus = Notification.Status.READ;
-        Notification sentModel = Mockito.mock(Notification.class);
-        Notification readModel = Mockito.mock(Notification.class);
-        NotificationWithInfoDto sentDto = Mockito.mock(NotificationWithInfoDto.class);
-        NotificationWithInfoDto readDto = Mockito.mock(NotificationWithInfoDto.class);
+        Notification sentModel = Notification.builder()
+                .description("this is a sent notification")
+                .build();
+        Notification readModel = Notification.builder()
+                .description("this is a read notification")
+                .build();
 
         Mockito.when(userService.findUserById(userId)).thenReturn(user);
         Mockito.when(repository.findAllWithReceiverAndStatus(user.getId(), sentStatus))
                 .thenReturn(Set.of(sentModel));
         Mockito.when(repository.findAllWithReceiverAndStatus(user.getId(), readStatus))
                 .thenReturn(Set.of(readModel));
-        Mockito.when(mapper.map(sentModel, NotificationWithInfoDto.class))
-                .thenReturn(sentDto);
-        Mockito.when(mapper.map(readModel, NotificationWithInfoDto.class))
-                .thenReturn(readDto);
         //TRY
         //CASE 1 : SENT STATUS
-        Assertions.assertEquals(List.of(sentDto),
-                service.findAllWithReceiverAndStatus(userId, sentStatus));
+        List<NotificationWithInfoDto> result = service.findAllWithReceiverAndStatus(userId, sentStatus);
+        Assertions.assertEquals(1, result.size());
+        Assertions.assertEquals(sentModel.getDescription(), result.get(0).getDescription());
         Mockito.verify(userService).findUserById(userId);
         Mockito.verify(repository).findAllWithReceiverAndStatus(user.getId(), sentStatus);
         //CASE 2 : READ STATUS
-        Assertions.assertEquals(List.of(readDto),
-                service.findAllWithReceiverAndStatus(userId, readStatus));
+        List<NotificationWithInfoDto> result2 = service.findAllWithReceiverAndStatus(userId, readStatus);
+        Assertions.assertEquals(1, result2.size());
+        Assertions.assertEquals(readModel.getDescription(), result2.get(0).getDescription());
         Mockito.verify(userService, Mockito.times(2)).findUserById(userId);
-        Mockito.verify(repository, Mockito.times(1)).findAllWithReceiverAndStatus(user.getId(), sentStatus);
+        Mockito.verify(repository).findAllWithReceiverAndStatus(user.getId(), readStatus);
     }
 
     @Test
     void readAllByReceiverTest() {
-        //MOCKING
+        //SETUP
         UUID userId = UUID.randomUUID();
         User user = new User();
         Mockito.when(userService.findUserById(userId)).thenReturn(user);
@@ -151,7 +158,6 @@ class NotificationServiceTest {
         Assertions.assertTrue(service.isSubscriber(username));
         //TRY
         Assertions.assertDoesNotThrow(() -> service.sendNotificationToUser(username, content));
-        //TODO how to check the event?
     }
 
     @Test

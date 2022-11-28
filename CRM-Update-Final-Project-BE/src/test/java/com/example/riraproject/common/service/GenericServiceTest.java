@@ -1,14 +1,18 @@
 package com.example.riraproject.common.service;
 
-import com.example.riraproject.common.model.BaseEntity;
+import com.example.riraproject.role.dto.RoleDto;
+import com.example.riraproject.role.model.Role;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,52 +20,55 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.validation.ValidationException;
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Stream;
 
+@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class GenericServiceTest {
-
-    @Mock
-    JpaRepository<BaseEntity, UUID> repository;
-
-    @Mock
-    ModelMapper mapper;
-
-    @InjectMocks
-    GenericService<BaseEntity, Object, UUID> service = new GenericService<>() {
-        @Override
-        public JpaRepository<BaseEntity, UUID> getRepository() {
-            return repository;
-        }
-
-        @Override
-        public ModelMapper getMapper() {
-            return mapper;
-        }
-    };
-
+    @Mock private JpaRepository<Role, UUID> repository;
+    @Autowired private ModelMapper mapper;
+    private GenericService<Role, RoleDto, UUID> service;
     private final UUID id = UUID.randomUUID();
-    private final BaseEntity model = new BaseEntity();
-    private final Object dto = new Object();
+    private Role model;
+    private RoleDto dto;
+
+    @BeforeEach
+    void init() {
+        service = new GenericService<>() {
+            @Override
+            public JpaRepository<Role, UUID> getRepository() {
+                return repository;
+            }
+
+            @Override
+            public ModelMapper getMapper() {
+                return mapper;
+            }
+        };
+        model = Role.builder()
+                .description("this is a model")
+                .build();
+        dto = RoleDto.builder()
+                .description("this is a dto")
+                .build();
+    }
 
     @Test
     void findByIdTest() {
         //MOCK
         Mockito.when(repository.findById(id)).thenReturn(Optional.of(model));
-        Mockito.when(mapper.map(model, Object.class)).thenReturn(dto);
         //CHECK RESULT
         //CASE 1: ID IS VALID
-        Assertions.assertEquals(dto, service.findById(Object.class, id));
+        RoleDto result = service.findById(RoleDto.class, id);
+        Assertions.assertEquals(model.getDescription(), result.getDescription());
         Mockito.verify(repository).findById(id);
         //CASE 2: ID IS INVALID
         Mockito.when(repository.findById(id)).thenReturn(Optional.empty());
         Assertions
                 .assertThrowsExactly(ValidationException.class ,
-                        () -> service.findById(Object.class, id));
+                        () -> service.findById(RoleDto.class, id));
         Mockito.verify(repository, Mockito.times(2)).findById(id);
     }
 
@@ -72,41 +79,48 @@ class GenericServiceTest {
         Mockito.when(repository.findAll(pageable))
                 .thenReturn(page);
         Mockito.when(page.stream()).thenReturn(List.of(model).stream());
-        Mockito.when(mapper.map(model, Object.class)).thenReturn(dto);
-        Assertions.assertEquals(List.of(dto),
-                service.findAllWithPaging(Object.class, 5, 2));
+        List<RoleDto> list = service.findAllWithPaging(RoleDto.class, 5, 2);
+        Assertions.assertEquals(1, list.size());
+        Assertions.assertEquals(model.getDescription(), list.get(0).getDescription());
         Mockito.verify(repository).findAll(pageable);
     }
 
     @Test
     void findAllTest() {
         Mockito.when(repository.findAll()).thenReturn(List.of(model));
-        Mockito.when(mapper.map(model, Object.class)).thenReturn(dto);
-        Assertions.assertEquals(List.of(dto), service.findAll(Object.class));
+        List<RoleDto> list = service.findAll(RoleDto.class);
+        Assertions.assertEquals(1, list.size());
+        Assertions.assertEquals(model.getDescription(), list.get(0).getDescription());
         Mockito.verify(repository).findAll();
     }
 
     @Test
     void saveTest() {
-        BaseEntity savedModel = Mockito.mock(BaseEntity.class);
-        Object savedDto = Mockito.mock(Object.class);
-        Mockito.when(mapper.map(dto, BaseEntity.class)).thenReturn(model);
-        Mockito.when(repository.save(model)).thenReturn(savedModel);
-        Mockito.when(mapper.map(savedModel, (Type) dto.getClass())).thenReturn(savedDto);
-        Assertions.assertEquals(savedDto, service.save(BaseEntity.class, dto));
-        Mockito.verify(repository).save(model);
+        //SETUP
+        Role savedModel = Role.builder()
+                .description("this is a saved model")
+                .build();
+        ArgumentCaptor<Role> captor = ArgumentCaptor.forClass(Role.class);
+        Mockito.when(repository.save(Mockito.any(Role.class))).thenReturn(savedModel);
+        //TRY
+        RoleDto savedDto = service.save(Role.class, dto);
+        Mockito.verify(repository).save(captor.capture());
+        Assertions.assertEquals(dto.getDescription(), captor.getValue().getDescription());
+        Assertions.assertEquals(savedModel.getDescription(), savedDto.getDescription());
     }
 
     @Test
     void updateTest() {
         //SETUP
+        Role savedModel = Role.builder()
+                .description("this is a saved model")
+                .build();
         Mockito.when(repository.findById(id)).thenReturn(Optional.of(model));
-        Mockito.doNothing().when(mapper).map(dto, model);
-        Mockito.when(repository.save(model)).thenReturn(model);
-        Mockito.when(mapper.map(model, (Type) dto.getClass())).thenReturn(dto);
+        Mockito.when(repository.save(model)).thenReturn(savedModel);
         //TRY
         //CASE 1 : ID IS VALID
-        Assertions.assertEquals(dto, service.update(id, dto));
+        RoleDto result = service.update(id, dto);
+        Assertions.assertEquals(dto.getDescription(), result.getDescription());
         Mockito.verify(repository).findById(id);
         //CASE 2 : ID IS INVALID
         Mockito.when(repository.findById(id)).thenReturn(Optional.empty());

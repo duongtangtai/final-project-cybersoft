@@ -6,12 +6,14 @@ import com.example.riraproject.notification.dto.NotificationWithInfoDto;
 import com.example.riraproject.notification.model.Notification;
 import com.example.riraproject.notification.service.NotificationService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +22,21 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.util.List;
 import java.util.UUID;
 
+@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class NotificationRestResourceTest {
     @Mock private NotificationService service;
-    @Mock private MessageSource messageSource;
+    @Autowired private MessageSource messageSource;
+    private NotificationRestResource restResource;
+    private final String id = UUID.randomUUID().toString();
+    private NotificationWithInfoDto dtoWithInfo;
 
-    @InjectMocks private NotificationRestResource restResource;
-
-    private String id = UUID.randomUUID().toString();
-
-    @Mock private NotificationWithInfoDto dtoWithInfo;
+    @BeforeEach
+    void init() {
+        restResource = new NotificationRestResource(service, messageSource);
+        dtoWithInfo = new NotificationWithInfoDto();
+        dtoWithInfo.setDescription("this is a new notification");
+    }
 
     @Test
     void findAllSentByReceiverIdTest() {

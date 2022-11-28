@@ -7,6 +7,7 @@ import com.example.riraproject.profile.service.ProfileService;
 import com.example.riraproject.security.dto.LoginResultDto;
 import com.example.riraproject.user.dto.UserDto;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,16 +15,24 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+@SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class ProfileRestResourceTest {
+class ProfileRestResourceTest {
     @Mock private ProfileService service;
-    @Mock private MessageSource messageSource;
+    @Autowired private MessageSource messageSource;
 
     @InjectMocks private ProfileRestResource restResource;
+
+    @BeforeEach
+    void init() {
+        restResource = new ProfileRestResource(service, messageSource);
+    }
 
     @Test
     void updateProfileTest() {

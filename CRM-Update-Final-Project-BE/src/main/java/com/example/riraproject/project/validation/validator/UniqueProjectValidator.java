@@ -15,8 +15,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UniqueProjectValidator implements ConstraintValidator<UniqueProject, ProjectDto> {
     private final ProjectRepository repository;
-    private String message;
     private final MessageSource messageSource;
+    private String message;
 
     @Override
     public void initialize(UniqueProject constraintAnnotation) {
@@ -52,6 +52,7 @@ public class UniqueProjectValidator implements ConstraintValidator<UniqueProject
     private boolean isOldProjectValid(ProjectDto dto, ConstraintValidatorContext context) {
         Optional<Project> projectOptional = repository.findById(dto.getId());
         if (projectOptional.isEmpty()) {
+            message = MessageUtil.getMessage(messageSource, "project.id.not-found");
             buildContext(message, context);
             return false;
         }

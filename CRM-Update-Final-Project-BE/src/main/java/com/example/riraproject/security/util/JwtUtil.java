@@ -49,7 +49,7 @@ public class JwtUtil {
         if (authentication.getPrincipal() instanceof String principal) {
             return principal;
         }
-        UserDetails userDetails = (UserDetails) authentication;
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         return userDetails.getUsername();
     }
 
