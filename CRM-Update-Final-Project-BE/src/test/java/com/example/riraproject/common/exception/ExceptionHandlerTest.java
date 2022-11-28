@@ -20,7 +20,7 @@ import java.util.Set;
 @ExtendWith(MockitoExtension.class)
 class ExceptionHandlerTest {
 
-    private GlobalExceptionHandler handler = new GlobalExceptionHandler();
+    private final GlobalExceptionHandler handler = new GlobalExceptionHandler();
     private final String message = "some error message";
 
     private void checkResult(ResponseEntity<ResponseDto> result) {
@@ -35,7 +35,7 @@ class ExceptionHandlerTest {
 
     @Test
     void validationExceptionTest() {
-        //MOCKING
+        //SETUP
         ValidationException exception = Mockito.mock(ValidationException.class);
         Mockito.when(exception.getMessage()).thenReturn(message);
         //TRY
@@ -46,7 +46,7 @@ class ExceptionHandlerTest {
 
     @Test
     void methodArgumentNotValidExceptionTest() {
-        //MOCKING
+        //SETUP
         MethodArgumentNotValidException exception = Mockito.mock(MethodArgumentNotValidException.class);
         ObjectError error = Mockito.mock(ObjectError.class);
         Mockito.when(exception.getAllErrors()).thenReturn(List.of(error));
@@ -59,7 +59,7 @@ class ExceptionHandlerTest {
 
     @Test
     void invalidFormatExceptionTest() {
-        //MOCKING
+        //SETUP
         InvalidFormatException exception = Mockito.mock(InvalidFormatException.class);
         Mockito.when(exception.getTargetType()).thenReturn(null);
         Mockito.when(exception.getOriginalMessage()).thenReturn(message);
@@ -71,7 +71,7 @@ class ExceptionHandlerTest {
 
     @Test
     void constraintViolationExceptionTest() {
-        //MOCKING
+        //SETUP
         ConstraintViolationException exception = Mockito.mock(ConstraintViolationException.class);
         ConstraintViolation constraint = Mockito.mock(ConstraintViolation.class);
         Mockito.when(exception.getConstraintViolations()).thenReturn(Set.of(constraint));
@@ -84,7 +84,7 @@ class ExceptionHandlerTest {
 
     @Test
     void riraAuthenticationExceptionTest() {
-        //MOCKING
+        //SETUP
         RiraAuthenticationException exception = Mockito.mock(RiraAuthenticationException.class);
         Mockito.when(exception.getMessage()).thenReturn(message);
         //TRY
@@ -95,7 +95,7 @@ class ExceptionHandlerTest {
 
     @Test
     void riraAuthorizationException() {
-        //MOCKING
+        //SETUP
         RiraAuthorizationException exception = Mockito.mock(RiraAuthorizationException.class);
         Mockito.when(exception.getMessage()).thenReturn(message);
         //TRY

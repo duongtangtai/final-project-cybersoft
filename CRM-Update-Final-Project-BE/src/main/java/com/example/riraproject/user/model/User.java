@@ -138,7 +138,6 @@ public class User extends BaseEntity {
 
     @PreRemove
     private void beforeRemoveUser() { //set null to relative projects and tasks
-        log.info("PreRemoveUser - Trying to set nulls to relative projects and tasks");
         getCreators().forEach(project -> project.setCreator(null));
         getLeaders().forEach(project -> project.setLeader(null));
         getTasks().forEach(task -> task.setReporter(null));

@@ -3,27 +3,33 @@ package com.example.riraproject.common.validation;
 import com.example.riraproject.common.validation.annotation.UUIDConstraint;
 import com.example.riraproject.common.validation.validator.UUIDConstraintValidator;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.validation.ConstraintValidatorContext;
 import java.util.UUID;
 
+@SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class UUIDConstraintValidatorTest {
+class UUIDConstraintValidatorTest {
 
-    private final String message = "some message";
+    @Mock UUIDConstraint constraint;
+    private UUIDConstraintValidator validator;
 
-    @InjectMocks
-    UUIDConstraintValidator validator;
+    @BeforeEach
+    void init() {
+        validator = new UUIDConstraintValidator();
+    }
 
     @Test
     void validatorShouldWork() {
-        //MOCKING
-        UUIDConstraint constraint = Mockito.mock(UUIDConstraint.class);
+        //SETUP
+        String message = "some message";
         Mockito.when(constraint.message()).thenReturn(message);
         ConstraintValidatorContext context = Mockito.mock(ConstraintValidatorContext.class);
         ConstraintValidatorContext newContext = Mockito.mock(ConstraintValidatorContext.class);

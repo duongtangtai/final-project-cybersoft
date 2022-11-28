@@ -15,8 +15,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UniqueProjectValidator implements ConstraintValidator<UniqueProject, ProjectDto> {
     private final ProjectRepository repository;
-    private String message;
     private final MessageSource messageSource;
+    private String message;
 
     @Override
     public void initialize(UniqueProject constraintAnnotation) {

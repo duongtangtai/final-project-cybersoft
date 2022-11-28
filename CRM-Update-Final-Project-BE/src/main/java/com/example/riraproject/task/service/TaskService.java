@@ -157,7 +157,10 @@ class TaskServiceImpl implements TaskService {
                 removeReporterFromTask(task, oldReporter);
                 addReporterToTask(task, newReporter);
             }
-        } //else do nothing with reporter
+        } else if (oldReporter != null) { // this task will no longer have reporter
+            //if oldReporter not null => let him know he's been removed
+            removeReporterFromTask(task, oldReporter);
+        }
         mapper.map(taskDto, task);
         return mapper.map(task, TaskDto.class);
     }

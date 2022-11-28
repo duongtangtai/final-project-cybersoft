@@ -49,7 +49,8 @@ public class NotificationRestResource {
     @PostMapping("/unsubscribe/{username}")
     public ResponseEntity<ResponseDto> unsubscribe(@PathVariable("username") String username) {
         service.unsubscribe(username);
-        return ResponseUtil.get("OK", HttpStatus.OK );
+        return ResponseUtil.get(MessageUtil.getMessage(messageSource,
+                "notification.unsubscribed"), HttpStatus.OK );
     }
 
     @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER, RoleUtil.EMPLOYEE})

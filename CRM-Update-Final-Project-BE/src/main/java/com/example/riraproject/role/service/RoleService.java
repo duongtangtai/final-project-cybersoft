@@ -6,7 +6,6 @@ import com.example.riraproject.role.model.Role;
 import com.example.riraproject.role.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.context.MessageSource;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +23,6 @@ public interface RoleService extends GenericService<Role, RoleDto, UUID> {
 class RoleServiceImpl implements RoleService {
     private final RoleRepository repository;
     private final ModelMapper mapper;
-    private final MessageSource messageSource;
-    private static final String UUID_NOT_FOUND = "role.id.not-found";
 
     @Override
     public JpaRepository<Role, UUID> getRepository() {

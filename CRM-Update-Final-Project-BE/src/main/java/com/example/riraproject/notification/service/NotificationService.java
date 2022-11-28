@@ -12,6 +12,7 @@ import com.example.riraproject.user.dto.UserDto;
 import com.example.riraproject.user.model.User;
 import com.example.riraproject.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.CopyOnWriteLinkedHashMap;
 import org.springframework.context.MessageSource;
@@ -39,6 +40,7 @@ public interface NotificationService extends GenericService<Notification, Notifi
 }
 @Service
 @RequiredArgsConstructor
+@Slf4j
 class NotificationServiceImpl implements NotificationService {
     private final NotificationRepository repository;
     private final ModelMapper mapper;
@@ -92,7 +94,7 @@ class NotificationServiceImpl implements NotificationService {
         try {
             username = (String) jwtUtil.verifyToken(token).getPrincipal();
         } catch (Exception e) {
-            System.out.println("ERROR WHILE SUBSCRIBING: " + e.getMessage());
+            log.error("ERROR WHILE SUBSCRIBING: " + e.getMessage());
             return null;
         }
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE); //default 30 seconds

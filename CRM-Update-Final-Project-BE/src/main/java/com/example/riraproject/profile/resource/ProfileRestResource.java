@@ -30,13 +30,13 @@ public class ProfileRestResource {
     private final ProfileService service;
     private final MessageSource messageSource;
 
-    @Authorized(roles = {RoleUtil.EMPLOYEE})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER, RoleUtil.EMPLOYEE})
     @PutMapping("/update-profile")
     public ResponseEntity<ResponseDto> updateProfile(@RequestBody @Validated(UpdateInfo.class) UserDto dto) {
         return ResponseUtil.get(service.updateProfile(dto),HttpStatus.OK);
     }
 
-    @Authorized(roles = {RoleUtil.EMPLOYEE})
+    @Authorized(roles = {RoleUtil.MANAGER, RoleUtil.LEADER, RoleUtil.EMPLOYEE})
     @PutMapping("/change-password")
     public ResponseEntity<ResponseDto> changePassword(@RequestBody @Valid ChangePasswordForm form) {
         service.changePassword(form);

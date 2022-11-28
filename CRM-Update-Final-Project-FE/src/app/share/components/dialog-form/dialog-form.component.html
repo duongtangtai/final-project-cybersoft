@@ -160,7 +160,7 @@
                 <strong>Action</strong>
               </th>
               <td mat-cell *matCellDef="let element">
-                <button class="button btn-primary" (click)="showProjectStaffStatistic(element)">
+                <button *ngIf="element.tasks.length > 0" class="button btn-primary" (click)="showProjectStaffStatistic(element)">
                   See Progress
                 </button>
               </td>

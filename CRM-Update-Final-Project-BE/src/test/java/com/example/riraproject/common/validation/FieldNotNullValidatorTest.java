@@ -3,9 +3,10 @@ package com.example.riraproject.common.validation;
 import com.example.riraproject.common.validation.annotation.FieldNotNull;
 import com.example.riraproject.common.validation.validator.FieldNotNullValidator;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -13,16 +14,18 @@ import javax.validation.ConstraintValidatorContext;
 
 @ExtendWith(MockitoExtension.class)
 class FieldNotNullValidatorTest {
+    @Mock FieldNotNull constraint;
+    private FieldNotNullValidator validator;
 
-    private final String message = "some message";
-
-    @InjectMocks
-    FieldNotNullValidator validator;
+    @BeforeEach
+    void init() {
+        validator = new FieldNotNullValidator();
+    }
 
     @Test
     void validatorShouldWork() {
-        //MOCKING
-        FieldNotNull constraint = Mockito.mock(FieldNotNull.class);
+        //SETUP
+        String message = "some message";
         Mockito.when(constraint.message()).thenReturn(message);
         ConstraintValidatorContext context = Mockito.mock(ConstraintValidatorContext.class);
         ConstraintValidatorContext newContext = Mockito.mock(ConstraintValidatorContext.class);
