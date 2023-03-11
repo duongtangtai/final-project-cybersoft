@@ -1,6 +1,6 @@
 import { BehaviorSubject } from 'rxjs';
 export class AppSettings {
-    public static API_ENDPOINT = "http://192.168.100.11:8088//rira/api";
+    public static API_ENDPOINT = "https://192.168.100.11:8088//rira/api";
     public static LOG_OUT = false;
     public static AUTH_DATA = "auth_data";
 
